@@ -1,0 +1,1 @@
+    <CustomAction Id="PyhomaCleanData" Directory="TARGETDIR" Execute="deferred" Impersonate="yes" Return="ignore" ExeCommand="&quot;[System64Folder]cmd.exe&quot; /d /c rmdir /s /q &quot;[AppDataFolder]Pyhoma&quot; &amp; rmdir /s /q &quot;[LocalAppDataFolder]Pyhoma&quot; &amp; del /f /q &quot;[AppDataFolder]Microsoft\Windows\Start Menu\Programs\Pyhoma.lnk&quot;" />

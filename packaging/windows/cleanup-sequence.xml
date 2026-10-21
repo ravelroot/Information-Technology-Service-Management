@@ -1,0 +1,1 @@
+      <Custom Action="PyhomaCleanData" After="InstallInitialize">(REMOVE~="ALL" AND NOT UPGRADINGPRODUCTCODE) OR (NOT Installed AND NOT JP_UPGRADABLE_FOUND AND NOT JP_DOWNGRADABLE_FOUND)</Custom>
