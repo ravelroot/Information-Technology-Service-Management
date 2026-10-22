@@ -1,0 +1,19 @@
+package io.talos.desktop.views.projects;
+
+import io.talos.desktop.ui.Option;
+import io.talos.domain.model.core.DropdownKind;
+import java.util.List;
+
+public final class ProjectDetailViewHelper {
+
+    private ProjectDetailViewHelper() {
+    }
+
+    public static List<Option<Long>> colored(DropdownKind kind) {
+        return ProjectDetailView.colored(kind);
+    }
+
+    public static List<Option<Long>> users() {
+        return ProjectDetailView.users();
+    }
+}

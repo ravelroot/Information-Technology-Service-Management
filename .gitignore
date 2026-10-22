@@ -14,7 +14,7 @@ build-logs/
 .DS_Store
 Thumbs.db
 
-pyhoma.properties
+talos.properties
 .key
 *.mv.db
 *.trace.db

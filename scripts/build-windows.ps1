@@ -15,7 +15,7 @@ New-Item -ItemType Directory -Force -Path $Tools, $Logs | Out-Null
 $Stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $Log = Join-Path $Logs "build-$Stamp.log"
 
-$AppName = 'Pyhoma'
+$AppName = 'Talos'
 $AppVersion = '1.0.0'
 $UpgradeUuid = '241ea7a4-95f2-539c-b574-4d367c3e5c72'
 $MavenVersion = '3.9.9'
@@ -125,12 +125,12 @@ try {
     $rc = Invoke-Logged $Mvn $mvnArgs
     if ($rc -ne 0) { Fail 'A compilacao Maven falhou. / The Maven build failed.' }
 
-    $AppInput = Join-Path $Root 'pyhoma-desktop\target\app'
-    if (-not (Test-Path (Join-Path $AppInput 'pyhoma.jar'))) { Fail "pyhoma.jar nao encontrado em $AppInput" }
+    $AppInput = Join-Path $Root 'talos-desktop\target\app'
+    if (-not (Test-Path (Join-Path $AppInput 'talos.jar'))) { Fail "talos.jar nao encontrado em $AppInput" }
 
-    $ResDir = Join-Path $Root 'pyhoma-desktop\target\jpackage-resources'
+    $ResDir = Join-Path $Root 'talos-desktop\target\jpackage-resources'
     New-Item -ItemType Directory -Force -Path $ResDir | Out-Null
-    Copy-Item (Join-Path $Root 'packaging\windows\pyhoma.ico') (Join-Path $ResDir "$AppName.ico") -Force
+    Copy-Item (Join-Path $Root 'packaging\windows\talos.ico') (Join-Path $ResDir "$AppName.ico") -Force
     $BannerBmp = Join-Path $Root 'packaging\windows\installer-banner.bmp'
     $DialogBmp = Join-Path $Root 'packaging\windows\installer-dialog.bmp'
     $Extract = Join-Path $ResDir 'jdk'
@@ -144,7 +144,7 @@ try {
         $CleanupActions = Get-Content -Path (Join-Path $Root 'packaging\windows\cleanup-actions.xml') -Raw
         $CleanupSequence = Get-Content -Path (Join-Path $Root 'packaging\windows\cleanup-sequence.xml') -Raw
         $Xml = $Xml.Replace('<InstallExecuteSequence>', $CleanupActions + "`r`n    <InstallExecuteSequence>`r`n" + $CleanupSequence)
-        if (-not $Xml.Contains('PyhomaCleanData')) { Fail 'Nao foi possivel incluir a limpeza na desinstalacao. / Could not add the uninstall cleanup.' }
+        if (-not $Xml.Contains('TalosCleanData')) { Fail 'Nao foi possivel incluir a limpeza na desinstalacao. / Could not add the uninstall cleanup.' }
         Set-Content -Path (Join-Path $ResDir 'main.wxs') -Value $Xml -Encoding UTF8
     } else {
         Write-Step 'Modelo main.wxs nao encontrado; instalador sem imagens personalizadas. / main.wxs template not found.'
@@ -170,13 +170,13 @@ try {
             '--type', $t,
             '--name', $AppName,
             '--app-version', $AppVersion,
-            '--vendor', 'Pyhoma',
-            '--description', 'Pyhoma. - IT service management, help desk and asset inventory',
+            '--vendor', 'Talos',
+            '--description', 'Talos. - IT service management, help desk and asset inventory',
             '--copyright', 'MIT License',
             '--input', $AppInput,
-            '--main-jar', 'pyhoma.jar',
-            '--main-class', 'io.pyhoma.desktop.Main',
-            '--icon', (Join-Path $Root 'packaging\windows\pyhoma.ico'),
+            '--main-jar', 'talos.jar',
+            '--main-class', 'io.talos.desktop.Main',
+            '--icon', (Join-Path $Root 'packaging\windows\talos.ico'),
             '--resource-dir', $ResDir,
             '--license-file', (Join-Path $Root 'LICENSE'),
             '--add-modules', $Modules,
@@ -190,10 +190,10 @@ try {
             '--java-options', '-Dstdout.encoding=UTF-8',
             '--win-dir-chooser',
             '--win-menu',
-            '--win-menu-group', 'Pyhoma',
+            '--win-menu-group', 'Talos',
             '--win-shortcut',
             '--win-upgrade-uuid', $UpgradeUuid,
-            '--install-dir', 'Pyhoma',
+            '--install-dir', 'Talos',
             '--dest', $OutDir,
             '--temp', (Join-Path $Logs "jpackage-$t-$Stamp"),
             '--verbose'

@@ -13,10 +13,10 @@ labels: bug
 **What you expected**
 
 **Environment**
-- Pyhoma. version:
+- Talos. version:
 - Windows version:
 - Database (H2, PostgreSQL, MySQL, MariaDB, SQL Server, Oracle) and version:
 
 **Log**
-Attach the relevant part of `%LOCALAPPDATA%\Pyhoma\logs\pyhoma.log`.
+Attach the relevant part of `%LOCALAPPDATA%\Talos\logs\talos.log`.
 Remove host names, user names, IP addresses and anything else you would not publish.

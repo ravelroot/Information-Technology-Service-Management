@@ -1,61 +1,61 @@
 # Modelo do banco de dados
 
-Este documento descreve o banco de dados do **Pyhoma.**: quais bancos são aceitos, como preparar cada um e todas as tabelas e campos que a aplicação usa. Ele é gerado a partir das migrações em [`pyhoma-infrastructure/src/main/resources/db/migration`](../pyhoma-infrastructure/src/main/resources/db/migration), que são a fonte oficial do esquema.
+Este documento descreve o banco de dados do **Talos.**: quais bancos são aceitos, como preparar cada um e todas as tabelas e campos que a aplicação usa. Ele é gerado a partir das migrações em [`talos-infrastructure/src/main/resources/db/migration`](../talos-infrastructure/src/main/resources/db/migration), que são a fonte oficial do esquema.
 
-> **Você não cria as tabelas.** Ao conectar pela primeira vez, o Pyhoma. cria todas elas sozinho (Flyway) e, nas próximas versões, aplica as alterações automaticamente. Basta entregar um banco **vazio** e um usuário com permissão para criar tabelas.
+> **Você não cria as tabelas.** Ao conectar pela primeira vez, o Talos. cria todas elas sozinho (Flyway) e, nas próximas versões, aplica as alterações automaticamente. Basta entregar um banco **vazio** e um usuário com permissão para criar tabelas.
 
 ## Bancos aceitos
 
 | Banco | Versão mínima | Script do esquema | Observação |
 |---|---|---|---|
-| H2 (arquivo local) | 2.x | [`h2/V1__baseline.sql`](../pyhoma-infrastructure/src/main/resources/db/migration/h2/V1__baseline.sql) | Só para um computador. Fica em `%LOCALAPPDATA%\Pyhoma\database`. |
-| PostgreSQL | 12 | [`postgresql/V1__baseline.sql`](../pyhoma-infrastructure/src/main/resources/db/migration/postgresql/V1__baseline.sql) | Recomendado para equipes. |
-| MySQL / MariaDB | 8.0 / 10.6 | [`mysql/V1__baseline.sql`](../pyhoma-infrastructure/src/main/resources/db/migration/mysql/V1__baseline.sql) | Use `utf8mb4`. |
-| SQL Server | 2017 | [`sqlserver/V1__baseline.sql`](../pyhoma-infrastructure/src/main/resources/db/migration/sqlserver/V1__baseline.sql) | Conexão criptografada; certificado autoassinado exige `trustServerCertificate=true`. |
-| Oracle | 19c | [`oracle/V1__baseline.sql`](../pyhoma-infrastructure/src/main/resources/db/migration/oracle/V1__baseline.sql) | Use um esquema (usuário) só para o Pyhoma. |
+| H2 (arquivo local) | 2.x | [`h2/V1__baseline.sql`](../talos-infrastructure/src/main/resources/db/migration/h2/V1__baseline.sql) | Só para um computador. Fica em `%LOCALAPPDATA%\Talos\database`. |
+| PostgreSQL | 12 | [`postgresql/V1__baseline.sql`](../talos-infrastructure/src/main/resources/db/migration/postgresql/V1__baseline.sql) | Recomendado para equipes. |
+| MySQL / MariaDB | 8.0 / 10.6 | [`mysql/V1__baseline.sql`](../talos-infrastructure/src/main/resources/db/migration/mysql/V1__baseline.sql) | Use `utf8mb4`. |
+| SQL Server | 2017 | [`sqlserver/V1__baseline.sql`](../talos-infrastructure/src/main/resources/db/migration/sqlserver/V1__baseline.sql) | Conexão criptografada; certificado autoassinado exige `trustServerCertificate=true`. |
+| Oracle | 19c | [`oracle/V1__baseline.sql`](../talos-infrastructure/src/main/resources/db/migration/oracle/V1__baseline.sql) | Use um esquema (usuário) só para o Talos. |
 
 Os cinco scripts criam exatamente as mesmas tabelas, colunas e índices; muda só a sintaxe de cada banco.
 
 ## Como preparar o banco
 
-Crie um banco vazio e um usuário dono dele. Troque `troque-esta-senha` por uma senha forte e guarde-a: ela é informada uma única vez no assistente do Pyhoma. e fica criptografada no computador.
+Crie um banco vazio e um usuário dono dele. Troque `troque-esta-senha` por uma senha forte e guarde-a: ela é informada uma única vez no assistente do Talos. e fica criptografada no computador.
 
 **PostgreSQL**
 
 ```sql
-CREATE USER pyhoma WITH PASSWORD 'troque-esta-senha';
-CREATE DATABASE pyhoma OWNER pyhoma ENCODING 'UTF8';
+CREATE USER talos WITH PASSWORD 'troque-esta-senha';
+CREATE DATABASE talos OWNER talos ENCODING 'UTF8';
 ```
 
 **MySQL / MariaDB**
 
 ```sql
-CREATE DATABASE pyhoma CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'pyhoma'@'%' IDENTIFIED BY 'troque-esta-senha';
-GRANT ALL PRIVILEGES ON pyhoma.* TO 'pyhoma'@'%';
+CREATE DATABASE talos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'talos'@'%' IDENTIFIED BY 'troque-esta-senha';
+GRANT ALL PRIVILEGES ON talos.* TO 'talos'@'%';
 ```
 
 **SQL Server**
 
 ```sql
-CREATE DATABASE pyhoma;
+CREATE DATABASE talos;
 GO
-CREATE LOGIN pyhoma WITH PASSWORD = 'troque-esta-senha';
+CREATE LOGIN talos WITH PASSWORD = 'troque-esta-senha';
 GO
-USE pyhoma;
-CREATE USER pyhoma FOR LOGIN pyhoma;
-ALTER ROLE db_owner ADD MEMBER pyhoma;
+USE talos;
+CREATE USER talos FOR LOGIN talos;
+ALTER ROLE db_owner ADD MEMBER talos;
 GO
 ```
 
 **Oracle**
 
 ```sql
-CREATE USER pyhoma IDENTIFIED BY "troque-esta-senha" QUOTA UNLIMITED ON USERS;
-GRANT CREATE SESSION, CREATE TABLE, CREATE SEQUENCE TO pyhoma;
+CREATE USER talos IDENTIFIED BY "troque-esta-senha" QUOTA UNLIMITED ON USERS;
+GRANT CREATE SESSION, CREATE TABLE, CREATE SEQUENCE TO talos;
 ```
 
-Depois, no assistente do Pyhoma., escolha o banco, informe servidor, porta, nome do banco, usuário e senha e clique em **Testar conexão**. Todos os computadores da equipe apontam para o mesmo banco.
+Depois, no assistente do Talos., escolha o banco, informe servidor, porta, nome do banco, usuário e senha e clique em **Testar conexão**. Todos os computadores da equipe apontam para o mesmo banco.
 
 ## Convenções
 
@@ -904,6 +904,6 @@ Trava para que só um computador rode as rotinas agendadas por vez.
 ## Como o esquema evolui
 
 - Cada mudança no banco vira um novo arquivo `V<número>__descricao.sql` **nas cinco pastas** de migração, com a mesma numeração. O arquivo `V1__baseline.sql` nunca é editado depois de publicado.
-- Ao abrir, o Pyhoma. compara o banco com as migrações (`validate-on-migrate`) e aplica só as que faltam. A limpeza do banco pelo Flyway (`clean`) é desativada.
+- Ao abrir, o Talos. compara o banco com as migrações (`validate-on-migrate`) e aplica só as que faltam. A limpeza do banco pelo Flyway (`clean`) é desativada.
 - O teste `SchemaGeneratorTest` confere que as entidades Java e os cinco scripts continuam iguais; `DatabaseCompatibilityTest` roda as migrações em bancos reais quando disponíveis.
-- Faça backup antes de atualizar a versão do Pyhoma. em um banco compartilhado.
+- Faça backup antes de atualizar a versão do Talos. em um banco compartilhado.

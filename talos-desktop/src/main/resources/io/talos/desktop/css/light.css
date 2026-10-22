@@ -1,0 +1,43 @@
+.root {
+    -tl-bg: #E8E8E8;
+    -tl-surface: #F6F5F4;
+    -tl-surface-2: #F1EFEE;
+    -tl-hover: #E4E0DE;
+    -tl-line: #D9D4D1;
+    -tl-line-strong: #BAB7B5;
+    -tl-text: #000000;
+    -tl-text-2: #2B2727;
+    -tl-muted: #6B6262;
+    -tl-accent: #000000;
+    -tl-accent-hover: #2B2727;
+    -tl-accent-soft: #D9D1CE;
+    -tl-accent-ink: #000000;
+    -tl-on-accent: #F1EFEE;
+    -tl-sidebar: #000000;
+    -tl-sidebar-2: #1C1919;
+    -tl-sidebar-line: #2B2727;
+    -tl-sidebar-text: #F1EFEE;
+    -tl-sidebar-muted: #BAB7B5;
+    -tl-sidebar-accent: #D9D1CE;
+    -tl-sidebar-on-accent: #000000;
+    -tl-sidebar-logo-bg: #F1EFEE;
+    -tl-sidebar-logo-fg: #000000;
+    -tl-icon: #2B2727;
+    -tl-focus: rgba(0, 0, 0, 0.22);
+    -tl-shadow: rgba(0, 0, 0, 0.16);
+    -tl-danger: #8A2F2F;
+    -tl-danger-hover: #732626;
+    -tl-inverse: #000000;
+    -tl-on-inverse: #F1EFEE;
+
+    -tl-green: #2F5A3F;   -tl-green-soft: #DDE8DF;   -tl-green-ink: #2F5A3F;
+    -tl-amber: #7A5A1E;   -tl-amber-soft: #EFE5CF;   -tl-amber-ink: #7A5A1E;
+    -tl-red: #8A2F2F;   -tl-red-soft: #EFDCDC;   -tl-red-ink: #8A2F2F;
+    -tl-blue: #000000;   -tl-blue-soft: #D9D1CE;   -tl-blue-ink: #000000;
+    -tl-teal: #2B2727;   -tl-teal-soft: #E4E0DE;   -tl-teal-ink: #2B2727;
+    -tl-violet: #AB9D9D;   -tl-violet-soft: #EAE4E2;   -tl-violet-ink: #5E5252;
+    -tl-cyan: #BAB7B5;   -tl-cyan-soft: #ECEAE9;   -tl-cyan-ink: #4F4B49;
+    -tl-slate: #6B6262;   -tl-slate-soft: #E6E2E0;   -tl-slate-ink: #3F3939;
+    -tl-gray: #BAB7B5;   -tl-gray-soft: #EEEBEA;   -tl-gray-ink: #6B6262;
+    -tl-crimson: #2B2727;   -tl-crimson-soft: #E4E0DE;   -tl-crimson-ink: #000000;
+}

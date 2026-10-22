@@ -24,8 +24,8 @@ jobs:
         run: ./scripts/build-windows.ps1
       - uses: actions/upload-artifact@v5
         with:
-          name: pyhoma-windows
-          path: Pyhoma-*.exe
+          name: talos-windows
+          path: Talos-*.exe
       - name: Attach to the GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
@@ -33,5 +33,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view "${{ github.ref_name }}" 2>$null
-          if ($LASTEXITCODE -ne 0) { gh release create "${{ github.ref_name }}" --title "Pyhoma. ${{ github.ref_name }}" --generate-notes }
-          gh release upload "${{ github.ref_name }}" (Get-ChildItem Pyhoma-*.exe).FullName --clobber
+          if ($LASTEXITCODE -ne 0) { gh release create "${{ github.ref_name }}" --title "Talos. ${{ github.ref_name }}" --generate-notes }
+          gh release upload "${{ github.ref_name }}" (Get-ChildItem Talos-*.exe).FullName --clobber

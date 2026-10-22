@@ -11,12 +11,12 @@
         <relativePath/>
     </parent>
 
-    <groupId>io.pyhoma</groupId>
-    <artifactId>pyhoma-parent</artifactId>
+    <groupId>io.talos</groupId>
+    <artifactId>talos-parent</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>Pyhoma.</name>
+    <name>Talos.</name>
     <description>Desktop IT service management, help desk and asset inventory.</description>
     <url>https://github.com/erikdevel0per/Information-Technology-Service-Management</url>
 
@@ -28,9 +28,9 @@
     </licenses>
 
     <modules>
-        <module>pyhoma-domain</module>
-        <module>pyhoma-infrastructure</module>
-        <module>pyhoma-desktop</module>
+        <module>talos-domain</module>
+        <module>talos-infrastructure</module>
+        <module>talos-desktop</module>
     </modules>
 
     <properties>
@@ -40,19 +40,19 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <javafx.version>21.0.8</javafx.version>
         <jna.version>5.16.0</jna.version>
-        <pyhoma.databases></pyhoma.databases>
+        <talos.databases></talos.databases>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.pyhoma</groupId>
-                <artifactId>pyhoma-domain</artifactId>
+                <groupId>io.talos</groupId>
+                <artifactId>talos-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.pyhoma</groupId>
-                <artifactId>pyhoma-infrastructure</artifactId>
+                <groupId>io.talos</groupId>
+                <artifactId>talos-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -86,7 +86,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
                         <systemPropertyVariables>
-                            <pyhoma.databases>${pyhoma.databases}</pyhoma.databases>
+                            <talos.databases>${talos.databases}</talos.databases>
                             <java.awt.headless>true</java.awt.headless>
                         </systemPropertyVariables>
                     </configuration>

@@ -1,6 +1,6 @@
 # Third-party notices
 
-Pyhoma. is distributed under the MIT License. The installers bundle the following third-party software, each under its own license.
+Talos. is distributed under the MIT License. The installers bundle the following third-party software, each under its own license.
 
 | Component | License | Notes |
 |---|---|---|

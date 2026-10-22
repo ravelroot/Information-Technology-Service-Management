@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for Pyhoma.
+about: Suggest an idea for Talos.
 labels: enhancement
 ---
 

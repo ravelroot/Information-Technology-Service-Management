@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.png" alt="Pyhoma." width="100%">
+  <img src="docs/images/banner.png" alt="Talos." width="100%">
 </p>
 
 <p align="center">
@@ -22,10 +22,10 @@
 ---
 
 <p align="center">
-  <img src="docs/images/dashboard.png" alt="Painel do Pyhoma. com indicadores de atendimento" width="92%">
+  <img src="docs/images/dashboard.png" alt="Painel do Talos. com indicadores de atendimento" width="92%">
 </p>
 
-O **Pyhoma.** reúne em um só programa o que uma equipe de TI usa todos os dias: chamados com prazos de SLA, problemas e mudanças no modelo ITIL, quadro Kanban, cronograma de Gantt, agenda dos técnicos, inventário de equipamentos, software e contratos, base de conhecimento e relatórios.
+O **Talos.** reúne em um só programa o que uma equipe de TI usa todos os dias: chamados com prazos de SLA, problemas e mudanças no modelo ITIL, quadro Kanban, cronograma de Gantt, agenda dos técnicos, inventário de equipamentos, software e contratos, base de conhecimento e relatórios.
 
 Ele roda no Windows como qualquer outro programa: você instala com um assistente, escolhe a pasta e abre pelo menu Iniciar. Não há site nem servidor web. Os dados ficam no banco de dados que **você** escolher, do arquivo local H2 a um PostgreSQL, MySQL, MariaDB, SQL Server ou Oracle compartilhado pela equipe.
 
@@ -87,7 +87,7 @@ Ele roda no Windows como qualquer outro programa: você instala com um assistent
 - **Grupos** técnicos e de requerentes, **listas** configuráveis (localizações, categorias, modelos, fabricantes…), **auditoria** completa de alterações e **lixeira** com restauração.
 - **Relatórios** com gráficos: chamados por mês e categoria, desempenho dos técnicos, cumprimento de SLA, satisfação, ativos por tipo e local, vencimentos e conformidade de licenças.
 - Busca global (<kbd>Ctrl</kbd> + <kbd>K</kbd>), notificações, português e inglês.
-- [**Manual de uso em PDF**](docs/manual/Manual-Pyhoma-Vers%C3%A3o%201.0.0.pdf) com todas as telas, funções, atalhos e informações técnicas.
+- [**Manual de uso em PDF**](docs/manual/Manual-Talos-Vers%C3%A3o%201.0.0.pdf) com todas as telas, funções, atalhos e informações técnicas.
 
 ### Interface
 
@@ -117,19 +117,19 @@ Ele roda no Windows como qualquer outro programa: você instala com um assistent
 ### Opção 1: baixar o instalador
 
 1. Abra a página [**Releases**](../../releases/latest) deste repositório.
-2. Baixe `Pyhoma-1.0.0.exe`.
+2. Baixe `Talos-1.0.0.exe`.
 3. Execute o instalador, escolha a pasta de instalação e conclua.
-4. Abra o **Pyhoma** pelo menu Iniciar ou pelo atalho na área de trabalho.
+4. Abra o **Talos** pelo menu Iniciar ou pelo atalho na área de trabalho.
 
 O instalador já inclui o Java e todas as bibliotecas necessárias. Não é preciso instalar mais nada.
 
-Ao desinstalar (Configurações › Aplicativos), o Pyhoma. apaga também tudo o que guardou no computador: configurações, logs e o banco local H2. Na próxima instalação ele começa do zero, pela tela de boas-vindas. Bancos em servidor (PostgreSQL, MySQL, SQL Server, Oracle) não são tocados.
+Ao desinstalar (Configurações › Aplicativos), o Talos. apaga também tudo o que guardou no computador: configurações, logs e o banco local H2. Na próxima instalação ele começa do zero, pela tela de boas-vindas. Bancos em servidor (PostgreSQL, MySQL, SQL Server, Oracle) não são tocados.
 
 > O Windows SmartScreen pode avisar que o editor é desconhecido, porque o instalador não é assinado digitalmente. Clique em **Mais informações** e depois em **Executar assim mesmo**.
 
 ### Opção 2: gerar o instalador você mesmo
 
-Veja [Compilar a partir do código](#compilar-a-partir-do-c%C3%B3digo). Um duplo clique em `scripts\build-windows.cmd` gera o instalador `Pyhoma-1.0.0.exe` na raiz do projeto.
+Veja [Compilar a partir do código](#compilar-a-partir-do-c%C3%B3digo). Um duplo clique em `scripts\build-windows.cmd` gera o instalador `Talos-1.0.0.exe` na raiz do projeto.
 
 ### Requisitos
 
@@ -164,7 +164,7 @@ Depois disso, chamados, ativos, contratos, projetos e artigos começam **vazios*
   <img src="docs/images/setup-initial.png" alt="Configuração inicial: cadastro de localizações" width="80%">
 </p>
 
-Quer só conhecer o programa? Clique em **Explorar sem banco de dados** na tela inicial: o Pyhoma. abre com dados fictícios, todas as telas funcionam e nada é salvo. Uma faixa no topo lembra que é uma demonstração e leva direto à configuração do banco quando você quiser.
+Quer só conhecer o programa? Clique em **Explorar sem banco de dados** na tela inicial: o Talos. abre com dados fictícios, todas as telas funcionam e nada é salvo. Uma faixa no topo lembra que é uma demonstração e leva direto à configuração do banco quando você quiser.
 
 Se o programa for fechado antes de concluir o passo 2, nada fica salvo: na próxima abertura o assistente recomeça do início.
 
@@ -182,11 +182,11 @@ Depois disso, cadastre as pessoas em **Administração › Usuários** e dê a c
 | Observador | Apenas consulta. |
 | Autoatendimento | Usuários finais: abrem e acompanham os próprios chamados e leem o FAQ. |
 
-Cada computador da equipe instala o Pyhoma. e aponta para o **mesmo servidor de banco**. Notificações, alertas de SLA e rotinas automáticas são coordenados entre as estações pelo próprio banco.
+Cada computador da equipe instala o Talos. e aponta para o **mesmo servidor de banco**. Notificações, alertas de SLA e rotinas automáticas são coordenados entre as estações pelo próprio banco.
 
 ## Banco de dados
 
-O banco é escolha sua. O Pyhoma. traz os drivers e os scripts de criação para todos estes:
+O banco é escolha sua. O Talos. traz os drivers e os scripts de criação para todos estes:
 
 | Banco | Versão mínima | Indicado para |
 |---|---|---|
@@ -205,8 +205,8 @@ Para um servidor, crie antes um banco vazio e um usuário com permissão para cr
 <summary>PostgreSQL</summary>
 
 ```sql
-CREATE USER pyhoma WITH PASSWORD 'troque-esta-senha';
-CREATE DATABASE pyhoma OWNER pyhoma ENCODING 'UTF8';
+CREATE USER talos WITH PASSWORD 'troque-esta-senha';
+CREATE DATABASE talos OWNER talos ENCODING 'UTF8';
 ```
 </details>
 
@@ -214,9 +214,9 @@ CREATE DATABASE pyhoma OWNER pyhoma ENCODING 'UTF8';
 <summary>MySQL / MariaDB</summary>
 
 ```sql
-CREATE DATABASE pyhoma CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'pyhoma'@'%' IDENTIFIED BY 'troque-esta-senha';
-GRANT ALL PRIVILEGES ON pyhoma.* TO 'pyhoma'@'%';
+CREATE DATABASE talos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'talos'@'%' IDENTIFIED BY 'troque-esta-senha';
+GRANT ALL PRIVILEGES ON talos.* TO 'talos'@'%';
 ```
 </details>
 
@@ -224,38 +224,38 @@ GRANT ALL PRIVILEGES ON pyhoma.* TO 'pyhoma'@'%';
 <summary>SQL Server</summary>
 
 ```sql
-CREATE DATABASE pyhoma;
+CREATE DATABASE talos;
 GO
-CREATE LOGIN pyhoma WITH PASSWORD = 'troque-esta-senha';
+CREATE LOGIN talos WITH PASSWORD = 'troque-esta-senha';
 GO
-USE pyhoma;
-CREATE USER pyhoma FOR LOGIN pyhoma;
-ALTER ROLE db_owner ADD MEMBER pyhoma;
+USE talos;
+CREATE USER talos FOR LOGIN talos;
+ALTER ROLE db_owner ADD MEMBER talos;
 ```
-O Pyhoma. valida o certificado do servidor. Se o seu SQL Server usa um certificado próprio (autoassinado), informe em *Parâmetros extras*: `trustServerCertificate=true`.
+O Talos. valida o certificado do servidor. Se o seu SQL Server usa um certificado próprio (autoassinado), informe em *Parâmetros extras*: `trustServerCertificate=true`.
 </details>
 
 <details>
 <summary>Oracle</summary>
 
 ```sql
-CREATE USER pyhoma IDENTIFIED BY "troque-esta-senha" QUOTA UNLIMITED ON USERS;
-GRANT CREATE SESSION, CREATE TABLE, CREATE SEQUENCE TO pyhoma;
+CREATE USER talos IDENTIFIED BY "troque-esta-senha" QUOTA UNLIMITED ON USERS;
+GRANT CREATE SESSION, CREATE TABLE, CREATE SEQUENCE TO talos;
 ```
 No campo *Banco*, informe o nome do serviço (por exemplo `FREEPDB1`).
 </details>
 
 Em *Parâmetros extras* você pode acrescentar opções do driver (por exemplo `ssl=true` no PostgreSQL) ou colar uma URL JDBC completa começando por `jdbc:`.
 
-A estrutura do banco é versionada com **Flyway**: ao atualizar o Pyhoma., as novas migrações são aplicadas sozinhas na primeira conexão.
+A estrutura do banco é versionada com **Flyway**: ao atualizar o Talos., as novas migrações são aplicadas sozinhas na primeira conexão.
 
 ### Onde ficam os arquivos
 
 | O quê | Onde |
 |---|---|
-| Configuração da conexão | `%APPDATA%\Pyhoma\pyhoma.properties` |
-| Banco H2 embutido | `%LOCALAPPDATA%\Pyhoma\database` (ou a pasta que você escolher) |
-| Logs | `%LOCALAPPDATA%\Pyhoma\logs\pyhoma.log` |
+| Configuração da conexão | `%APPDATA%\Talos\talos.properties` |
+| Banco H2 embutido | `%LOCALAPPDATA%\Talos\database` (ou a pasta que você escolher) |
+| Logs | `%LOCALAPPDATA%\Talos\logs\talos.log` |
 
 Nada é gravado na pasta de instalação. Para trocar de banco, use **Configurações › Banco de dados** ou o link *Usar outro banco de dados* na tela de login.
 
@@ -274,7 +274,7 @@ O script:
 1. procura um **JDK 21** e o **Maven**; se não encontrar, baixa versões portáteis para a pasta `.tools` (nada é instalado no sistema);
 2. baixa o **WiX Toolset 3**, usado pelo `jpackage` para gerar o `.exe`;
 3. compila e roda os testes (`mvn clean verify`);
-4. gera `Pyhoma-1.0.0.exe` na raiz do projeto (fora do Git).
+4. gera `Talos-1.0.0.exe` na raiz do projeto (fora do Git).
 
 Opção: `scripts\build-windows.cmd -SkipTests` (mais rápido). O log completo fica em `build-logs\`.
 
@@ -284,10 +284,10 @@ Requisitos: JDK 21 ou mais novo e Maven 3.9+.
 
 ```bash
 mvn clean verify                                   # compila e testa
-java -jar pyhoma-desktop/target/app/pyhoma.jar      # abre o programa sem instalar
+java -jar talos-desktop/target/app/talos.jar        # abre o programa sem instalar
 ```
 
-A pasta `pyhoma-desktop/target/app` contém o `pyhoma.jar` e todas as dependências; é dela que o `jpackage` monta o instalador.
+A pasta `talos-desktop/target/app` contém o `talos.jar` e todas as dependências; é dela que o `jpackage` monta o instalador.
 
 ## Arquitetura
 
@@ -295,14 +295,14 @@ O projeto segue uma **arquitetura hexagonal** (portas e adaptadores). As regras 
 
 ```mermaid
 flowchart LR
-    subgraph desktop["pyhoma-desktop · JavaFX"]
+    subgraph desktop["talos-desktop · JavaFX"]
         UI["Telas, Kanban, Gantt<br/>assistente de instalação"]
     end
-    subgraph domain["pyhoma-domain · Java puro"]
+    subgraph domain["talos-domain · Java puro"]
         S["Serviços<br/>chamados, SLA, regras,<br/>inventário, projetos"]
         P(["Portas<br/>DataStore · BackendProvider"])
     end
-    subgraph infra["pyhoma-infrastructure · Spring Boot"]
+    subgraph infra["talos-infrastructure · Spring Boot"]
         J["Adaptador JPA<br/>Hibernate + HikariCP"]
         F["Flyway<br/>migrações por banco"]
         K["Rotinas agendadas<br/>com trava no banco"]
@@ -319,15 +319,15 @@ flowchart LR
 
 | Módulo | Responsabilidade |
 |---|---|
-| `pyhoma-domain` | Entidades, serviços, matriz de prioridade, calendário comercial, motor de regras, agendamento de projetos (caminho crítico), permissões, auditoria. Inclui um repositório em memória usado nos testes. |
-| `pyhoma-infrastructure` | Contexto Spring Boot sem servidor web (`web-application-type=none`), Spring Data JPA/Hibernate, Flyway com scripts para cada banco, drivers JDBC e as rotinas periódicas. |
-| `pyhoma-desktop` | Interface JavaFX, assistente de primeiro uso, configuração local e criptografia da senha do banco. Encontra o backend pelo `ServiceLoader`. |
+| `talos-domain` | Entidades, serviços, matriz de prioridade, calendário comercial, motor de regras, agendamento de projetos (caminho crítico), permissões, auditoria. Inclui um repositório em memória usado nos testes. |
+| `talos-infrastructure` | Contexto Spring Boot sem servidor web (`web-application-type=none`), Spring Data JPA/Hibernate, Flyway com scripts para cada banco, drivers JDBC e as rotinas periódicas. |
+| `talos-desktop` | Interface JavaFX, assistente de primeiro uso, configuração local e criptografia da senha do banco. Encontra o backend pelo `ServiceLoader`. |
 
 ### O que vem do GLPI
 
-O Pyhoma. não usa código do GLPI; ele reaproveita os **conceitos** que tornaram o GLPI uma referência:
+O Talos. não usa código do GLPI; ele reaproveita os **conceitos** que tornaram o GLPI uma referência:
 
-| GLPI | Pyhoma. |
+| GLPI | Talos. |
 |---|---|
 | Entidades | Unidades organizacionais com herança para subunidades |
 | Perfis e direitos | Perfis com permissões por módulo, concedidos por unidade |
@@ -343,16 +343,16 @@ O Pyhoma. não usa código do GLPI; ele reaproveita os **conceitos** que tornara
 
 ```
 Information-Technology-Service-Management/
-├── pyhoma-domain/            regras de negócio (sem framework)
-├── pyhoma-infrastructure/    Spring Boot, JPA, Flyway, drivers
+├── talos-domain/             regras de negócio (sem framework)
+├── talos-infrastructure/     Spring Boot, JPA, Flyway, drivers
 │   └── src/main/resources/db/migration/{h2,postgresql,mysql,sqlserver,oracle}
-├── pyhoma-desktop/           interface JavaFX
-│   └── src/main/resources/io/pyhoma/desktop/{css,i18n,icons,fonts,images}
+├── talos-desktop/            interface JavaFX
+│   └── src/main/resources/io/talos/desktop/{css,i18n,icons,fonts,images}
 ├── packaging/windows/        ícone do instalador
 ├── scripts/                  build-windows.cmd / build-windows.ps1
 └── docs/
     ├── banco-de-dados.md     modelo do banco: tabelas, campos e relacionamentos
-    ├── manual/               manual de uso completo (Manual-Pyhoma-Versão 1.0.0.pdf)
+    ├── manual/               manual de uso completo (Manual-Talos-Versão 1.0.0.pdf)
     └── images/               imagens deste README
 ```
 
@@ -374,7 +374,7 @@ Information-Technology-Service-Management/
 - A troca obrigatória de senha não pode ser desligada pelo próprio usuário.
 
 **Dados e arquivos**
-- A senha do banco é **criptografada com a DPAPI do Windows**, vinculada à sua conta e ao Pyhoma., e nunca fica em texto puro.
+- A senha do banco é **criptografada com a DPAPI do Windows**, vinculada à sua conta e ao Talos., e nunca fica em texto puro.
 - Links de documentos só aceitam `http(s)`, e-mail ou arquivos não executáveis (`.exe`, `.bat`, `.ps1`, `.lnk`, `.msi` e similares são recusados), e o endereço é mostrado para confirmação antes de abrir.
 - Exportações CSV neutralizam fórmulas (`=`, `+`, `-`, `@`), evitando injeção de comandos ao abrir no Excel.
 - Expressões regulares das regras de negócio têm tamanho e tempo de execução limitados.
@@ -400,8 +400,8 @@ mvn verify
 Para testar contra servidores reais (requer Docker):
 
 ```bash
-mvn -pl pyhoma-infrastructure -am verify -Dtest=DatabaseCompatibilityTest -Dsurefire.failIfNoSpecifiedTests=false \
-    -Dpyhoma.databases=postgresql,mysql,mariadb,sqlserver,oracle
+mvn -pl talos-infrastructure -am verify -Dtest=DatabaseCompatibilityTest -Dsurefire.failIfNoSpecifiedTests=false \
+    -Dtalos.databases=postgresql,mysql,mariadb,sqlserver,oracle
 ```
 
 ## Contribuindo
@@ -414,5 +414,5 @@ Distribuído sob a [licença MIT](LICENSE).
 
 - Ícones: [Lucide](https://lucide.dev) (ISC).
 - Fontes: [IBM Plex Sans e Plex Mono](https://github.com/IBM/plex) (SIL Open Font License 1.1).
-- Inspiração de arquitetura: [GLPI](https://glpi-project.org), da Teclib'. O Pyhoma. é um projeto independente, sem relação com o GLPI ou a Teclib'.
+- Inspiração de arquitetura: [GLPI](https://glpi-project.org), da Teclib'. O Talos. é um projeto independente, sem relação com o GLPI ou a Teclib'.
 - Detalhes das bibliotecas de terceiros em [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

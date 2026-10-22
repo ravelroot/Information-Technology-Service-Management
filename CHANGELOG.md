@@ -5,6 +5,7 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 ## [Não publicado]
 
 ### Alterado
+- O projeto passou a se chamar **Talos.** (antes Pyhoma): pacotes `io.talos`, módulos `talos-domain`, `talos-infrastructure` e `talos-desktop`, pasta de dados `%LOCALAPPDATA%\Talos`, configuração em `talos.properties` e manual em `Manual-Talos-Versão 1.0.0.pdf`.
 - Nova logo: um rack de servidor com três gavetas no lugar do prompt `>_`, aplicada no aplicativo, nos ícones da janela e do instalador, nos banners do README, nos prints e no manual em PDF. Em tamanhos pequenos (barra lateral e ícones de até 48 px) a logo usa uma versão compacta, sem a fenda das gavetas, para continuar legível.
 
 ## [1.0.0] - 2026-10-14
@@ -27,7 +28,7 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 - Administrador cria e exclui categorias de chamados (com cor e subcategorias) direto no Kanban e no novo item.
 - Modo demonstração sem banco de dados; a instalação real começa vazia, sem dados fictícios.
 - Configuração inicial guiada depois do primeiro login do administrador (organização, unidades, localizações, equipe, horário e categorias), com etapas obrigatórias e gravação imediata no banco.
-- Documentação do modelo do banco em `docs/banco-de-dados.md` e manual de uso em `docs/manual/Manual-Pyhoma-Versão 1.0.0.pdf`.
+- Documentação do modelo do banco em `docs/banco-de-dados.md` e manual de uso em `docs/manual/Manual-Talos-Versão 1.0.0.pdf`.
 - Chamados (incidentes e requisições), problemas e mudanças com fluxo de status ITIL, matriz de prioridade, SLA de atendimento e solução em horário comercial, aprovações, soluções com aceite do requerente e pesquisa de satisfação.
 - Quadro Kanban, Gantt de projetos com dependências e caminho crítico, portfólio e agenda dos técnicos.
 - Inventário de ativos, software e licenças, contratos e fornecedores, documentos, importação e exportação CSV.

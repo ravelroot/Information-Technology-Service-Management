@@ -38,6 +38,6 @@ jobs:
           cache: maven
       - name: Run the persistence suite against PostgreSQL, MySQL, MariaDB, SQL Server and Oracle
         run: >
-          mvn -B -ntp -pl pyhoma-infrastructure -am verify
+          mvn -B -ntp -pl talos-infrastructure -am verify
           -Dtest=DatabaseCompatibilityTest -Dsurefire.failIfNoSpecifiedTests=false
-          -Dpyhoma.databases=postgresql,mysql,mariadb,sqlserver,oracle
+          -Dtalos.databases=postgresql,mysql,mariadb,sqlserver,oracle
