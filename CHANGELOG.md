@@ -2,6 +2,11 @@
 
 Todas as mudanças relevantes deste projeto são registradas aqui. O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o projeto usa [versionamento semântico](https://semver.org/lang/pt-BR/).
 
+## [Não publicado]
+
+### Alterado
+- Nova logo: um rack de servidor com três gavetas no lugar do prompt `>_`, aplicada no aplicativo, nos ícones da janela e do instalador, nos banners do README, nos prints e no manual em PDF. Em tamanhos pequenos (barra lateral e ícones de até 48 px) a logo usa uma versão compacta, sem a fenda das gavetas, para continuar legível.
+
 ## [1.0.0] - 2026-10-14
 
 ### Segurança
