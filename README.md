@@ -116,10 +116,9 @@ Ele roda no Windows como qualquer outro programa: você instala com um assistent
 
 ### Opção 1: baixar o instalador
 
-1. Abra a página [**Releases**](../../releases/latest) deste repositório.
-2. Baixe `Talos-1.0.0.exe`.
-3. Execute o instalador, escolha a pasta de instalação e conclua.
-4. Abra o **Talos** pelo menu Iniciar ou pelo atalho na área de trabalho.
+1. Baixe o instalador [**Talos-1.0.0.exe**](../../raw/main/Talos-1.0.0.exe), que fica na raiz deste repositório.
+2. Execute o instalador, escolha a pasta de instalação e conclua.
+3. Abra o **Talos** pelo menu Iniciar ou pelo atalho na área de trabalho.
 
 O instalador já inclui o Java e todas as bibliotecas necessárias. Não é preciso instalar mais nada.
 
@@ -274,7 +273,7 @@ O script:
 1. procura um **JDK 21** e o **Maven**; se não encontrar, baixa versões portáteis para a pasta `.tools` (nada é instalado no sistema);
 2. baixa o **WiX Toolset 3**, usado pelo `jpackage` para gerar o `.exe`;
 3. compila e roda os testes (`mvn clean verify`);
-4. gera `Talos-1.0.0.exe` na raiz do projeto (fora do Git).
+4. gera `Talos-1.0.0.exe` na raiz do projeto.
 
 Opção: `scripts\build-windows.cmd -SkipTests` (mais rápido). O log completo fica em `build-logs\`.
 

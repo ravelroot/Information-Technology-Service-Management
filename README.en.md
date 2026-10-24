@@ -86,10 +86,9 @@ The interface is available in Portuguese (Brazil) and English, with light and da
 
 ## Installation
 
-1. Open the [**Releases**](../../releases/latest) page.
-2. Download `Talos-1.0.0.exe`.
-3. Run the installer, choose the installation folder and finish.
-4. Open **Talos** from the Start menu or the desktop shortcut.
+1. Download the installer [**Talos-1.0.0.exe**](../../raw/main/Talos-1.0.0.exe) from the root of this repository.
+2. Run the installer, choose the installation folder and finish.
+3. Open **Talos** from the Start menu or the desktop shortcut.
 
 The installer bundles Java and every library it needs. Windows SmartScreen may warn about an unknown publisher because the installer isn't code-signed: click **More info**, then **Run anyway**.
 
@@ -135,7 +134,7 @@ For a server, create an empty database and a user allowed to create tables first
 
 ## Building from source
 
-On Windows, double-click `scripts\build-windows.cmd`. It finds (or downloads into `.tools`) a JDK 21, Maven and the WiX Toolset 3, runs `mvn clean verify`, and writes `Talos-1.0.0.exe` in the project root (outside Git). Add `-SkipTests` to go faster.
+On Windows, double-click `scripts\build-windows.cmd`. It finds (or downloads into `.tools`) a JDK 21, Maven and the WiX Toolset 3, runs `mvn clean verify`, and writes `Talos-1.0.0.exe` in the project root. Add `-SkipTests` to go faster.
 
 Manually, with JDK 21+ and Maven 3.9+:
 
