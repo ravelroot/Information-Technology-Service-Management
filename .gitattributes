@@ -7,4 +7,4 @@
 *.ttf binary
 *.jar binary
 *.bmp binary
-Talos-*.exe filter=lfs diff=lfs merge=lfs -text
+Talos-*.exe binary

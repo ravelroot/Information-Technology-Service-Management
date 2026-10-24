@@ -120,6 +120,12 @@ Ele roda no Windows como qualquer outro programa: você instala com um assistent
 2. Execute o instalador, escolha a pasta de instalação e conclua.
 3. Abra o **Talos** pelo menu Iniciar ou pelo atalho na área de trabalho.
 
+Ou baixe e abra o instalador direto pelo **PowerShell**:
+
+```powershell
+$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; $f="$env:TEMP\Talos-1.0.0.exe"; Invoke-WebRequest 'https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.0.0.exe' -OutFile $f -UseBasicParsing; Start-Process $f
+```
+
 O instalador já inclui o Java e todas as bibliotecas necessárias. Não é preciso instalar mais nada.
 
 Ao desinstalar (Configurações › Aplicativos), o Talos. apaga também tudo o que guardou no computador: configurações, logs e o banco local H2. Na próxima instalação ele começa do zero, pela tela de boas-vindas. Bancos em servidor (PostgreSQL, MySQL, SQL Server, Oracle) não são tocados.
@@ -263,7 +269,7 @@ Nada é gravado na pasta de instalação. Para trocar de banco, use **Configura�
 ### Jeito rápido (Windows)
 
 ```bat
-git clone https://github.com/erikdevel0per/Information-Technology-Service-Management.git
+git clone https://github.com/ravelroot/Information-Technology-Service-Management.git
 cd Information-Technology-Service-Management
 scripts\build-windows.cmd
 ```

@@ -128,6 +128,12 @@ try {
     $AppInput = Join-Path $Root 'talos-desktop\target\app'
     if (-not (Test-Path (Join-Path $AppInput 'talos.jar'))) { Fail "talos.jar nao encontrado em $AppInput" }
 
+    # Jars sem compressao interna: o instalador comprime tudo junto e fica bem menor.
+    # Uncompressed jars: the installer compresses everything together and ends up much smaller.
+    Write-Step 'Regravando os .jar sem compressao / Storing the jars uncompressed'
+    $rc = Invoke-Logged (Join-Path $JavaHome 'bin\java.exe') @((Join-Path $PSScriptRoot 'StoreJars.java'), $AppInput)
+    if ($rc -ne 0) { Fail 'Nao foi possivel regravar os .jar. / Could not rewrite the jars.' }
+
     $ResDir = Join-Path $Root 'talos-desktop\target\jpackage-resources'
     New-Item -ItemType Directory -Force -Path $ResDir | Out-Null
     Copy-Item (Join-Path $Root 'packaging\windows\talos.ico') (Join-Path $ResDir "$AppName.ico") -Force
@@ -145,6 +151,10 @@ try {
         $CleanupSequence = Get-Content -Path (Join-Path $Root 'packaging\windows\cleanup-sequence.xml') -Raw
         $Xml = $Xml.Replace('<InstallExecuteSequence>', $CleanupActions + "`r`n    <InstallExecuteSequence>`r`n" + $CleanupSequence)
         if (-not $Xml.Contains('TalosCleanData')) { Fail 'Nao foi possivel incluir a limpeza na desinstalacao. / Could not add the uninstall cleanup.' }
+        # Compressao maxima (LZX) para o .exe ficar abaixo de 100 MB, limite do GitHub sem Git LFS.
+        # Maximum (LZX) compression keeps the .exe under 100 MB, GitHub's limit without Git LFS.
+        $Xml = $Xml.Replace('<Media ', '<Media CompressionLevel="high" ')
+        if (-not $Xml.Contains('CompressionLevel="high"')) { Write-Step 'Aviso: compressao maxima nao aplicada. / Warning: high compression not applied.' }
         Set-Content -Path (Join-Path $ResDir 'main.wxs') -Value $Xml -Encoding UTF8
     } else {
         Write-Step 'Modelo main.wxs nao encontrado; instalador sem imagens personalizadas. / main.wxs template not found.'
@@ -180,6 +190,7 @@ try {
             '--resource-dir', $ResDir,
             '--license-file', (Join-Path $Root 'LICENSE'),
             '--add-modules', $Modules,
+            '--jlink-options', '--strip-native-commands --strip-debug --no-man-pages --no-header-files --include-locales=en,pt',
             '--java-options', '-Xms128m',
             '--java-options', '-Xmx1024m',
             '--java-options', '-XX:+DisableAttachMechanism',
@@ -209,5 +220,10 @@ try {
 Write-Host ''
 Write-Host 'Pronto! / Done!' -ForegroundColor Green
 Get-ChildItem -Path (Join-Path $Root "$AppName-*.exe") -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "  $($_.FullName)  ($([math]::Round($_.Length / 1MB, 1)) MB)" }
+$Built = Get-ChildItem -Path (Join-Path $Root "$AppName-*.exe") -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($Built -and $Built.Length -ge 100MB) {
+    Write-Host 'AVISO: o instalador passou de 100 MB e o GitHub nao aceita arquivos desse tamanho sem Git LFS.' -ForegroundColor Yellow
+    Write-Host 'WARNING: the installer is over 100 MB, which GitHub rejects without Git LFS.' -ForegroundColor Yellow
+}
 Add-Content -Path $Log -Value "BUILD SUCCESS" -Encoding UTF8
 Write-Host "Log: $Log"

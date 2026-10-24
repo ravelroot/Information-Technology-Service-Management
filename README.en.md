@@ -90,6 +90,12 @@ The interface is available in Portuguese (Brazil) and English, with light and da
 2. Run the installer, choose the installation folder and finish.
 3. Open **Talos** from the Start menu or the desktop shortcut.
 
+Or download and launch the installer straight from **PowerShell**:
+
+```powershell
+$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; $f="$env:TEMP\Talos-1.0.0.exe"; Invoke-WebRequest 'https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.0.0.exe' -OutFile $f -UseBasicParsing; Start-Process $f
+```
+
 The installer bundles Java and every library it needs. Windows SmartScreen may warn about an unknown publisher because the installer isn't code-signed: click **More info**, then **Run anyway**.
 
 Uninstalling (Settings › Apps) also deletes everything Talos. kept on the computer: settings, logs and the local H2 database. The next installation starts from scratch at the welcome screen. Server databases (PostgreSQL, MySQL, SQL Server, Oracle) are left untouched.
