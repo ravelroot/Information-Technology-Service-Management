@@ -15,7 +15,8 @@ public enum DropdownKind {
     SUPPLIER_TYPE(false, false),
     CONTRACT_TYPE(false, false),
     DOCUMENT_CATEGORY(false, false),
-    PROJECT_STATE(false, true);
+    PROJECT_STATE(false, true),
+    RESPONSE_TEMPLATE(false, false);
 
     private final boolean hierarchical;
     private final boolean colored;

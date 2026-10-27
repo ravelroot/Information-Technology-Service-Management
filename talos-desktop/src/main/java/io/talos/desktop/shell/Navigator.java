@@ -165,6 +165,7 @@ public final class Navigator {
             case DROPDOWNS -> new DropdownsView();
             case RULES -> new RulesView();
             case SLAS -> new SlaView();
+            case INTEGRATIONS -> new io.talos.desktop.views.admin.IntegrationsView();
             case AUDIT -> new AuditView();
             case SETTINGS -> new SettingsView();
         };

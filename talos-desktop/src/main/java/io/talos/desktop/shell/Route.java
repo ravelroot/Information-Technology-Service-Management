@@ -27,6 +27,7 @@ public enum Route {
     DROPDOWNS(Section.ADMIN, "list", Module.DROPDOWN),
     RULES(Section.ADMIN, "workflow", Module.RULE),
     SLAS(Section.ADMIN, "timer", Module.SLA),
+    INTEGRATIONS(Section.ADMIN, "plug", Module.SETTINGS),
     AUDIT(Section.ADMIN, "history", Module.AUDIT),
     SETTINGS(Section.ADMIN, "settings", Module.SETTINGS);
 

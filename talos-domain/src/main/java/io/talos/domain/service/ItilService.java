@@ -682,6 +682,7 @@ public abstract class ItilService<T extends ItilItem> extends AbstractService {
         }
         services.notifications().notify(targets, Severity.INFO, key("created"),
                 List.of(item.reference(), item.getTitle()), type().getSimpleName(), item.getId());
+        services.integrations().publishItem(IntegrationService.Event.ITEM_CREATED, item);
     }
 
     protected void notifyAssigned(T item) {
@@ -693,11 +694,14 @@ public abstract class ItilService<T extends ItilItem> extends AbstractService {
         }
         services.notifications().notify(targets, Severity.INFO, key("assigned"),
                 List.of(item.reference(), item.getTitle()), type().getSimpleName(), item.getId());
+        services.integrations().publishItem(IntegrationService.Event.ITEM_ASSIGNED, item);
     }
 
     protected void notifyStatus(T item) {
         Severity sev = item.getStatus() == ItilStatus.SOLVED ? Severity.SUCCESS : Severity.INFO;
         services.notifications().notify(stakeholders(item, true), sev, key("status"),
                 List.of(item.reference(), item.getTitle(), item.getStatus().name()), type().getSimpleName(), item.getId());
+        services.integrations().publishItem(item.getStatus() == ItilStatus.SOLVED
+                ? IntegrationService.Event.ITEM_SOLVED : IntegrationService.Event.ITEM_STATUS, item);
     }
 }

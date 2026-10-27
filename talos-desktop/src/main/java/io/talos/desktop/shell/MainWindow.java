@@ -63,6 +63,7 @@ public final class MainWindow {
     private final Label bellCount = Ui.label("", "bell-count");
     private Timeline poller;
     private Navigator navigator;
+    private Button themeButton;
 
     public MainWindow(Stage stage, java.util.function.Consumer<String> onLogout) {
         this.stage = stage;
@@ -100,6 +101,14 @@ public final class MainWindow {
         scene.getAccelerators().put(new KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), this::openSearch);
         scene.getAccelerators().put(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN),
                 () -> navigator.go(Route.TICKETS));
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN), () -> {
+            if (App.can(io.talos.domain.model.core.Module.TICKET, Right.CREATE)) {
+                io.talos.desktop.views.itil.ItilQuickForm.open(io.talos.domain.model.itil.ItilType.TICKET,
+                        io.talos.domain.model.itil.ItilStatus.NEW, io.talos.desktop.views.itil.ItilQuickForm::openCreated);
+            }
+        });
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.F1), ShortcutsDialog::show);
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.F5), () -> navigator.refresh());
         scene.addEventFilter(javafx.scene.input.InputEvent.ANY, e -> lastActivity = System.nanoTime());
         stage.setScene(scene);
         stage.setMinWidth(Math.min(1100, screen.getWidth() * 0.9));
@@ -240,13 +249,10 @@ public final class MainWindow {
         Node unit = orgUnitSelector();
 
         Button theme = Ui.iconButton(Theme.mode() == Theme.Mode.DARK ? "sun" : "moon", I18n.t("topbar.theme"), null);
-        theme.setOnAction(e -> {
-            Theme.Mode next = Theme.mode() == Theme.Mode.DARK ? Theme.Mode.LIGHT : Theme.Mode.DARK;
-            Theme.setMode(next);
-            theme.setGraphic(Icons.of(next == Theme.Mode.DARK ? "sun" : "moon", 16));
-            App.config().set("ui.theme", next.name());
-            App.config().save();
-        });
+        themeButton = theme;
+        theme.setOnAction(e -> toggleTheme());
+
+        Button help = Ui.iconButton("keyboard", I18n.t("shortcuts.title") + " (F1)", ShortcutsDialog::show);
 
         Button bell = Ui.iconButton("bell", I18n.t("topbar.notifications"), null);
         StackPane bellStack = new StackPane(bell, bellCount);
@@ -263,19 +269,44 @@ public final class MainWindow {
         profile.setOnAction(e -> navigator.open(new io.talos.desktop.views.admin.UserDetailView(App.session().userId())));
         MenuItem password = new MenuItem(I18n.t("menu.changePassword"));
         password.setOnAction(e -> io.talos.desktop.views.admin.PasswordDialog.changeOwn());
+        MenuItem shortcuts = new MenuItem(I18n.t("shortcuts.title") + "  (F1)");
+        shortcuts.setOnAction(e -> ShortcutsDialog.show());
         MenuItem about = new MenuItem(I18n.t("menu.about"));
         about.setOnAction(e -> io.talos.desktop.views.AboutDialog.show());
         MenuItem logout = new MenuItem(I18n.t("menu.logout"));
         logout.setOnAction(e -> {
             endSession(null);
         });
-        user.getItems().addAll(profile, password, new SeparatorMenuItem(), about, new SeparatorMenuItem(), logout);
+        user.getItems().addAll(profile, password, new SeparatorMenuItem(), shortcuts, about, new SeparatorMenuItem(), logout);
 
         Region gap = Ui.spacer();
-        HBox bar = new HBox(10, searchBox, gap, busy, unit, theme, bellStack, user);
+        HBox bar = new HBox(10, searchBox, gap, busy, unit, help, theme, bellStack, user);
         bar.setAlignment(Pos.CENTER_LEFT);
         bar.getStyleClass().add("topbar");
         return bar;
+    }
+
+    /** Alterna entre os temas claro e escuro e lembra a escolha neste computador. */
+    public static void toggleTheme() {
+        Theme.Mode next = Theme.mode() == Theme.Mode.DARK ? Theme.Mode.LIGHT : Theme.Mode.DARK;
+        Theme.setMode(next);
+        if (active != null && active.themeButton != null) {
+            active.themeButton.setGraphic(Icons.of(next == Theme.Mode.DARK ? "sun" : "moon", 16));
+        }
+        App.config().set("ui.theme", next.name());
+        App.config().save();
+    }
+
+    /** Telas que o usuário atual pode abrir, na ordem da barra lateral. */
+    public static List<Route> visibleRoutes() {
+        List<Route> list = new ArrayList<>();
+        UserSession s = App.session();
+        for (Route r : Route.values()) {
+            if (visible(r, s)) {
+                list.add(r);
+            }
+        }
+        return list;
     }
 
     private Node demoBanner() {

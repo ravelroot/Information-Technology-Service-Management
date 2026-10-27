@@ -125,6 +125,9 @@ public class JobService extends AbstractService {
                     List.of(String.valueOf(licenses), String.valueOf(overUsed)), "Software", null);
             sent++;
         }
+        if (warranties > 0 || contracts > 0 || licenses > 0 || overUsed > 0) {
+            services.integrations().publishExpiration(warranties, contracts, licenses, overUsed, days);
+        }
         return sent;
     }
 

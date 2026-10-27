@@ -16,7 +16,7 @@ $Stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $Log = Join-Path $Logs "build-$Stamp.log"
 
 $AppName = 'Talos'
-$AppVersion = '1.0.0'
+$AppVersion = '1.1.0'
 $UpgradeUuid = '241ea7a4-95f2-539c-b574-4d367c3e5c72'
 $MavenVersion = '3.9.9'
 $JdkUrl = 'https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse'

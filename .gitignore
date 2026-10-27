@@ -26,3 +26,6 @@ application-local.*
 *.msi
 *.exe
 !Talos-*.exe
+
+__pycache__/
+*.pyc

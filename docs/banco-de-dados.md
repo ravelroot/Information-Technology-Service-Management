@@ -847,7 +847,7 @@ Listas usadas nos formulários (localização, categoria, modelo...), separadas 
 
 | Coluna | Tipo | Obrigatória | Referência / valores |
 |---|---|:-:|---|
-| `kind` | VARCHAR(40) | sim | um de: `LOCATION`, `ITIL_CATEGORY`, `KB_CATEGORY`, `MANUFACTURER`, `ASSET_MODEL`, `ASSET_STATE`, `OPERATING_SYSTEM`, `REQUEST_SOURCE`, `SOLUTION_TYPE`, `TASK_CATEGORY`, `SOFTWARE_CATEGORY`, `SUPPLIER_TYPE`, `CONTRACT_TYPE`, `DOCUMENT_CATEGORY`, `PROJECT_STATE` |
+| `kind` | VARCHAR(40) | sim | um de: `LOCATION`, `ITIL_CATEGORY`, `KB_CATEGORY`, `MANUFACTURER`, `ASSET_MODEL`, `ASSET_STATE`, `OPERATING_SYSTEM`, `REQUEST_SOURCE`, `SOLUTION_TYPE`, `TASK_CATEGORY`, `SOFTWARE_CATEGORY`, `SUPPLIER_TYPE`, `CONTRACT_TYPE`, `DOCUMENT_CATEGORY`, `PROJECT_STATE`, `RESPONSE_TEMPLATE` (respostas prontas: nome + texto em `notes`, desde a 1.1.0) |
 | `name` | VARCHAR(150) | sim |  |
 | `parent_id` | BIGINT |  | → `pyh_dropdown.id` (hierarquia) |
 | `complete_name` | VARCHAR(600) |  | caminho completo, ex.: `Rio > Térreo` |
@@ -887,6 +887,8 @@ Configurações da organização (chave/valor).
 | `setting_value` | VARCHAR(2000) |  |  |
 
 Índices: **único** `setting_key`.
+
+Desde a 1.1.0 as integrações também ficam aqui, sem tabela nova: `integration.webhooks` guarda a lista de ids e cada `integration.webhook.<id>` guarda nome, destino, URL, segredo, ativo e eventos (codificados como `chave=valor&...`).
 
 #### `pyh_job_lock`
 

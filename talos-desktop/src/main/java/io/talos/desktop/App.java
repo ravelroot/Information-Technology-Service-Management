@@ -33,6 +33,7 @@ public final class App {
     }
 
     public static void connect(BackendProvider.Backend b, Services s) {
+        s.integrations().setLabels(App::label);
         backend = b;
         services = s;
         lookups = new LookupCache(s);
@@ -77,5 +78,17 @@ public final class App {
             } catch (RuntimeException ignored) {
             }
         }
+    }
+
+    /** Textos usados por integrações e exportações do domínio, no idioma atual da interface. */
+    public static String label(String key) {
+        if (key.startsWith("priority.")) {
+            try {
+                return io.talos.desktop.ui.I18n.priority(Integer.valueOf(key.substring("priority.".length())));
+            } catch (NumberFormatException e) {
+                return key;
+            }
+        }
+        return io.talos.desktop.ui.I18n.has(key) ? io.talos.desktop.ui.I18n.t(key) : key.substring(key.lastIndexOf('.') + 1);
     }
 }

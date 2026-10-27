@@ -552,6 +552,7 @@ public class ItilDetailView extends View {
         });
         HBox actions = Ui.row(8, privateNote, Ui.spacer());
         if (tech) {
+            actions.getChildren().add(responsesMenu(text));
             actions.getChildren().add(Ui.button(I18n.t("itil.addTask"), "list-checks", () -> editTask(newTask())));
             if (type != ItilType.CHANGE && item.getStatus().isOpen()) {
                 actions.getChildren().add(Ui.button(I18n.t("itil.solve"), "circle-check", this::proposeSolution));
@@ -561,6 +562,49 @@ public class ItilDetailView extends View {
         VBox box = new VBox(8, text, actions);
         box.getStyleClass().add("composer");
         return box;
+    }
+
+    /** Menu "Respostas prontas": textos cadastrados em Listas e cadastros, com campos substituídos. */
+    private Node responsesMenu(TextArea target) {
+        javafx.scene.control.MenuButton menu = new javafx.scene.control.MenuButton(I18n.t("composer.responses"));
+        menu.setGraphic(io.talos.desktop.ui.Icons.of("message-circle", 15));
+        menu.getStyleClass().add("responses-menu");
+        javafx.scene.control.MenuItem loading = new javafx.scene.control.MenuItem(I18n.t("composer.responsesLoading"));
+        loading.setDisable(true);
+        menu.getItems().add(loading);
+        menu.setOnShowing(e -> Async.run(() -> App.services().dropdowns()
+                .list(io.talos.domain.model.core.DropdownKind.RESPONSE_TEMPLATE, true), list -> {
+            menu.getItems().clear();
+            for (io.talos.domain.model.core.DropdownItem r : list) {
+                if (r.getNotes() == null || r.getNotes().isBlank()) {
+                    continue;
+                }
+                javafx.scene.control.MenuItem mi = new javafx.scene.control.MenuItem(r.getName());
+                mi.setOnAction(ev -> {
+                    String filled = fillResponse(r.getNotes());
+                    String current = target.getText();
+                    target.setText(current == null || current.isBlank() ? filled : current.stripTrailing() + "\n\n" + filled);
+                    target.positionCaret(target.getText().length());
+                    target.requestFocus();
+                });
+                menu.getItems().add(mi);
+            }
+            if (menu.getItems().isEmpty()) {
+                javafx.scene.control.MenuItem none = new javafx.scene.control.MenuItem(I18n.t("composer.responsesEmpty"));
+                none.setDisable(true);
+                menu.getItems().add(none);
+            }
+        }));
+        return menu;
+    }
+
+    private String fillResponse(String template) {
+        String requester = item.getRequesterId() == null ? "" : App.lookups().user(item.getRequesterId());
+        String first = requester == null || requester.isBlank() ? "" : requester.trim().split("\\s+")[0];
+        return template.replace("{requester}", first)
+                .replace("{reference}", item.reference() == null ? "" : item.reference())
+                .replace("{title}", item.getTitle() == null ? "" : item.getTitle())
+                .replace("{me}", App.session().fullName());
     }
 
     private void proposeSolution() {

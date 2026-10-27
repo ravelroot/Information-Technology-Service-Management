@@ -4,18 +4,22 @@
 
 <p align="center">
   <b>Gestão de serviços de TI, central de suporte e inventário de ativos para o seu computador.</b><br>
-  Um aplicativo desktop para Windows, inspirado na arquitetura do GLPI, feito em Java com Spring Boot.
+  Um aplicativo desktop para Windows, inspirado na arquitetura do GLPI, feito em Java com Spring Boot e JavaFX.
 </p>
 
 <p align="center">
-  <img alt="Java 21" src="https://img.shields.io/badge/Java-21-000000">
-  <img alt="Spring Boot 4" src="https://img.shields.io/badge/Spring%20Boot-4.0-000000">
-  <img alt="JavaFX 21" src="https://img.shields.io/badge/JavaFX-21-000000">
-  <img alt="Windows" src="https://img.shields.io/badge/Windows-.exe-555555">
-  <img alt="Licença MIT" src="https://img.shields.io/badge/licen%C3%A7a-MIT-555555">
+  <img alt="Versão 1.1.0" src="https://img.shields.io/badge/vers%C3%A3o-1.1.0-9A5B2A">
+  <img alt="Java 21" src="https://img.shields.io/badge/Java-21-1C1B19">
+  <img alt="Spring Boot 4" src="https://img.shields.io/badge/Spring%20Boot-4.0-1C1B19">
+  <img alt="JavaFX 21" src="https://img.shields.io/badge/JavaFX-21-1C1B19">
+  <img alt="Windows" src="https://img.shields.io/badge/Windows-.exe-75706A">
+  <img alt="Licença MIT" src="https://img.shields.io/badge/licen%C3%A7a-MIT-75706A">
 </p>
 
 <p align="center">
+  <a href="../../raw/main/Talos-1.1.0.exe"><b>Baixar o instalador</b></a> ·
+  <a href="Manual-Talos-Vers%C3%A3o%201.1.0.pdf"><b>Manual em PDF</b></a> ·
+  <a href="CHANGELOG.md">Novidades</a> ·
   <a href="README.en.md">Read in English</a>
 </p>
 
@@ -25,14 +29,47 @@
   <img src="docs/images/dashboard.png" alt="Painel do Talos. com indicadores de atendimento" width="92%">
 </p>
 
-O **Talos.** reúne em um só programa o que uma equipe de TI usa todos os dias: chamados com prazos de SLA, problemas e mudanças no modelo ITIL, quadro Kanban, cronograma de Gantt, agenda dos técnicos, inventário de equipamentos, software e contratos, base de conhecimento e relatórios.
+O **Talos.** reúne em um só programa o que uma equipe de TI usa todos os dias: chamados com prazos de SLA, problemas e mudanças no modelo ITIL, quadro Kanban, cronograma de Gantt, agenda dos técnicos, inventário de equipamentos, software e contratos, base de conhecimento, relatórios e integrações com as ferramentas de chat da equipe.
 
-Ele roda no Windows como qualquer outro programa: você instala com um assistente, escolhe a pasta e abre pelo menu Iniciar. Não há site nem servidor web. Os dados ficam no banco de dados que **você** escolher, do arquivo local H2 a um PostgreSQL, MySQL, MariaDB, SQL Server ou Oracle compartilhado pela equipe.
+Ele roda no Windows como qualquer outro programa: você instala com um assistente e abre pelo menu Iniciar. Não há site nem servidor web. Os dados ficam no banco de dados que **você** escolher, do arquivo local H2 a um PostgreSQL, MySQL, MariaDB, SQL Server ou Oracle compartilhado pela equipe.
+
+## Comece em 3 minutos
+
+1. Baixe [**Talos-1.1.0.exe**](../../raw/main/Talos-1.1.0.exe) (na raiz deste repositório), execute e conclua o assistente de instalação.
+2. Abra o **Talos** pelo menu Iniciar. Na tela de boas-vindas, escolha o idioma e o banco: para experimentar, use o **H2 (arquivo local)**, que não precisa de servidor.
+3. Crie a organização e a sua conta de administrador (não existe senha padrão), entre e conclua a configuração inicial guiada.
+4. Pressione <kbd>Ctrl</kbd> + <kbd>N</kbd> para abrir o primeiro chamado, ou <kbd>Ctrl</kbd> + <kbd>K</kbd> para ir a qualquer tela.
+
+Só quer conhecer? Clique em **Explorar sem banco de dados**: o Talos. abre com dados fictícios e nada é salvo.
+
+<details>
+<summary>Baixar e abrir o instalador pelo PowerShell</summary>
+
+```powershell
+$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; $f="$env:TEMP\Talos-1.1.0.exe"; Invoke-WebRequest 'https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.1.0.exe' -OutFile $f -UseBasicParsing; Start-Process $f
+```
+</details>
+
+> O Windows SmartScreen pode avisar que o editor é desconhecido, porque o instalador não é assinado digitalmente. Clique em **Mais informações** e depois em **Executar assim mesmo**.
+
+## Novidades da versão 1.1.0
+
+| | |
+|---|---|
+| **Central de integrações** | Webhooks para **Slack, Microsoft Teams, Discord, Google Chat** e **JSON genérico** assinado com HMAC-SHA256. Escolha os eventos, envie um teste e acompanhe as últimas entregas. |
+| **Agenda em iCalendar** | Exporte os prazos dos chamados abertos em `.ics` para o Outlook, Google Agenda ou Apple Calendário. |
+| **Paleta de comandos** | <kbd>Ctrl</kbd> + <kbd>K</kbd> busca em todo o sistema e executa ações: novo chamado, ir para qualquer tela, alternar o tema. |
+| **Guia de atalhos** | <kbd>F1</kbd> mostra todos os atalhos de teclado. |
+| **Respostas prontas** | Textos padronizados na linha do tempo do chamado, com nome do requerente e número do item preenchidos. Cadastro em **Listas e cadastros**. |
+
+A lista completa está no [CHANGELOG](CHANGELOG.md). Quem usa a 1.0.0 pode instalar por cima: banco, configurações e conexão são mantidos, e nenhuma tabela nova é criada.
 
 ## Sumário
 
 - [Recursos](#recursos)
 - [Telas](#telas)
+- [Integrações](#integra%C3%A7%C3%B5es)
+- [Atalhos de teclado](#atalhos-de-teclado)
 - [Instalação](#instala%C3%A7%C3%A3o)
 - [Primeiro uso](#primeiro-uso)
 - [Banco de dados](#banco-de-dados)
@@ -51,27 +88,24 @@ Ele roda no Windows como qualquer outro programa: você instala com um assistent
 - **SLA** de atendimento (TTO) e de solução (TTR) por prioridade, contados em horário comercial, com feriados e pausa enquanto o chamado está pendente. Alertas automáticos quando o prazo entra em risco ou estoura.
 - **Linha do tempo** com acompanhamentos (públicos ou privados), tarefas com tempo gasto, solução com aceite ou recusa do requerente e pesquisa de satisfação.
 - **Problemas** com sintomas, causa raiz e análise de impacto; **mudanças** com plano de implantação, plano de retorno, checklist, risco e fluxo de **aprovação**.
-- **Novo item** em um formulário enxuto: título, quadro (chamados, problemas ou mudanças), tipo, categoria, responsáveis, seguidores e uma caixa de texto para explicar o pedido. O formulário completo continua a um clique.
-- **Um ou mais responsáveis** por item, escolhidos por qualquer pessoa, seja qual for o perfil. **Seguidores** só acompanham: veem o item e recebem as atualizações. Tudo fica na aba **Pessoas** do item ou no menu do cartão do Kanban.
-- **Categorias de chamados** criadas e excluídas pelo administrador direto no Kanban ou no novo item, com cor e subcategorias. Ao excluir, os chamados da categoria ficam sem categoria.
+- **Novo item** em um formulário enxuto (título, quadro, tipo, categoria, responsáveis, seguidores e descrição), a um <kbd>Ctrl</kbd> + <kbd>N</kbd> de distância. O formulário completo continua a um clique.
+- **Um ou mais responsáveis** por item e **seguidores**, que só acompanham. Tudo na aba **Pessoas** ou no menu do cartão do Kanban.
+- **Categorias de chamados** com cor e subcategorias, criadas e excluídas pelo administrador direto no Kanban.
 - **Vínculos** entre chamados, problemas e mudanças, ativos afetados, grupos que acompanham e documentos anexados.
 - **Regras de negócio** que classificam e atribuem chamados na abertura (se o título contém "impressora", atribuir ao grupo Infraestrutura), com testador embutido.
-- **Chamados recorrentes** para rotinas como backup e verificação mensal.
-- **Fechamento automático** de chamados solucionados após alguns dias.
+- **Chamados recorrentes** para rotinas como backup e verificação mensal, e **fechamento automático** de chamados solucionados.
 
-### Visões Kanban e Gantt
+### Visões Kanban, Gantt e agenda
 
 - **Kanban** de chamados, problemas, mudanças e tarefas de projeto. Arraste o cartão para mudar o status; o fluxo respeita as transições permitidas.
-- Cada coluna mostra quantos itens tem, o tempo trabalhado somado e quantos estão atrasados, e termina com **Adicionar chamado**: o cartão novo aparece na própria coluna. O menu **⋯** da coluna ordena por prioridade, data de criação, prazo ou título.
-- Cada cartão traz a categoria (com a cor dela) e o tipo, o número e o título, os responsáveis, o prazo, a bandeira de prioridade, o tempo trabalhado e as tarefas concluídas. Cartões atrasados ficam destacados.
-- **Gantt** de cada projeto com dependências, marcos, caminho crítico e reprogramação automática. Arraste uma barra para mover a tarefa ou a borda para mudar a duração.
-- **Portfólio** com todos os projetos ativos em uma única linha do tempo, por dia, semana ou mês.
-- **Agenda** semanal das tarefas planejadas de cada técnico.
+- Colunas com contadores (itens, tempo trabalhado e atrasados), ordenação e **Adicionar chamado**; cartões com categoria, tipo, responsáveis, prazo, bandeira de prioridade, tempo trabalhado e tarefas.
+- **Gantt** de cada projeto com dependências, marcos, caminho crítico e reprogramação automática; **portfólio** com todos os projetos ativos.
+- **Agenda** semanal das tarefas planejadas de cada técnico, com **exportação `.ics`** dos prazos para o seu calendário.
 
 ### Inventário de ativos
 
 - Computadores, notebooks, servidores, monitores, impressoras, equipamentos de rede, telefones, tablets e periféricos, com patrimônio, número de série, IP, MAC, garantia e responsáveis.
-- **Conexões de rede** entre ativos, **software instalado** e **licenças** com controle de conformidade (licenças adquiridas versus instalações).
+- **Conexões de rede** entre ativos, **software instalado** e **licenças** com controle de conformidade.
 - **Contratos** com fornecedores, aviso prévio e renovação; alertas de vencimento de garantias e contratos.
 - **Importação e exportação CSV** (inclusive um modelo de planilha pronto).
 
@@ -84,57 +118,128 @@ Ele roda no Windows como qualquer outro programa: você instala com um assistent
 
 - **Unidades organizacionais** em hierarquia (as "entidades" do GLPI), com visibilidade herdada pelas subunidades.
 - **Perfis e permissões** por módulo (ler, criar, editar, excluir, expurgar, atribuir, ver todos, aprovar), concedidos por unidade.
-- **Grupos** técnicos e de requerentes, **listas** configuráveis (localizações, categorias, modelos, fabricantes…), **auditoria** completa de alterações e **lixeira** com restauração.
-- **Relatórios** com gráficos: chamados por mês e categoria, desempenho dos técnicos, cumprimento de SLA, satisfação, ativos por tipo e local, vencimentos e conformidade de licenças.
-- Busca global (<kbd>Ctrl</kbd> + <kbd>K</kbd>), notificações, português e inglês.
-- [**Manual de uso em PDF**](docs/manual/Manual-Talos-Vers%C3%A3o%201.0.0.pdf) com todas as telas, funções, atalhos e informações técnicas.
+- **Grupos**, **listas** configuráveis, **auditoria** completa de alterações e **lixeira** com restauração.
+- **Relatórios** com gráficos: chamados por mês e categoria, desempenho dos técnicos, cumprimento de SLA, satisfação, ativos, vencimentos e conformidade de licenças.
+- **Integrações** por webhook com Slack, Microsoft Teams, Discord, Google Chat e sistemas próprios.
 
 ### Interface
 
 - Paleta minimalista em cinzas, areia e preto (`#E8E8E8`, `#D9D1CE`, `#BAB7B5`, `#AB9D9D`, `#000000`) nos temas **claro** e **escuro**.
 - Movimento suave: troca de telas com transição, rolagem suave, cartões e indicadores animados. A janela abre maximizada, ocupando a tela inteira.
-- **Zoom** padrão de 75% (como 75% no navegador). Ajuste com <kbd>Ctrl</kbd> + rolagem do mouse ou <kbd>Ctrl</kbd> + <kbd>+</kbd> / <kbd>-</kbd>, de 50% a 175%; <kbd>Ctrl</kbd> + <kbd>0</kbd> volta a 75%. O nível escolhido fica salvo.
-- **Gráficos do Painel** em barras, colunas, linha ou rosca: cada gráfico tem botões para trocar a visualização, e a escolha fica salva.
+- **Paleta de comandos** (<kbd>Ctrl</kbd> + <kbd>K</kbd>) e **guia de atalhos** (<kbd>F1</kbd>).
+- **Zoom** de 50% a 175% (padrão 75%), transições suaves e gráficos em barras, colunas, linha ou rosca.
 - **Modo demonstração**: conheça todas as telas com dados fictícios, sem conectar um banco.
+- [**Manual de uso em PDF**](Manual-Talos-Vers%C3%A3o%201.1.0.pdf) com todas as telas, funções, atalhos e informações técnicas (cópia também em [`docs/manual/`](docs/manual/Manual-Talos-Vers%C3%A3o%201.1.0.pdf)).
 
 ## Telas
 
 | | |
 |---|---|
 | <img src="docs/images/tickets.png" alt="Lista de chamados"> | <img src="docs/images/ticket.png" alt="Detalhe do chamado com linha do tempo"> |
-| **Chamados** com filtros, prioridade e prazo de SLA | **Linha do tempo** do chamado, solução e propriedades |
+| **Chamados** com visões, prioridade e prazo de SLA | **Linha do tempo** do chamado, solução e propriedades |
 | <img src="docs/images/kanban.png" alt="Quadro Kanban"> | <img src="docs/images/gantt.png" alt="Gantt do projeto"> |
-| **Kanban** com categorias, responsáveis, prazos e contadores | **Gantt** com dependências e caminho crítico |
+| **Kanban** com contadores, responsáveis e prazos | **Gantt** com dependências e caminho crítico |
+| <img src="docs/images/integrations.png" alt="Central de integrações"> | <img src="docs/images/command-palette.png" alt="Paleta de comandos"> |
+| **Integrações** com Slack, Teams, Discord e Google Chat | **Paleta de comandos** com busca e ações |
 | <img src="docs/images/assets.png" alt="Inventário de ativos"> | <img src="docs/images/reports.png" alt="Relatórios"> |
 | **Inventário** de equipamentos | **Relatórios** exportáveis em CSV |
-| <img src="docs/images/profiles.png" alt="Perfis e permissões"> | <img src="docs/images/dashboard-dark.png" alt="Painel no tema escuro, em inglês"> |
-| **Perfis e permissões** por módulo | **Tema escuro** e interface em inglês |
+| <img src="docs/images/profiles.png" alt="Perfis e permissões"> | <img src="docs/images/dashboard-dark.png" alt="Painel no tema escuro"> |
+| **Perfis e permissões** por módulo | **Tema escuro** |
 
 > As telas mostram os dados de demonstração gerados pelo próprio programa. Todos os nomes, e-mails e números são fictícios.
+
+## Integrações
+
+Em **Administração › Integrações** você conecta o Talos. às ferramentas que a equipe já usa. Cada webhook recebe só os eventos marcados, no momento em que acontecem. O envio é assíncrono (a tela nunca trava) e cada tentativa tem tempo limite de 10 segundos.
+
+| Destino | O que chega |
+|---|---|
+| **Slack** | Mensagem no canal com número, título e status do item (Incoming Webhook) |
+| **Microsoft Teams** | Cartão de mensagem no canal (webhook de entrada ou fluxo do Workflows) |
+| **Discord** | Mensagem no canal (webhook do canal) |
+| **Google Chat** | Mensagem no espaço (webhook do espaço) |
+| **JSON genérico** | POST com o evento completo, para n8n, Power Automate, Zapier ou sistemas próprios |
+
+**Eventos:** item criado, atribuído, com status alterado ou solucionado (chamados, problemas e mudanças) e alertas de vencimento de garantias, contratos e licenças.
+
+### Conectar o Slack ou o Teams
+
+1. No **Slack**, crie um *Incoming Webhook* para o canal. No **Teams**, crie um webhook de entrada (ou um fluxo do Workflows que recebe solicitações HTTP). Copie a URL.
+2. No Talos., abra **Administração › Integrações** e clique em **Novo webhook**.
+3. Dê um nome, escolha o destino, cole a URL e marque os eventos.
+4. Clique em **Enviar teste**: a mensagem chega no canal e o resultado (status HTTP e horário) aparece em **Últimas entregas**.
+5. Salve. O botão de pausa (ou a opção **Ativo**) suspende o webhook sem apagar a configuração.
+
+### Webhook JSON genérico
+
+```json
+{
+  "event": "item.solved",
+  "occurredAt": "2026-10-27T14:32:05-03:00",
+  "organization": "Acme Ltda.",
+  "item": {
+    "type": "Ticket",
+    "id": 125,
+    "reference": "#125",
+    "title": "Outlook não sincroniza e-mails",
+    "status": "SOLVED",
+    "priority": 4
+  },
+  "actor": "Ana Souza",
+  "detail": null,
+  "text": "Chamado #125 — solucionado — Outlook não sincroniza e-mails"
+}
+```
+
+Códigos de evento: `item.created`, `item.assigned`, `item.status_changed`, `item.solved`, `inventory.expiration_alert` e `integration.test` (botão **Enviar teste**). O código também vai no cabeçalho `X-Talos-Event`.
+
+Se você informar um **segredo**, cada envio leva o cabeçalho `X-Talos-Signature: sha256=<hex>` com o HMAC-SHA256 do corpo. Confira no sistema que recebe:
+
+```python
+import hashlib, hmac
+
+def assinatura_valida(corpo: bytes, cabecalho: str, segredo: str) -> bool:
+    esperado = "sha256=" + hmac.new(segredo.encode(), corpo, hashlib.sha256).hexdigest()
+    return hmac.compare_digest(esperado, cabecalho)
+```
+
+> Use sempre URLs `https://` e trate a URL do webhook como senha: quem a tiver pode publicar no canal.
+
+### Outras formas de integrar
+
+- **Calendário:** Agenda › **Exportar .ics** gera um arquivo iCalendar com os prazos dos chamados abertos, para importar no Outlook, Google Agenda ou Apple Calendário.
+- **Planilhas:** qualquer lista exporta para CSV (com proteção contra fórmulas), e o inventário de ativos importa CSV com modelo pronto.
+- **Banco de dados:** o modelo completo está documentado em [docs/banco-de-dados.md](docs/banco-de-dados.md), para relatórios em Power BI, Metabase ou Looker Studio direto no servidor.
+
+## Atalhos de teclado
+
+| Atalho | Ação |
+|---|---|
+| <kbd>Ctrl</kbd> + <kbd>K</kbd> | Paleta de comandos: busca global e ações rápidas |
+| <kbd>Ctrl</kbd> + <kbd>N</kbd> | Novo chamado |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | Ir para Chamados |
+| <kbd>F1</kbd> | Guia de atalhos |
+| <kbd>F5</kbd> | Atualizar a tela atual |
+| <kbd>Esc</kbd> | Fechar janelas, menus e a paleta |
+| <kbd>Ctrl</kbd> + rolagem do mouse | Ampliar ou reduzir a interface |
+| <kbd>Ctrl</kbd> + <kbd>+</kbd> / <kbd>-</kbd> / <kbd>0</kbd> | Ampliar / reduzir / voltar ao zoom padrão (75%) |
+| <kbd>Enter</kbd> em uma tabela | Abrir o item selecionado |
 
 ## Instalação
 
 ### Opção 1: baixar o instalador
 
-1. Baixe o instalador [**Talos-1.0.0.exe**](../../raw/main/Talos-1.0.0.exe), que fica na raiz deste repositório.
+1. Baixe o instalador [**Talos-1.1.0.exe**](../../raw/main/Talos-1.1.0.exe), que fica na raiz deste repositório.
 2. Execute o instalador, escolha a pasta de instalação e conclua.
 3. Abra o **Talos** pelo menu Iniciar ou pelo atalho na área de trabalho.
-
-Ou baixe e abra o instalador direto pelo **PowerShell**:
-
-```powershell
-$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; $f="$env:TEMP\Talos-1.0.0.exe"; Invoke-WebRequest 'https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.0.0.exe' -OutFile $f -UseBasicParsing; Start-Process $f
-```
 
 O instalador já inclui o Java e todas as bibliotecas necessárias. Não é preciso instalar mais nada.
 
 Ao desinstalar (Configurações › Aplicativos), o Talos. apaga também tudo o que guardou no computador: configurações, logs e o banco local H2. Na próxima instalação ele começa do zero, pela tela de boas-vindas. Bancos em servidor (PostgreSQL, MySQL, SQL Server, Oracle) não são tocados.
 
-> O Windows SmartScreen pode avisar que o editor é desconhecido, porque o instalador não é assinado digitalmente. Clique em **Mais informações** e depois em **Executar assim mesmo**.
-
 ### Opção 2: gerar o instalador você mesmo
 
-Veja [Compilar a partir do código](#compilar-a-partir-do-c%C3%B3digo). Um duplo clique em `scripts\build-windows.cmd` gera o instalador `Talos-1.0.0.exe` na raiz do projeto.
+Veja [Compilar a partir do código](#compilar-a-partir-do-c%C3%B3digo). Um duplo clique em `scripts\build-windows.cmd` gera o instalador `Talos-1.1.0.exe` na raiz do projeto.
 
 ### Requisitos
 
@@ -143,7 +248,8 @@ Veja [Compilar a partir do código](#compilar-a-partir-do-c%C3%B3digo). Um duplo
 | Sistema | Windows 10 ou 11, 64 bits |
 | Memória | 4 GB (o programa usa até 1 GB) |
 | Disco | 400 MB para o programa, mais o espaço do banco |
-| Banco | H2 embutido, ou um servidor da lista abaixo |
+| Banco | H2 embutido, ou um servidor da lista em [Banco de dados](#banco-de-dados) |
+| Rede (opcional) | Saída HTTPS para os webhooks das integrações |
 
 ## Primeiro uso
 
@@ -163,31 +269,25 @@ Na primeira vez que o programa abre, um assistente de quatro passos aparece:
 | Horário | sim | Dias e horário de atendimento usados pelo SLA |
 | Categorias | | Categorias de chamado além das que já vêm prontas |
 
-Depois disso, chamados, ativos, contratos, projetos e artigos começam **vazios**, sem nenhum dado fictício, para você preencher como preferir. Perfis, SLAs por prioridade, feriados nacionais e listas comuns (origens, estados de ativo, tipos de contrato…) já vêm criados e podem ser ajustados em **Administração**.
+Depois disso, chamados, ativos, contratos, projetos e artigos começam **vazios**, sem nenhum dado fictício. Perfis, SLAs por prioridade, feriados nacionais e listas comuns já vêm criados e podem ser ajustados em **Administração**.
 
 <p align="center">
-  <img src="docs/images/setup-initial.png" alt="Configuração inicial: cadastro de localizações" width="80%">
+  <img src="docs/images/setup-database.png" alt="Assistente: escolha do banco de dados" width="80%">
 </p>
-
-Quer só conhecer o programa? Clique em **Explorar sem banco de dados** na tela inicial: o Talos. abre com dados fictícios, todas as telas funcionam e nada é salvo. Uma faixa no topo lembra que é uma demonstração e leva direto à configuração do banco quando você quiser.
 
 Se o programa for fechado antes de concluir o passo 2, nada fica salvo: na próxima abertura o assistente recomeça do início.
 
-<p align="center">
-  <img src="docs/images/setup-database.png" alt="Assistente: escolha do banco de dados" width="70%">
-</p>
-
-Depois disso, cadastre as pessoas em **Administração › Usuários** e dê a cada uma um perfil:
+Depois, cadastre as pessoas em **Administração › Usuários** e dê a cada uma um perfil:
 
 | Perfil | Para quem |
 |---|---|
-| Super-Administrador | Configura tudo. Perfil protegido. |
+| Super-Administrador | Configura tudo, inclusive as integrações. Perfil protegido. |
 | Supervisor | Coordena a equipe: vê e atribui todos os chamados, aprova mudanças, vê relatórios. |
 | Técnico | Atende chamados, cuida do inventário e dos projetos. |
 | Observador | Apenas consulta. |
 | Autoatendimento | Usuários finais: abrem e acompanham os próprios chamados e leem o FAQ. |
 
-Cada computador da equipe instala o Talos. e aponta para o **mesmo servidor de banco**. Notificações, alertas de SLA e rotinas automáticas são coordenados entre as estações pelo próprio banco.
+Cada computador da equipe instala o Talos. e aponta para o **mesmo servidor de banco**. Notificações, alertas de SLA, webhooks e rotinas automáticas são coordenados entre as estações pelo próprio banco.
 
 ## Banco de dados
 
@@ -279,7 +379,7 @@ O script:
 1. procura um **JDK 21** e o **Maven**; se não encontrar, baixa versões portáteis para a pasta `.tools` (nada é instalado no sistema);
 2. baixa o **WiX Toolset 3**, usado pelo `jpackage` para gerar o `.exe`;
 3. compila e roda os testes (`mvn clean verify`);
-4. gera `Talos-1.0.0.exe` na raiz do projeto.
+4. gera `Talos-1.1.0.exe` na raiz do projeto.
 
 Opção: `scripts\build-windows.cmd -SkipTests` (mais rápido). O log completo fica em `build-logs\`.
 
@@ -294,6 +394,15 @@ java -jar talos-desktop/target/app/talos.jar        # abre o programa sem instal
 
 A pasta `talos-desktop/target/app` contém o `talos.jar` e todas as dependências; é dela que o `jpackage` monta o instalador.
 
+### Manual em PDF e banners
+
+O manual é gerado a partir do texto em `scripts/manual/content.py`, com os prints da classe de teste `ScreenshotTour`:
+
+```bash
+pip install reportlab
+python3 scripts/manual/build_manual.py --images <pasta-dos-prints> --out "Manual-Talos-Versão 1.1.0.pdf"
+```
+
 ## Arquitetura
 
 O projeto segue uma **arquitetura hexagonal** (portas e adaptadores). As regras de negócio não conhecem Spring, JPA nem JavaFX; o banco e a interface são adaptadores trocáveis.
@@ -304,7 +413,7 @@ flowchart LR
         UI["Telas, Kanban, Gantt<br/>assistente de instalação"]
     end
     subgraph domain["talos-domain · Java puro"]
-        S["Serviços<br/>chamados, SLA, regras,<br/>inventário, projetos"]
+        S["Serviços<br/>chamados, SLA, regras,<br/>inventário, projetos,<br/>integrações"]
         P(["Portas<br/>DataStore · BackendProvider"])
     end
     subgraph infra["talos-infrastructure · Spring Boot"]
@@ -313,6 +422,7 @@ flowchart LR
         K["Rotinas agendadas<br/>com trava no banco"]
     end
     DB[("H2 · PostgreSQL · MySQL<br/>MariaDB · SQL Server · Oracle")]
+    W(["Slack · Teams · Discord<br/>Google Chat · JSON"])
 
     UI --> S
     S --> P
@@ -320,13 +430,14 @@ flowchart LR
     UI -. ServiceLoader .-> infra
     J --> DB
     F --> DB
+    S -. webhooks HTTPS .-> W
 ```
 
 | Módulo | Responsabilidade |
 |---|---|
-| `talos-domain` | Entidades, serviços, matriz de prioridade, calendário comercial, motor de regras, agendamento de projetos (caminho crítico), permissões, auditoria. Inclui um repositório em memória usado nos testes. |
+| `talos-domain` | Entidades, serviços, matriz de prioridade, calendário comercial, motor de regras, agendamento de projetos (caminho crítico), permissões, auditoria e integrações (webhooks com `java.net.http`, sem dependências extras). Inclui um repositório em memória usado nos testes. |
 | `talos-infrastructure` | Contexto Spring Boot sem servidor web (`web-application-type=none`), Spring Data JPA/Hibernate, Flyway com scripts para cada banco, drivers JDBC e as rotinas periódicas. |
-| `talos-desktop` | Interface JavaFX, assistente de primeiro uso, configuração local e criptografia da senha do banco. Encontra o backend pelo `ServiceLoader`. |
+| `talos-desktop` | Interface JavaFX, paleta de comandos, atalhos, assistente de primeiro uso, configuração local e criptografia da senha do banco. Encontra o backend pelo `ServiceLoader`. |
 
 ### O que vem do GLPI
 
@@ -355,9 +466,10 @@ Information-Technology-Service-Management/
 │   └── src/main/resources/io/talos/desktop/{css,i18n,icons,fonts,images}
 ├── packaging/windows/        ícone do instalador
 ├── scripts/                  build-windows.cmd / build-windows.ps1
+│   └── manual/               gerador do manual em PDF e dos banners
 └── docs/
     ├── banco-de-dados.md     modelo do banco: tabelas, campos e relacionamentos
-    ├── manual/               manual de uso completo (Manual-Talos-Versão 1.0.0.pdf)
+    ├── manual/               manual de uso completo (Manual-Talos-Versão 1.1.0.pdf)
     └── images/               imagens deste README
 ```
 
@@ -388,6 +500,12 @@ Information-Technology-Service-Management/
 - Erros inesperados mostram uma mensagem genérica; os detalhes técnicos ficam só no log local.
 - O programa instalado bloqueia a anexação de ferramentas externas à máquina virtual Java (`DisableAttachMechanism`).
 
+**Integrações**
+- Só quem tem permissão de editar as configurações cria ou altera webhooks.
+- O envio é assíncrono, com tempo limite de 10 segundos, e uma falha nunca impede o trabalho no Talos.
+- O webhook JSON genérico pode ser assinado com HMAC-SHA256 (`X-Talos-Signature`), para o receptor confirmar a origem.
+- As mensagens levam só o necessário (número, título, status, prioridade e o nome de quem fez a ação), nunca senhas ou dados de contato.
+
 **Repositório**
 - **Nenhum dado sensível**: não há conexões, senhas, chaves ou bancos de exemplo versionados. Os dados de demonstração são gerados na hora, com nomes e e-mails fictícios (`@example.com`) e usuários sem senha, que não conseguem entrar.
 - Encontrou uma vulnerabilidade? Veja [SECURITY.md](SECURITY.md).
@@ -398,7 +516,7 @@ Information-Technology-Service-Management/
 mvn verify
 ```
 
-- **Domínio**: ciclo de vida dos chamados, SLA em horário comercial, matriz de prioridade, motor de regras, caminho crítico, permissões e dados de demonstração.
+- **Domínio**: ciclo de vida dos chamados, SLA em horário comercial, matriz de prioridade, motor de regras, caminho crítico, permissões, integrações e dados de demonstração.
 - **Infraestrutura**: inicialização real do Spring Boot com H2, migrações Flyway, bloqueio otimista e verificação de que os scripts SQL de todos os bancos correspondem às entidades.
 - **Interface**: traduções completas e iguais em português e inglês.
 

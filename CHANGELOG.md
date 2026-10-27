@@ -4,8 +4,24 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 
 ## [Não publicado]
 
+## [1.1.0] - 2026-10-27
+
+### Adicionado
+- **Respostas prontas**: textos padronizados cadastrados em Listas e cadastros e inseridos pelo menu **Resposta pronta** na linha do tempo, com os campos `{requester}`, `{reference}`, `{title}` e `{me}`. Novas instalações já vêm com quatro respostas de exemplo.
+- **Central de integrações** em Administração › Integrações: webhooks para Slack, Microsoft Teams, Discord, Google Chat e JSON genérico, com assinatura HMAC-SHA256 opcional no cabeçalho `X-Talos-Signature`.
+- Eventos selecionáveis por webhook: item criado, atribuído, com status alterado e solucionado (chamados, problemas e mudanças) e alertas de vencimento de garantias, contratos e licenças.
+- Botão **Enviar teste**, pausa/retomada e registro das **últimas entregas** (status HTTP e horário). Envio assíncrono, com tempo limite de 10 segundos, sem travar a interface.
+- Exportação da agenda em **iCalendar (`.ics`)** com os prazos dos chamados abertos, para Outlook, Google Agenda e Apple Calendário.
+- **Paleta de comandos** (<kbd>Ctrl</kbd> + <kbd>K</kbd>): busca global e ações rápidas (novo chamado, ir para qualquer tela, alternar tema, abrir atalhos), navegável pelo teclado.
+- **Guia de atalhos de teclado** (<kbd>F1</kbd>) e novos atalhos: <kbd>Ctrl</kbd> + <kbd>N</kbd> (novo chamado) e <kbd>F5</kbd> (atualizar a tela).
+- Gerador do manual em PDF versionado no repositório (`scripts/manual/build_manual.py`, com o texto em `scripts/manual/content.py`).
+
 ### Alterado
-- O projeto passou a se chamar **Talos.** (antes Pyhoma): pacotes `io.talos`, módulos `talos-domain`, `talos-infrastructure` e `talos-desktop`, pasta de dados `%LOCALAPPDATA%\Talos`, configuração em `talos.properties` e manual em `Manual-Talos-Versão 1.0.0.pdf`.
+- Manual de uso atualizado para a versão 1.1.0 (`Manual-Talos-Versão 1.1.0.pdf`), no mesmo visual do manual anterior, com sumário clicável, prints novos e seções sobre integrações, paleta de comandos, atalhos e respostas prontas; READMEs atualizados.
+- A busca da barra superior virou a paleta de comandos, e a barra superior ganhou o botão **Atalhos de teclado**; o menu do usuário também abre o guia.
+- O visual da 1.0.0 (paleta minimalista em cinzas, areia e preto) foi mantido; as telas novas seguem o mesmo estilo.
+- Instalador renomeado para `Talos-1.1.0.exe`.
+- O projeto passou a se chamar **Talos.** (antes Pyhoma): pacotes `io.talos`, módulos `talos-domain`, `talos-infrastructure` e `talos-desktop`, pasta de dados `%LOCALAPPDATA%\Talos`, configuração em `talos.properties` e manual em PDF.
 - Nova logo: um rack de servidor com três gavetas no lugar do prompt `>_`, aplicada no aplicativo, nos ícones da janela e do instalador, nos banners do README, nos prints e no manual em PDF. Em tamanhos pequenos (barra lateral e ícones de até 48 px) a logo usa uma versão compacta, sem a fenda das gavetas, para continuar legível.
 
 ## [1.0.0] - 2026-10-14
@@ -37,3 +53,7 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 - Suporte a H2, PostgreSQL, MySQL, MariaDB, SQL Server e Oracle com migrações Flyway.
 - Assistente de primeiro uso, temas claro e escuro, português e inglês.
 - Instalador `.exe` para Windows gerado com `jpackage`; a desinstalação remove configurações, logs e o banco local.
+
+[Não publicado]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/ravelroot/Information-Technology-Service-Management/releases/tag/v1.0.0

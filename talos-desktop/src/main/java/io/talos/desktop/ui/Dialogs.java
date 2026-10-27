@@ -79,6 +79,17 @@ public final class Dialogs {
         d.showAndWait();
     }
 
+    /** Diálogo informativo com conteúdo livre; quem chama decide entre show() e showAndWait(). */
+    public static Dialog<ButtonType> infoDialog(String title, Node content) {
+        Dialog<ButtonType> d = base(title);
+        d.getDialogPane().setContent(body(title, content));
+        d.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        javafx.scene.control.Button ok = (javafx.scene.control.Button) d.getDialogPane().lookupButton(ButtonType.OK);
+        ok.getStyleClass().add("primary");
+        ok.setText(I18n.t("action.close"));
+        return d;
+    }
+
     public static void error(Throwable e) {
         System.getLogger("talos.ui").log(System.Logger.Level.DEBUG, "UI error", e);
         Runnable show = () -> {

@@ -65,7 +65,8 @@ public class PlanningView extends View {
                     onShow();
                 }, "ghost"),
                 Ui.iconButton("chevron-right", I18n.t("planning.next"), () -> move(1)),
-                range, Ui.spacer(), ItilListView.labeled("filter.assignee", technician));
+                range, Ui.spacer(), ItilListView.labeled("filter.assignee", technician),
+                Ui.button(I18n.t("ics.export"), "calendar-plus", this::exportIcs));
         toolbar.getStyleClass().add("toolbar");
         grid.getStyleClass().add("planning-grid");
         ScrollPane scroll = new ScrollPane(grid);
@@ -75,6 +76,24 @@ public class PlanningView extends View {
         VBox root = new VBox(16, header, toolbar, scroll);
         root.getStyleClass().add("page");
         return root;
+    }
+
+    /** Exporta os prazos dos chamados abertos do técnico escolhido para Outlook, Google Agenda ou Apple Calendário. */
+    private void exportIcs() {
+        javafx.stage.FileChooser chooser = new javafx.stage.FileChooser();
+        chooser.setTitle(I18n.t("ics.export"));
+        chooser.setInitialFileName("talos-prazos.ics");
+        chooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("iCalendar (*.ics)", "*.ics"));
+        java.io.File file = chooser.showSaveDialog(grid.getScene() == null ? null : grid.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+        Long assignee = technician.getValue();
+        io.talos.desktop.ui.Async.run(() -> {
+            String ics = App.services().calendarExport().openTicketDeadlines(assignee, App::label);
+            java.nio.file.Files.writeString(file.toPath(), ics, java.nio.charset.StandardCharsets.UTF_8);
+            return ics.split("BEGIN:VEVENT", -1).length - 1;
+        }, n -> io.talos.desktop.ui.Toasts.success(I18n.t("ics.exported", n, file.getName())));
     }
 
     private void move(int weeks) {

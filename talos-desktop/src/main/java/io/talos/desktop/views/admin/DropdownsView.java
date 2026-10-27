@@ -120,7 +120,12 @@ public class DropdownsView extends MasterDetail {
         }
         f.integer("sortOrder", d::getSortOrder, d::setSortOrder)
                 .check("active", d::isActive, d::setActive)
-                .area("notes", d::getNotes, d::setNotes, 2, false);
+                .area("notes", d::getNotes, d::setNotes, d.getKind() == DropdownKind.RESPONSE_TEMPLATE ? 6 : 2, false);
+        if (d.getKind() == DropdownKind.RESPONSE_TEMPLATE) {
+            javafx.scene.control.Label hint = Ui.label(I18n.t("dropdowns.responseHint"), "muted");
+            hint.setWrapText(true);
+            f.custom("placeholders", hint, 2);
+        }
         f.load();
         ((javafx.scene.layout.Region) f.node()).setPrefWidth(520);
         Dialogs.form(I18n.t(d.isNew() ? "dropdowns.new" : "dropdowns.edit") + " — " + I18n.e(d.getKind()), f.node(),

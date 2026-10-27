@@ -109,6 +109,22 @@ public final class ScreenshotTour {
 
         services.auth().login("admin", ADMIN_PASSWORD);
         App.lookups().warmUp();
+        seedIntegrations(services);
+        try {
+            fx(() -> {
+                new io.talos.desktop.views.setup.SetupWizard(p -> {
+                    Scene sc = new Scene(p, 1040, 700);
+                    Theme.install(sc);
+                    stage.setScene(sc);
+                }, () -> { }).start();
+                stage.setWidth(1040);
+                stage.setHeight(700);
+                return null;
+            });
+            shot("04-setup-initial");
+        } catch (Exception e) {
+            System.err.println("setup wizard not captured: " + e);
+        }
         fx(() -> {
             new MainWindow(stage, notice -> { }).show();
             stage.setWidth(1440);
@@ -121,7 +137,7 @@ public final class ScreenshotTour {
         Route[] routes = {Route.TICKETS, Route.KANBAN, Route.PROBLEMS, Route.CHANGES, Route.PLANNING, Route.PROJECTS,
             Route.PORTFOLIO, Route.ASSETS, Route.SOFTWARE, Route.CONTRACTS, Route.SUPPLIERS, Route.DOCUMENTS,
             Route.KNOWLEDGE, Route.REPORTS, Route.RECURRING, Route.USERS, Route.GROUPS, Route.PROFILES, Route.ORG_UNITS,
-            Route.DROPDOWNS, Route.RULES, Route.SLAS, Route.AUDIT, Route.SETTINGS, Route.HOME};
+            Route.DROPDOWNS, Route.RULES, Route.SLAS, Route.INTEGRATIONS, Route.AUDIT, Route.SETTINGS, Route.HOME};
         int n = 11;
         for (Route r : routes) {
             go(r);
@@ -129,7 +145,8 @@ public final class ScreenshotTour {
         }
 
         Ticket ticket = services.store().repository(Ticket.class)
-                .find(Query.all().orderBy(Sort.desc("priority")).limit(1)).get(0);
+                .find(Query.where(io.talos.domain.query.Filter.eq("status", io.talos.domain.model.itil.ItilStatus.ASSIGNED))
+                        .orderBy(Sort.desc("priority")).limit(1)).get(0);
         open("Ticket", ticket.getId());
         shot("40-ticket");
         selectTab(1);
@@ -147,7 +164,112 @@ public final class ScreenshotTour {
                 .items().get(0).getId();
         open("Asset", assetId);
         shot("45-asset");
+
+        go(Route.DASHBOARD);
+        fx(() -> io.talos.desktop.shell.GlobalSearch.show(stage));
+        settle(900);
+        shotWithOverlay("46-command-palette");
+        fx(() -> {
+            closeOverlays();
+            return null;
+        });
+        settle(400);
+        fx(() -> io.talos.desktop.shell.ShortcutsDialog.show());
+        settle(900);
+        shotWithOverlay("47-shortcuts");
+        fx(() -> {
+            closeOverlays();
+            App.config().set("ui.chart.trend", "COLUMNS");
+            App.config().set("ui.chart.status", "DONUT");
+            App.config().set("ui.chart.technicians", "COLUMNS");
+            App.config().set("ui.chart.priority", "DONUT");
+            App.config().set("ui.chart.categories", "COLUMNS");
+            return null;
+        });
+        go(Route.TICKETS);
+        go(Route.DASHBOARD);
+        settle(1200);
+        shot("48-dashboard-charts");
         return failures;
+    }
+
+    private void seedIntegrations(Services services) throws Exception {
+        boolean pt = I18n.isPortuguese();
+        var integrations = services.integrations();
+        integrations.setTransport((uri, body, headers) -> uri.getPath().contains("erp") ? 503 : 200);
+        var all = java.util.EnumSet.of(io.talos.domain.service.IntegrationService.Event.ITEM_CREATED,
+                io.talos.domain.service.IntegrationService.Event.ITEM_ASSIGNED,
+                io.talos.domain.service.IntegrationService.Event.ITEM_SOLVED);
+        var slack = integrations.save(new io.talos.domain.service.IntegrationService.Webhook(null,
+                pt ? "Canal #suporte-ti" : "#it-support channel", io.talos.domain.service.IntegrationService.Kind.SLACK,
+                "https://hooks.slack.com/services/T0000/B0000/demo1234", "", true, all));
+        var teams = integrations.save(new io.talos.domain.service.IntegrationService.Webhook(null,
+                pt ? "Infraestrutura (Teams)" : "Infrastructure (Teams)", io.talos.domain.service.IntegrationService.Kind.TEAMS,
+                "https://prod-00.westus.logic.azure.com/workflows/demo/triggers/manual/paths/invoke/a9f2", "", true,
+                java.util.EnumSet.of(io.talos.domain.service.IntegrationService.Event.ITEM_SOLVED,
+                        io.talos.domain.service.IntegrationService.Event.EXPIRATION_ALERT)));
+        var erp = integrations.save(new io.talos.domain.service.IntegrationService.Webhook(null,
+                pt ? "ERP — fila de compras" : "ERP — purchasing queue", io.talos.domain.service.IntegrationService.Kind.GENERIC,
+                "https://erp.example.com/api/talos/erp-hook", "segredo-demo", false,
+                java.util.EnumSet.of(io.talos.domain.service.IntegrationService.Event.ITEM_CREATED)));
+        integrations.test(slack).get(10, TimeUnit.SECONDS);
+        integrations.test(teams).get(10, TimeUnit.SECONDS);
+        integrations.test(erp).get(10, TimeUnit.SECONDS);
+        for (Ticket t : services.store().repository(Ticket.class).find(Query.all().orderBy(Sort.desc("id")).limit(3))) {
+            integrations.publishItem(io.talos.domain.service.IntegrationService.Event.ITEM_CREATED, t);
+        }
+        Thread.sleep(800);
+    }
+
+    private static void closeOverlays() {
+        for (javafx.stage.Window w : new java.util.ArrayList<>(javafx.stage.Window.getWindows())) {
+            if (w instanceof Stage st && st.getOwner() != null) {
+                st.close();
+            }
+        }
+    }
+
+    /** Captura a janela principal e desenha por cima as janelas filhas (paleta, diálogos) na posição real. */
+    private void shotWithOverlay(String name) {
+        try {
+            settle(600);
+            WritableImage base = fx(() -> stage.getScene().snapshot(null));
+            BufferedImage bi = toBuffered(base);
+            java.awt.Graphics2D g = bi.createGraphics();
+            g.setColor(new java.awt.Color(20, 18, 16, 70));
+            g.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+            double originX = fx(() -> stage.getX() + stage.getScene().getX());
+            double originY = fx(() -> stage.getY() + stage.getScene().getY());
+            for (javafx.stage.Window w : fx(() -> new java.util.ArrayList<>(javafx.stage.Window.getWindows()))) {
+                if (w == stage || w.getScene() == null || !w.isShowing()) {
+                    continue;
+                }
+                WritableImage over = fx(() -> w.getScene().snapshot(null));
+                int x = (int) Math.round(w.getX() + w.getScene().getX() - originX);
+                int y = (int) Math.round(w.getY() + w.getScene().getY() - originY);
+                g.drawImage(toBuffered(over), x, y, null);
+            }
+            g.dispose();
+            ImageIO.write(bi, "png", out.resolve(name + ".png").toFile());
+            System.out.println("saved " + name);
+        } catch (Exception e) {
+            failures++;
+            System.err.println("FAILED " + name + ": " + e);
+            e.printStackTrace();
+        }
+    }
+
+    private static BufferedImage toBuffered(WritableImage img) {
+        int w = (int) img.getWidth();
+        int h = (int) img.getHeight();
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        PixelReader pr = img.getPixelReader();
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                bi.setRGB(x, y, pr.getArgb(x, y));
+            }
+        }
+        return bi;
     }
 
     private void go(Route r) throws Exception {

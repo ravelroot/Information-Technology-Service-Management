@@ -251,6 +251,31 @@ public class InstallationService extends AbstractService {
                 d.create(DropdownKind.ITIL_CATEGORY, group[j], parent.getId(), color, false, j);
             }
         }
+        String[][] responses = pt
+                ? new String[][] {
+                    {"Recebemos seu chamado", "Olá, {requester}! Recebemos o chamado {reference} e ele já está com a equipe de TI. "
+                        + "Vamos manter você informado por aqui."},
+                    {"Pedido de mais informações", "Olá, {requester}. Para seguir com o {reference}, pode enviar um print da "
+                        + "mensagem de erro e o horário em que o problema aconteceu?"},
+                    {"Acesso remoto", "Vou acessar seu computador remotamente para analisar o problema. "
+                        + "Deixe a máquina ligada e salve os arquivos abertos, por favor."},
+                    {"Confirmação de solução", "Aplicamos a correção no {reference}. Pode confirmar se está tudo funcionando? "
+                        + "Se não houver retorno, o chamado será encerrado automaticamente."}}
+                : new String[][] {
+                    {"We got your ticket", "Hi {requester}! We received ticket {reference} and the IT team is on it. "
+                        + "We will keep you posted here."},
+                    {"Need more details", "Hi {requester}. To move {reference} forward, could you send a screenshot of the "
+                        + "error message and the time it happened?"},
+                    {"Remote session", "I will connect to your computer remotely to look into the problem. "
+                        + "Please keep it on and save any open files."},
+                    {"Confirm the fix", "We applied the fix for {reference}. Could you confirm everything works? "
+                        + "Without a reply the ticket will be closed automatically."}};
+        i = 0;
+        for (String[] r : responses) {
+            DropdownItem item = d.create(DropdownKind.RESPONSE_TEMPLATE, r[0], null, null, false, i++);
+            item.setNotes(r[1]);
+            d.saveInternal(item);
+        }
         simple(DropdownKind.KB_CATEGORY, pt ? new String[] {"Primeiros passos", "Procedimentos de TI", "Perguntas frequentes"}
                 : new String[] {"Getting started", "IT procedures", "Frequently asked questions"});
     }

@@ -8,7 +8,7 @@ import java.time.Clock;
 
 public final class Services {
 
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
 
     private final DataStore store;
     private final Clock clock;
@@ -44,6 +44,8 @@ public final class Services {
     private final JobService jobs = new JobService(this);
     private final InstallationService installation = new InstallationService(this);
     private final DemoDataService demoData = new DemoDataService(this);
+    private final IntegrationService integrations = new IntegrationService(this);
+    private final CalendarExportService calendarExport = new CalendarExportService(this);
 
     public Services(DataStore store, Clock clock) {
         this.store = store;
@@ -192,5 +194,13 @@ public final class Services {
 
     public DemoDataService demoData() {
         return demoData;
+    }
+
+    public IntegrationService integrations() {
+        return integrations;
+    }
+
+    public CalendarExportService calendarExport() {
+        return calendarExport;
     }
 }
