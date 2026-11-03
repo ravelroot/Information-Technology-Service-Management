@@ -28,8 +28,6 @@
 
 > **Versão 1.1.0 (Anterior):** **central de integrações** com webhooks para Slack, Microsoft Teams, Discord, Google Chat e JSON genérico assinado com HMAC-SHA256, exportação da agenda em **iCalendar** (`.ics`), **paleta de comandos** (<kbd>Ctrl</kbd> + <kbd>K</kbd>), **guia de atalhos** (<kbd>F1</kbd>), **respostas prontas** na linha do tempo e a nova logo, um rack com três gavetas. Detalhes em [Integrações (1.1.0)](#integrações-110).
 
-> **Versão 1.0.0 (Anterior):** primeira versão. Chamados, problemas e mudanças com fluxo ITIL, matriz de prioridade, SLA em horário comercial, aprovações e pesquisa de satisfação; Kanban, Gantt, portfólio e agenda; inventário, software, licenças, contratos e fornecedores; base de conhecimento e autoatendimento; unidades organizacionais, perfis por módulo, regras de negócio, auditoria e lixeira; seis bancos de dados e instalador `.exe`.
-
 > **English:** [README.en.md](README.en.md).
 
 <p align="center">
