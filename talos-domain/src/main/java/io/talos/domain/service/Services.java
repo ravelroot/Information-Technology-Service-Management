@@ -8,7 +8,7 @@ import java.time.Clock;
 
 public final class Services {
 
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
 
     private final DataStore store;
     private final Clock clock;
@@ -30,6 +30,7 @@ public final class Services {
     private final ProblemService problems = new ProblemService(this);
     private final ChangeService changes = new ChangeService(this);
     private final ItilActivityService itilActivity = new ItilActivityService(this);
+    private final ItilBulkService itilBulk = new ItilBulkService(this);
     private final RecurringTicketService recurringTickets = new RecurringTicketService(this);
     private final AssetService assets = new AssetService(this);
     private final SoftwareService software = new SoftwareService(this);
@@ -138,6 +139,10 @@ public final class Services {
 
     public ItilActivityService itilActivity() {
         return itilActivity;
+    }
+
+    public ItilBulkService itilBulk() {
+        return itilBulk;
     }
 
     public RecurringTicketService recurringTickets() {

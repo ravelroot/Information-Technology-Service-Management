@@ -160,12 +160,13 @@ public final class DataTable<T> extends TableView<T> {
     }
 
     public void setRows(List<T> rows) {
-        T selected = getSelectionModel().getSelectedItem();
+        List<T> previous = List.copyOf(getSelectionModel().getSelectedItems());
         getItems().setAll(FXCollections.observableArrayList(rows));
-        if (selected != null) {
-            for (T r : rows) {
-                if (r.equals(selected)) {
-                    getSelectionModel().select(r);
+        getSelectionModel().clearSelection();
+        for (T r : rows) {
+            if (previous.contains(r)) {
+                getSelectionModel().select(r);
+                if (getSelectionModel().getSelectionMode() == SelectionMode.SINGLE) {
                     break;
                 }
             }
@@ -190,5 +191,14 @@ public final class DataTable<T> extends TableView<T> {
 
     public T selected() {
         return getSelectionModel().getSelectedItem();
+    }
+
+    public DataTable<T> multiSelect() {
+        getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        return this;
+    }
+
+    public List<T> selectedRows() {
+        return List.copyOf(getSelectionModel().getSelectedItems());
     }
 }

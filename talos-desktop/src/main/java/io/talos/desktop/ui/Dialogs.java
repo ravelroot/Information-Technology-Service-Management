@@ -79,7 +79,6 @@ public final class Dialogs {
         d.showAndWait();
     }
 
-    /** Diálogo informativo com conteúdo livre; quem chama decide entre show() e showAndWait(). */
     public static Dialog<ButtonType> infoDialog(String title, Node content) {
         Dialog<ButtonType> d = base(title);
         d.getDialogPane().setContent(body(title, content));

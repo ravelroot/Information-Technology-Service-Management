@@ -12,15 +12,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-/**
- * Regrava os .jar de uma pasta sem compressao interna (metodo STORED).
- * O instalador comprime tudo junto e fica bem menor do que com jars ja compactados.
- *
- * Rewrites every .jar in a folder without internal compression (STORED entries).
- * The installer then compresses everything together, which is much smaller.
- *
- * Uso / usage: java scripts/StoreJars.java <pasta-com-jars>
- */
 public class StoreJars {
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {

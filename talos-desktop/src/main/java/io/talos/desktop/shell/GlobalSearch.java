@@ -32,13 +32,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-/**
- * Paleta de comandos (Ctrl+K): ações rápidas, navegação para qualquer tela e busca global
- * em chamados, ativos, pessoas, artigos e projetos — tudo pelo teclado.
- */
 public final class GlobalSearch {
 
-    /** Uma linha da paleta: um comando ou um resultado de busca. */
     private record Entry(String group, String icon, String title, String hint, Runnable action) {
     }
 

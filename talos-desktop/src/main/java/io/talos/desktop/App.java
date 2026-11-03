@@ -80,7 +80,6 @@ public final class App {
         }
     }
 
-    /** Textos usados por integrações e exportações do domínio, no idioma atual da interface. */
     public static String label(String key) {
         if (key.startsWith("priority.")) {
             try {

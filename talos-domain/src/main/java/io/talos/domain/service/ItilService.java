@@ -153,7 +153,7 @@ public abstract class ItilService<T extends ItilItem> extends AbstractService {
         parts.add(security().orgFilter());
         parts.add(visibility());
         parts.add(Filter.search(s.text(), "title", "content"));
-        if (s.text() != null && s.text().trim().matches("#?\\d+")) {
+        if (s.text() != null && s.text().trim().matches("#?\\d{1,18}")) {
             parts.set(parts.size() - 1, Filter.or(Filter.search(s.text(), "title", "content"),
                     Filter.eq("id", Long.valueOf(s.text().trim().replace("#", "")))));
         }
@@ -267,6 +267,14 @@ public abstract class ItilService<T extends ItilItem> extends AbstractService {
         validate(item);
         return tx(() -> {
             T before = get(item.getId());
+            if (item.getOrgUnitId() == null) {
+                item.setOrgUnitId(before.getOrgUnitId());
+            }
+            if (!Objects.equals(before.getOrgUnitId(), item.getOrgUnitId())
+                    && !security().current().canSeeOrgUnit(item.getOrgUnitId())) {
+                throw new BusinessException("error.orgUnitNotAllowed");
+            }
+            item.setDeleted(before.isDeleted());
             if (!Objects.equals(before.getUrgency(), item.getUrgency()) || !Objects.equals(before.getImpact(), item.getImpact())) {
                 if (Objects.equals(before.getPriority(), item.getPriority())) {
                     item.setPriority(PriorityMatrix.compute(item.getUrgency(), item.getImpact()));
@@ -374,6 +382,10 @@ public abstract class ItilService<T extends ItilItem> extends AbstractService {
             T item = get(id);
             if (item.getStatus().isTerminal()) {
                 throw new BusinessException("error.itemClosed");
+            }
+            if (!Objects.equals(item.getRequesterId(), currentUserId()) && !can(module(), Right.UPDATE)
+                    && !can(module(), Right.ASSIGN)) {
+                throw new BusinessException("error.cannotAssign");
             }
             ItilPeople before = peopleOf(item);
             Long primary = who.isEmpty() ? null : who.get(0);
@@ -492,6 +504,55 @@ public abstract class ItilService<T extends ItilItem> extends AbstractService {
     public T takeIntoAccount(Long id) {
         T item = get(id);
         return assign(id, currentUserId(), item.getAssigneeGroupId());
+    }
+
+    public T duplicate(Long id) {
+        require(module(), Right.CREATE);
+        T source = get(id);
+        T copy = copy(source);
+        copy.setId(null);
+        copy.setVersion(null);
+        copy.setCreatedAt(null);
+        copy.setUpdatedAt(null);
+        copy.setStatus(ItilStatus.NEW);
+        copy.setOpenedAt(null);
+        copy.setDueAt(null);
+        copy.setSolvedAt(null);
+        copy.setClosedAt(null);
+        copy.setLastActivityAt(null);
+        copy.setActionTimeMinutes(0);
+        copy.setDeleted(false);
+        copy.setAssigneeId(null);
+        if (!can(module(), Right.UPDATE)) {
+            copy.setRequesterId(currentUserId());
+        }
+        if (copy.getPriority() != null && copy.getPriority() == PriorityMatrix.MAJOR) {
+            copy.setPriority(PriorityMatrix.compute(copy.getUrgency(), copy.getImpact()));
+        }
+        resetCopy(copy);
+        return tx(() -> {
+            T created = create(copy);
+            ItilRelation r = new ItilRelation();
+            r.setSourceType(itilType());
+            r.setSourceId(created.getId());
+            r.setTargetType(itilType());
+            r.setTargetId(source.getId());
+            r.setRelationType(io.talos.domain.model.itil.RelationType.LINKED);
+            r.setCreatedById(currentUserId());
+            insert(r);
+            return created;
+        });
+    }
+
+    protected void resetCopy(T copy) {
+    }
+
+    void closeAsDuplicate(T item) {
+        ItilStatus target = ItilStatus.workflow(itilType()).contains(ItilStatus.CANCELED) ? ItilStatus.CANCELED : ItilStatus.CLOSED;
+        transition(item, target);
+        item.setLastActivityAt(now());
+        update(item);
+        notifyStatus(item);
     }
 
     public void trash(Long id) {

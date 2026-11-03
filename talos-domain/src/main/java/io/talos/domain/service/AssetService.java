@@ -281,8 +281,13 @@ public class AssetService extends AbstractService {
         }
         String serial = Texts.clean(row.get("serialNumber"));
         Asset asset = serial == null ? new Asset() : repo(Asset.class)
-                .findFirst(Filter.and(Filter.eq("serialNumber", serial), Filter.eq("assetType", type))).orElseGet(Asset::new);
+                .findFirst(Filter.and(Filter.eq("serialNumber", serial), Filter.eq("assetType", type),
+                        Filter.isFalse("deleted"), security().orgFilter())).orElseGet(Asset::new);
         boolean isNew = asset.isNew();
+        if (!isNew) {
+            require(Module.ASSET, Right.UPDATE);
+            checkVisible(asset);
+        }
         asset.setAssetType(type);
         asset.setName(row.get("name"));
         asset.setSerialNumber(serial);

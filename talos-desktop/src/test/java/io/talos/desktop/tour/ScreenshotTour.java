@@ -229,7 +229,6 @@ public final class ScreenshotTour {
         }
     }
 
-    /** Captura a janela principal e desenha por cima as janelas filhas (paleta, diálogos) na posição real. */
     private void shotWithOverlay(String name) {
         try {
             settle(600);

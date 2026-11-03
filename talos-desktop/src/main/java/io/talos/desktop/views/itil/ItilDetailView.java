@@ -228,11 +228,45 @@ public class ItilDetailView extends View {
             });
             more.getItems().addAll(new SeparatorMenuItem(), purge);
         }
+        if (App.can(service().module(), Right.CREATE) && !item.isDeleted()) {
+            MenuItem duplicate = new MenuItem(I18n.t("action.duplicate"));
+            duplicate.setGraphic(Icons.of("copy", 14));
+            duplicate.setOnAction(e -> Async.run(() -> service().duplicate(id), copy -> {
+                Toasts.success(I18n.t("itil.created", copy.reference()));
+                App.nav().open(new ItilDetailView(type, copy.getId()));
+            }));
+            more.getItems().add(0, duplicate);
+        }
+        if (tech && item.getStatus().isOpen() && !item.isDeleted()) {
+            MenuItem merge = new MenuItem(I18n.t("itil.mergeInto"));
+            merge.setGraphic(Icons.of("git-pull-request-arrow", 14));
+            merge.setOnAction(e -> mergeInto());
+            more.getItems().add(0, merge);
+        }
         MenuItem refresh = new MenuItem(I18n.t("action.refresh"));
         refresh.setOnAction(e -> load());
         more.getItems().add(0, refresh);
         nodes.add(more);
         return nodes;
+    }
+
+    private void mergeInto() {
+        Dialogs.prompt(I18n.t("itil.mergeInto"), I18n.t("itil.mergeIntoHint", item.reference()), "", false).ifPresent(raw -> {
+            String digits = raw.replaceAll("[^0-9]", "");
+            if (digits.isEmpty() || digits.length() > 18) {
+                Toasts.warning(I18n.t("itil.mergeInvalid"));
+                return;
+            }
+            Long target = Long.valueOf(digits);
+            if (target.equals(id)) {
+                Toasts.warning(I18n.t("itil.mergeInvalid"));
+                return;
+            }
+            Async.run(() -> App.services().itilBulk().merge(type, target, List.of(id), App::label), n -> {
+                Toasts.success(I18n.t("bulk.merged", n));
+                App.nav().open(new ItilDetailView(type, target));
+            });
+        });
     }
 
     private void renderSide() {
@@ -564,7 +598,6 @@ public class ItilDetailView extends View {
         return box;
     }
 
-    /** Menu "Respostas prontas": textos cadastrados em Listas e cadastros, com campos substituídos. */
     private Node responsesMenu(TextArea target) {
         javafx.scene.control.MenuButton menu = new javafx.scene.control.MenuButton(I18n.t("composer.responses"));
         menu.setGraphic(io.talos.desktop.ui.Icons.of("message-circle", 15));

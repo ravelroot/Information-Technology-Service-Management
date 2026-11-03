@@ -42,7 +42,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-/** Administração > Integrações: webhooks de saída e exportação de agenda. */
 public class IntegrationsView extends View {
 
     private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("dd/MM HH:mm:ss");
@@ -289,7 +288,6 @@ public class IntegrationsView extends View {
         };
     }
 
-    /** Mostra só o domínio e o final do endereço: a URL de um webhook funciona como senha. */
     static String mask(String url) {
         try {
             URI u = URI.create(url);

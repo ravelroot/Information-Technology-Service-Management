@@ -78,7 +78,6 @@ public class PlanningView extends View {
         return root;
     }
 
-    /** Exporta os prazos dos chamados abertos do técnico escolhido para Outlook, Google Agenda ou Apple Calendário. */
     private void exportIcs() {
         javafx.stage.FileChooser chooser = new javafx.stage.FileChooser();
         chooser.setTitle(I18n.t("ics.export"));

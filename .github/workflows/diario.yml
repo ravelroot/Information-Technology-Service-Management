@@ -2,10 +2,10 @@ name: Atividade diária
 
 on:
   schedule:
-    - cron: "17 10 * * *"  # 07:17 (Brasília)
-    - cron: "37 11 * * *"  # 08:37 reserva
-    - cron: "17 22 * * *"  # 19:17
-    - cron: "37 23 * * *"  # 20:37 reserva
+    - cron: "17 10 * * *"
+    - cron: "37 11 * * *"
+    - cron: "17 22 * * *"
+    - cron: "37 23 * * *"
   workflow_dispatch:
     inputs:
       turno:

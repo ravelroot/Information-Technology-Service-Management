@@ -9,19 +9,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-/** Guia de atalhos de teclado (F1). */
 public final class ShortcutsDialog {
 
     private ShortcutsDialog() {
     }
 
-    /** Grupos de atalhos: chave do título e pares (teclas, chave da descrição). */
     static final String[][][] GROUPS = {
         {{"shortcuts.group.general"}, {"Ctrl K", "shortcuts.palette"}, {"Ctrl N", "shortcuts.newTicket"},
             {"F1", "shortcuts.help"}, {"F5", "shortcuts.refresh"}, {"Esc", "shortcuts.close"}},
         {{"shortcuts.group.view"}, {"Ctrl +", "shortcuts.zoomIn"}, {"Ctrl −", "shortcuts.zoomOut"},
             {"Ctrl 0", "shortcuts.zoomReset"}, {"Ctrl + rolagem", "shortcuts.zoomWheel"}},
         {{"shortcuts.group.lists"}, {"↑ ↓", "shortcuts.move"}, {"Enter", "shortcuts.open"},
+            {"Ctrl A", "shortcuts.selectAll"}, {"Shift ↑ ↓", "shortcuts.extend"},
             {"Ctrl Shift N", "shortcuts.tickets"}},
     };
 

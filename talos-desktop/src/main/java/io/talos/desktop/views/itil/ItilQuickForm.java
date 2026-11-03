@@ -6,6 +6,7 @@ import io.talos.desktop.ui.I18n;
 import io.talos.desktop.ui.Option;
 import io.talos.desktop.ui.Toasts;
 import io.talos.desktop.ui.Ui;
+import io.talos.desktop.ui.Async;
 import io.talos.desktop.ui.components.Form;
 import io.talos.desktop.ui.components.PeopleField;
 import io.talos.desktop.ui.components.PickerField;
@@ -125,6 +126,49 @@ public final class ItilQuickForm {
         where.setText(I18n.t("kanban.createIn", I18n.e(target())));
     }
 
+    private VBox similarPanel(Form f) {
+        VBox box = new VBox(4);
+        box.getStyleClass().add("similar-items");
+        box.setVisible(false);
+        box.setManaged(false);
+        if (!(f.box("title").control() instanceof javafx.scene.control.TextInputControl input)) {
+            return box;
+        }
+        javafx.animation.PauseTransition debounce = new javafx.animation.PauseTransition(javafx.util.Duration.millis(450));
+        debounce.setOnFinished(e -> {
+            String text = input.getText();
+            ItilType t = board.getValue();
+            if (text == null || text.trim().length() < 4 || t == null) {
+                box.getChildren().clear();
+                box.setVisible(false);
+                box.setManaged(false);
+                return;
+            }
+            Async.run(() -> App.services().itilBulk().similar(t, text, null, 4), found -> {
+                if (!text.equals(input.getText()) || t != board.getValue()) {
+                    return;
+                }
+                box.getChildren().clear();
+                if (!found.isEmpty()) {
+                    box.getChildren().add(Ui.label(I18n.t("itil.similar"), "muted"));
+                    for (var item : found) {
+                        Hyperlink link = new Hyperlink(item.reference() + "  " + item.title() + "  ·  " + I18n.e(item.status()));
+                        link.setOnAction(ev -> {
+                            link.getScene().getWindow().hide();
+                            App.nav().open(new ItilDetailView(item.type(), item.id()));
+                        });
+                        box.getChildren().add(link);
+                    }
+                }
+                box.setVisible(!found.isEmpty());
+                box.setManaged(!found.isEmpty());
+            });
+        });
+        input.textProperty().addListener((o, a, b) -> debounce.playFromStart());
+        board.onChange(v -> debounce.playFromStart());
+        return box;
+    }
+
     private void show() {
         Form f = new Form(2)
                 .text("title", () -> title[0], v -> title[0] = v, 2, true)
@@ -151,7 +195,8 @@ public final class ItilQuickForm {
         });
         HBox foot = new HBox(8, where, Ui.spacer(), full);
         foot.setAlignment(Pos.CENTER_LEFT);
-        VBox body = new VBox(14, f.node(), foot);
+        VBox similar = similarPanel(f);
+        VBox body = new VBox(14, f.node(), similar, foot);
         body.setPrefWidth(620);
         ItilType[] created = {null};
         Dialogs.form(I18n.t("itil.quick.title"), body, I18n.t("action.create"), () -> {

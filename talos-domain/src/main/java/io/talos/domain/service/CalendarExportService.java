@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 
-/**
- * Exporta os prazos dos chamados abertos no formato iCalendar (RFC 5545), para assinatura ou
- * importação no Outlook, Google Agenda e Apple Calendário.
- */
 public class CalendarExportService extends AbstractService {
 
     private static final DateTimeFormatter UTC = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'", Locale.ROOT);
@@ -22,7 +18,6 @@ public class CalendarExportService extends AbstractService {
         super(services);
     }
 
-    /** Prazos dos chamados abertos visíveis ao usuário; {@code assigneeId} nulo = todos. */
     public String openTicketDeadlines(Long assigneeId, Function<String, String> labels) {
         ItilSearch s = ItilSearch.create().view(ItilSearch.View.OPEN).sort("dueAt", true).page(0, 2000);
         if (assigneeId != null) {
@@ -82,7 +77,6 @@ public class CalendarExportService extends AbstractService {
                 .replace("\r\n", "\\n").replace("\n", "\\n");
     }
 
-    /** Dobra linhas em 75 octetos, como pede a RFC 5545. */
     static void line(StringBuilder b, String content) {
         byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
         if (bytes.length <= 75) {

@@ -302,19 +302,27 @@ public class ProjectService extends AbstractService {
 
     void rollup(Long projectId) {
         List<ProjectTask> tasks = tasks(projectId);
-        for (ProjectTask parent : tasks) {
-            List<ProjectTask> children = tasks.stream().filter(t -> Objects.equals(t.getParentId(), parent.getId())).toList();
-            if (children.isEmpty()) {
-                continue;
-            }
-            int progress = ProjectScheduler.weightedProgress(children);
-            LocalDate start = children.stream().map(ProjectTask::getPlanStart).filter(Objects::nonNull).min(LocalDate::compareTo).orElse(parent.getPlanStart());
-            LocalDate end = children.stream().map(ProjectTask::getPlanEnd).filter(Objects::nonNull).max(LocalDate::compareTo).orElse(parent.getPlanEnd());
-            if (progress != parent.getProgress() || !Objects.equals(start, parent.getPlanStart()) || !Objects.equals(end, parent.getPlanEnd())) {
-                parent.setProgress(progress);
-                parent.setPlanStart(start);
-                parent.setPlanEnd(end);
-                saveQuietly(parent);
+        boolean dirty = true;
+        for (int pass = 0; dirty && pass <= tasks.size(); pass++) {
+            dirty = false;
+            for (ProjectTask parent : tasks) {
+                List<ProjectTask> children = tasks.stream().filter(t -> Objects.equals(t.getParentId(), parent.getId())).toList();
+                if (children.isEmpty()) {
+                    continue;
+                }
+                int progress = ProjectScheduler.weightedProgress(children);
+                LocalDate start = children.stream().map(ProjectTask::getPlanStart).filter(Objects::nonNull).min(LocalDate::compareTo).orElse(parent.getPlanStart());
+                LocalDate end = children.stream().map(ProjectTask::getPlanEnd).filter(Objects::nonNull).max(LocalDate::compareTo).orElse(parent.getPlanEnd());
+                if (progress != parent.getProgress() || !Objects.equals(start, parent.getPlanStart()) || !Objects.equals(end, parent.getPlanEnd())) {
+                    parent.setProgress(progress);
+                    parent.setPlanStart(start);
+                    parent.setPlanEnd(end);
+                    ProjectTask saved = saveQuietly(parent);
+                    if (saved != null && saved != parent) {
+                        parent.setVersion(saved.getVersion());
+                    }
+                    dirty = true;
+                }
             }
         }
         Project project = repo(Project.class).getById(projectId);

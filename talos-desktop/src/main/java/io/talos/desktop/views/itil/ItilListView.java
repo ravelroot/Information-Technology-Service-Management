@@ -45,9 +45,18 @@ public class ItilListView extends ListPage<ItilItem> {
         return list;
     }, null);
 
+    private ItilBulkActions bulk;
+
     public ItilListView(ItilType type) {
         this.type = type;
         this.view = App.session().isSelfService() ? View.MINE_REQUESTED : View.OPEN;
+    }
+
+    private ItilBulkActions bulk() {
+        if (bulk == null) {
+            bulk = new ItilBulkActions(type, table::selectedRows, this::reload);
+        }
+        return bulk;
     }
 
     private ItilService<? extends ItilItem> service() {
@@ -125,12 +134,23 @@ public class ItilListView extends ListPage<ItilItem> {
     }
 
     @Override
+    protected Node[] trailing() {
+        if (!ItilBulkActions.available(type)) {
+            return new Node[0];
+        }
+        return new Node[] {bulk().button()};
+    }
+
+    @Override
     protected Node emptyState() {
         return new EmptyState(type == ItilType.TICKET ? "ticket" : "inbox", I18n.t("itil.empty"), I18n.t("itil.emptyHint"), null);
     }
 
     @Override
     protected void columns(DataTable<ItilItem> t) {
+        if (ItilBulkActions.available(type)) {
+            t.multiSelect().menu(bulk().contextMenu());
+        }
         t.col("#", 64, "num", ItilItem::getId)
                 .col(I18n.t("field.title"), 320, ItilItem::getTitle)
                 .node(I18n.t("field.status"), 140, i -> Badge.status(i.getStatus()), i -> I18n.e(i.getStatus()))

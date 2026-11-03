@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""Gera o manual do Talos. em PDF (paleta minimalista do aplicativo).
-
-Uso:
-    python3 scripts/manual/build_manual.py --images <pasta-de-prints> --out "Manual-Talos-Versão 1.1.0.pdf"
-
-Os prints são procurados primeiro em --images e depois em docs/images. Figuras sem
-arquivo são omitidas sem erro, então o manual sempre pode ser gerado.
-Requer: reportlab (pip install reportlab).
-"""
 from __future__ import annotations
 
 import argparse
@@ -27,13 +18,11 @@ from reportlab.platypus import (BaseDocTemplate, CondPageBreak, Flowable, Frame,
                                 TableStyle)
 from reportlab.platypus.tableofcontents import TableOfContents
 
-from content import VERSION, chapters  # noqa: E402  (mesmo diretório)
+from content import VERSION, chapters
 
 ROOT = Path(__file__).resolve().parents[2]
 FONTS = ROOT / "talos-desktop/src/main/resources/io/talos/desktop/fonts"
 
-# ---------------------------------------------------------------- paleta
-# Paleta minimalista do Talos. (a mesma do aplicativo): cinza-claro, areia, pedra, malva e preto.
 INK = colors.HexColor("#000000")
 TEXT2 = colors.HexColor("#2B2727")
 MUTED = colors.HexColor("#6B6262")
@@ -58,7 +47,6 @@ MARGIN_TOP = 24 * mm
 MARGIN_BOTTOM = 22 * mm
 CONTENT_W = PAGE_W - 2 * MARGIN_X
 
-
 def register_fonts() -> None:
     faces = {
         "Plex": "IBMPlexSans-400.ttf",
@@ -74,8 +62,6 @@ def register_fonts() -> None:
     pdfmetrics.registerFontFamily("PlexMono", normal="PlexMono", bold="PlexMono-Medium", italic="PlexMono",
                                   boldItalic="PlexMono-Medium")
 
-
-# ---------------------------------------------------------------- estilos
 def styles() -> dict[str, ParagraphStyle]:
     base = ParagraphStyle("body", fontName="Plex", fontSize=9.6, leading=14.2, textColor=TEXT2, alignment=TA_LEFT,
                           spaceAfter=6)
@@ -107,13 +93,9 @@ def styles() -> dict[str, ParagraphStyle]:
     }
     return s
 
-
 S: dict[str, ParagraphStyle] = {}
 
-
-# ---------------------------------------------------------------- marcação simples
 def md(text: str) -> str:
-    """**negrito**, `código`, [[tecla]] e › para caminhos de menu."""
     t = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     t = re.sub(r"\[\[(.+?)\]\]",
                lambda m: f'<font face="PlexMono-Medium" size="8.2" color="#000000" backColor="#E8E8E8">'
@@ -122,8 +104,6 @@ def md(text: str) -> str:
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     return t
 
-
-# ---------------------------------------------------------------- flowables
 class Rule(Flowable):
     def __init__(self, width: float, color=MAUVE, thickness: float = 1.6, space: float = 14):
         super().__init__()
@@ -136,9 +116,7 @@ class Rule(Flowable):
         self.canv.setFillColor(self.color)
         self.canv.rect(0, self.space, self.width, self.thickness, stroke=0, fill=1)
 
-
 class Heading(Paragraph):
-    """Parágrafo que entra no sumário e vira marcador do PDF."""
 
     def __init__(self, text: str, style: ParagraphStyle, level: int, toc_text: str | None = None,
                  number: str | None = None):
@@ -146,7 +124,6 @@ class Heading(Paragraph):
         self.level = level
         self.toc_text = toc_text or text
         self.number = number
-
 
 class Callout(Flowable):
     def __init__(self, label: str, text: str, tone: str = "tip"):
@@ -170,7 +147,6 @@ class Callout(Flowable):
         c.rect(0, 8, 3, self.h, stroke=0, fill=1)
         self.para.drawOn(c, 15, 8 + 9)
 
-
 class CodeBlock(Flowable):
     def __init__(self, text: str):
         super().__init__()
@@ -192,9 +168,7 @@ class CodeBlock(Flowable):
             c.drawString(12, y, line)
             y -= 11.4
 
-
 def logo(c, x: float, y: float, size: float, bg=BLACK, drawer=ON_DARK, led=BLACK) -> None:
-    """Marca do Talos.: rack com três gavetas."""
     c.saveState()
     c.setFillColor(bg)
     c.rect(x, y, size, size, stroke=0, fill=1)
@@ -213,8 +187,6 @@ def logo(c, x: float, y: float, size: float, bg=BLACK, drawer=ON_DARK, led=BLACK
         c.circle(x0 + dw * 0.84, yy + dh / 2, dh * 0.2, stroke=0, fill=1)
     c.restoreState()
 
-
-# ---------------------------------------------------------------- documento
 class ManualDoc(BaseDocTemplate):
     def __init__(self, filename: str, **kw):
         super().__init__(filename, pagesize=A4, leftMargin=MARGIN_X, rightMargin=MARGIN_X, topMargin=MARGIN_TOP,
@@ -245,7 +217,6 @@ class ManualDoc(BaseDocTemplate):
                 self._starts.append((self.page, f.toc_text))
 
     def chapter_for(self, page: int) -> str:
-        """Capítulo da página, usando o mapa da passada anterior do multiBuild."""
         name = ""
         for start, title in self._prev_starts:
             if start <= page:
@@ -259,9 +230,7 @@ class ManualDoc(BaseDocTemplate):
         self._starts = []
         super().handle_documentBegin()
 
-
 def draw_cover(c, doc) -> None:
-    """Capa no estilo do manual 1.0.0: fundo preto, marca clara e faixa com a paleta no rodapé."""
     c.saveState()
     c.setFillColor(BLACK)
     c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
@@ -291,7 +260,6 @@ def draw_cover(c, doc) -> None:
     c.drawString(x, 58 * mm, f"Versão {VERSION}  ·  Outubro de 2026  ·  Windows 10 e 11 (64 bits)")
     c.drawString(x, 52 * mm, "Java 21  ·  Spring Boot 4  ·  JavaFX 21  ·  Licença MIT")
     c.drawString(x, 46 * mm, "Copyright (©) 2026 Erik Pimenta")
-    # faixa com a paleta
     band = [PAPER, SAND, STONE, MAUVE, DARK]
     w = PAGE_W / len(band)
     for k, col in enumerate(band):
@@ -299,9 +267,7 @@ def draw_cover(c, doc) -> None:
         c.rect(k * w, 0, w + 0.5, 22 * mm, stroke=0, fill=1)
     c.restoreState()
 
-
 def draw_page(c, doc) -> None:
-    """Páginas internas: barra preta com bloco malva no topo e rodapé com versão e número."""
     c.saveState()
     c.setFillColor(SURFACE)
     c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
@@ -315,7 +281,6 @@ def draw_page(c, doc) -> None:
         c.setFont("Plex", 7.8)
         c.setFillColor(MUTED)
         c.drawRightString(PAGE_W - MARGIN_X, PAGE_H - 10 * mm, chapter)
-    # rodapé
     c.setStrokeColor(LINE)
     c.setLineWidth(0.6)
     c.line(MARGIN_X, 14 * mm, PAGE_W - MARGIN_X, 14 * mm)
@@ -333,8 +298,6 @@ def draw_page(c, doc) -> None:
     c.drawRightString(PAGE_W - MARGIN_X, 9.5 * mm, str(doc.page))
     c.restoreState()
 
-
-# ---------------------------------------------------------------- blocos
 class Figures:
     def __init__(self, dirs: list[Path]):
         self.dirs = dirs
@@ -376,7 +339,6 @@ class Figures:
                         f'{md(caption)}', S["caption"])
         return [KeepTogether([Spacer(1, 4), frame, cap])]
 
-
 def table(headers, rows, widths=None):
     n = len(headers)
     widths = widths or [1 / n] * n
@@ -396,7 +358,6 @@ def table(headers, rows, widths=None):
         ("TOPPADDING", (0, 0), (-1, 0), 6), ("BOTTOMPADDING", (0, 0), (-1, 0), 6),
     ]))
     return [Spacer(1, 3), t, Spacer(1, 10)]
-
 
 def render(blocks, figs: Figures):
     out = []
@@ -434,7 +395,6 @@ def render(blocks, figs: Figures):
             raise ValueError(kind)
     return out
 
-
 def build(images: Path | None, out: Path) -> None:
     register_fonts()
     S.update(styles())
@@ -443,11 +403,10 @@ def build(images: Path | None, out: Path) -> None:
     doc = ManualDoc(str(out))
 
     story = [NextPageTemplate("page"), PageBreak()]
-    # sumário
     story += [Paragraph("Sumário", S["h1"]), Rule(28 * mm), Spacer(1, 4)]
     toc = TableOfContents()
     toc.levelStyles = [S["toc0"], S["toc1"]]
-    toc.dotsMinLevel = 99  # sem pontilhado: números alinhados à direita
+    toc.dotsMinLevel = 99
     story.append(toc)
 
     for ch in chapters():
@@ -462,14 +421,12 @@ def build(images: Path | None, out: Path) -> None:
     doc.multiBuild(story)
     print(f"manual gerado: {out}  ({figs.n} figuras)")
 
-
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--images", type=Path, default=None, help="pasta com os prints (ScreenshotTour)")
     ap.add_argument("--out", type=Path, default=ROOT / f"Manual-Talos-Versão {VERSION}.pdf")
     a = ap.parse_args()
     build(a.images, a.out)
-
 
 if __name__ == "__main__":
     main()

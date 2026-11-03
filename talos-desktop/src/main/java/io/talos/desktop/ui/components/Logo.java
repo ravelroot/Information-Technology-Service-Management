@@ -11,7 +11,6 @@ public final class Logo {
 
     private static final double BASE = 500;
 
-    // Abaixo deste tamanho a gaveta perde a fenda e fica mais alta, para continuar legível.
     private static final double COMPACT_BELOW = 56;
 
     private static final String RACK =

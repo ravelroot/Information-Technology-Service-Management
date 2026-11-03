@@ -20,6 +20,8 @@ public final class RuleEngine {
 
     public static RuleOutcome run(List<RuleDefinition> rules, Ticket ticket, Set<Long> requesterGroups) {
         RuleOutcome outcome = new RuleOutcome();
+        Integer urgency = ticket.getUrgency();
+        Integer impact = ticket.getImpact();
         for (RuleDefinition def : rules) {
             if (!def.rule().isActive() || def.criteria().isEmpty()) {
                 continue;
@@ -34,7 +36,9 @@ public final class RuleEngine {
                 }
             }
         }
-        if (!outcome.prioritySet() && outcome.matchedAny()) {
+        boolean matrixChanged = !java.util.Objects.equals(urgency, ticket.getUrgency())
+                || !java.util.Objects.equals(impact, ticket.getImpact());
+        if (!outcome.prioritySet() && outcome.matchedAny() && matrixChanged) {
             ticket.setPriority(PriorityMatrix.compute(ticket.getUrgency(), ticket.getImpact()));
         }
         return outcome;
@@ -64,17 +68,18 @@ public final class RuleEngine {
 
     private static boolean matchesCollection(RuleCriterion c, Collection<Long> values) {
         return switch (c.getMatchOperator()) {
-            case IS_NOT -> values.stream().noneMatch(v -> compare(withOp(c), v));
+            case IS_NOT -> values.stream().noneMatch(v -> compare(withOp(c, io.talos.domain.model.rules.RuleOperator.IS), v));
+            case NOT_CONTAINS -> values.stream().noneMatch(v -> compare(withOp(c, io.talos.domain.model.rules.RuleOperator.CONTAINS), v));
             case IS_EMPTY -> values.isEmpty();
             default -> values.stream().anyMatch(v -> compare(c, v));
         };
     }
 
-    private static RuleCriterion withOp(RuleCriterion c) {
+    private static RuleCriterion withOp(RuleCriterion c, io.talos.domain.model.rules.RuleOperator op) {
         RuleCriterion copy = new RuleCriterion();
         copy.setField(c.getField());
         copy.setPattern(c.getPattern());
-        copy.setMatchOperator(io.talos.domain.model.rules.RuleOperator.IS);
+        copy.setMatchOperator(op);
         return copy;
     }
 

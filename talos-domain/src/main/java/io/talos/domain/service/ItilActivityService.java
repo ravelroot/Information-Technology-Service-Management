@@ -229,8 +229,10 @@ public class ItilActivityService extends AbstractService {
         txRun(() -> {
             ItilTask t = repo(ItilTask.class).getById(taskId);
             require(svc(t.getItemType()).module(), Right.UPDATE);
-            ItilItem item = svc(t.getItemType()).reload(t.getItemId());
-            item.setActionTimeMinutes(Math.max(0, item.getActionTimeMinutes() - t.getDurationMinutes()));
+            ItilItem item = item(t.getItemType(), t.getItemId());
+            int spent = item.getActionTimeMinutes() == null ? 0 : item.getActionTimeMinutes();
+            int duration = t.getDurationMinutes() == null ? 0 : t.getDurationMinutes();
+            item.setActionTimeMinutes(Math.max(0, spent - duration));
             svc(t.getItemType()).saveForActivity(item);
             purge(t);
         });
@@ -435,7 +437,12 @@ public class ItilActivityService extends AbstractService {
     }
 
     private ApprovalStatus aggregate(ItilType type, Long id) {
-        List<ItilApproval> all = repo(ItilApproval.class).find(Filter.and(Filter.eq("itemType", type), Filter.eq("itemId", id)));
+        java.util.Map<Long, ItilApproval> latest = new java.util.HashMap<>();
+        for (ItilApproval a : repo(ItilApproval.class).find(Filter.and(Filter.eq("itemType", type), Filter.eq("itemId", id)))) {
+            latest.merge(a.getApproverId() == null ? -a.getId() : a.getApproverId(), a,
+                    (x, y) -> x.getId() > y.getId() ? x : y);
+        }
+        List<ItilApproval> all = List.copyOf(latest.values());
         if (all.isEmpty()) {
             return ApprovalStatus.NONE;
         }

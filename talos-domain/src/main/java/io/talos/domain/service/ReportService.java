@@ -25,8 +25,8 @@ import java.util.TreeMap;
 public class ReportService extends AbstractService {
 
     public enum ReportKind {
-        TICKETS_BY_MONTH, TICKETS_BY_CATEGORY, TECHNICIAN_PERFORMANCE, SLA_COMPLIANCE, SATISFACTION,
-        ASSETS_BY_TYPE, ASSETS_BY_LOCATION, WARRANTY_EXPIRATION, CONTRACT_EXPIRATION, LICENSE_COMPLIANCE
+        TICKETS_BY_MONTH, TICKETS_BY_CATEGORY, TECHNICIAN_PERFORMANCE, SLA_COMPLIANCE, FIRST_RESPONSE, BACKLOG_AGING,
+        TOP_REQUESTERS, SATISFACTION, ASSETS_BY_TYPE, ASSETS_BY_LOCATION, WARRANTY_EXPIRATION, CONTRACT_EXPIRATION, LICENSE_COMPLIANCE
     }
 
     public enum ChartKind { NONE, BAR, STACKED_BAR, LINE, PIE }
@@ -48,6 +48,9 @@ public class ReportService extends AbstractService {
             case TICKETS_BY_CATEGORY -> ticketsByCategory(start, end);
             case TECHNICIAN_PERFORMANCE -> technicians(start, end);
             case SLA_COMPLIANCE -> slaCompliance(start, end);
+            case FIRST_RESPONSE -> firstResponse(start, end);
+            case BACKLOG_AGING -> backlogAging();
+            case TOP_REQUESTERS -> topRequesters(start, end);
             case SATISFACTION -> satisfaction(start, end);
             case ASSETS_BY_TYPE -> assetsByType();
             case ASSETS_BY_LOCATION -> assetsByLocation();
@@ -192,6 +195,128 @@ public class ReportService extends AbstractService {
         series.put("report.series.missed", missed);
         return new Report(ReportKind.SLA_COMPLIANCE, List.of("month", "withSla", "met", "missed", "compliance"),
                 rows, ChartKind.STACKED_BAR, cats, series);
+    }
+
+    private Report firstResponse(LocalDate from, LocalDate to) {
+        Map<YearMonth, long[]> months = new TreeMap<>();
+        for (YearMonth m = YearMonth.from(from); !m.isAfter(YearMonth.from(to)); m = m.plusMonths(1)) {
+            months.put(m, new long[4]);
+        }
+        for (Ticket t : tickets(from, to)) {
+            long[] v = months.get(YearMonth.from(t.getOpenedAt()));
+            if (v == null || t.getTakenAt() == null) {
+                continue;
+            }
+            v[0]++;
+            v[1] += Math.max(0, Duration.between(t.getOpenedAt(), t.getTakenAt()).toMinutes());
+            if (t.getTtoDueAt() != null) {
+                if (t.getTakenAt().isAfter(t.getTtoDueAt())) {
+                    v[3]++;
+                } else {
+                    v[2]++;
+                }
+            }
+        }
+        List<List<String>> rows = new ArrayList<>();
+        List<String> cats = new ArrayList<>();
+        List<Number> met = new ArrayList<>();
+        List<Number> missed = new ArrayList<>();
+        months.forEach((m, v) -> {
+            long withSla = v[2] + v[3];
+            rows.add(List.of(m.toString(), String.valueOf(v[0]), hours(v[0] == 0 ? 0 : v[1] / v[0]), String.valueOf(v[2]),
+                    String.valueOf(v[3]), withSla == 0 ? "—" : (v[2] * 100 / withSla) + "%"));
+            cats.add(m.toString());
+            met.add(v[2]);
+            missed.add(v[3]);
+        });
+        Map<String, List<Number>> series = new LinkedHashMap<>();
+        series.put("report.series.met", met);
+        series.put("report.series.missed", missed);
+        return new Report(ReportKind.FIRST_RESPONSE,
+                List.of("month", "answered", "avgFirstResponseHours", "met", "missed", "compliance"),
+                rows, ChartKind.STACKED_BAR, cats, series);
+    }
+
+    private Report backlogAging() {
+        String[] buckets = {"report.value.age.day", "report.value.age.threeDays", "report.value.age.week",
+                "report.value.age.month", "report.value.age.older"};
+        long[][] stats = new long[buckets.length][4];
+        Filter open = services.tickets().filter(ItilSearch.create().view(ItilSearch.View.OPEN));
+        java.time.LocalDateTime now = now();
+        for (Ticket t : repo(Ticket.class).find(open)) {
+            if (t.getOpenedAt() == null) {
+                continue;
+            }
+            long hoursOpen = Math.max(0, Duration.between(t.getOpenedAt(), now).toHours());
+            int b = hoursOpen < 24 ? 0 : hoursOpen < 72 ? 1 : hoursOpen < 168 ? 2 : hoursOpen < 720 ? 3 : 4;
+            long[] v = stats[b];
+            v[0]++;
+            if (t.getTicketType() == io.talos.domain.model.itil.TicketType.INCIDENT) {
+                v[1]++;
+            } else {
+                v[2]++;
+            }
+            if (t.getDueAt() != null && t.getDueAt().isBefore(now)) {
+                v[3]++;
+            }
+        }
+        List<List<String>> rows = new ArrayList<>();
+        List<String> cats = new ArrayList<>();
+        List<Number> incidents = new ArrayList<>();
+        List<Number> requests = new ArrayList<>();
+        for (int i = 0; i < buckets.length; i++) {
+            long[] v = stats[i];
+            rows.add(List.of(buckets[i], String.valueOf(v[0]), String.valueOf(v[1]), String.valueOf(v[2]), String.valueOf(v[3])));
+            cats.add(buckets[i]);
+            incidents.add(v[1]);
+            requests.add(v[2]);
+        }
+        Map<String, List<Number>> series = new LinkedHashMap<>();
+        series.put("report.series.incidents", incidents);
+        series.put("report.series.requests", requests);
+        return new Report(ReportKind.BACKLOG_AGING, List.of("age", "tickets", "incidents", "requests", "overdue"),
+                rows, ChartKind.STACKED_BAR, cats, series);
+    }
+
+    private Report topRequesters(LocalDate from, LocalDate to) {
+        Map<Long, String> names = services.lookups().names(User.class);
+        Map<Long, long[]> stats = new HashMap<>();
+        for (Ticket t : tickets(from, to)) {
+            if (t.getRequesterId() == null) {
+                continue;
+            }
+            long[] v = stats.computeIfAbsent(t.getRequesterId(), k -> new long[5]);
+            v[0]++;
+            if (t.getStatus().isOpen()) {
+                v[1]++;
+            }
+            if (t.getTicketType() == io.talos.domain.model.itil.TicketType.INCIDENT) {
+                v[2]++;
+            }
+            if (t.getSatisfaction() != null) {
+                v[3] += t.getSatisfaction();
+                v[4]++;
+            }
+        }
+        List<List<String>> rows = new ArrayList<>();
+        List<String> cats = new ArrayList<>();
+        List<Number> opened = new ArrayList<>();
+        stats.entrySet().stream()
+                .sorted((a, b) -> a.getValue()[0] != b.getValue()[0] ? Long.compare(b.getValue()[0], a.getValue()[0])
+                        : names.getOrDefault(a.getKey(), "").compareToIgnoreCase(names.getOrDefault(b.getKey(), "")))
+                .limit(25)
+                .forEach(e -> {
+                    long[] v = e.getValue();
+                    String name = names.getOrDefault(e.getKey(), "#" + e.getKey());
+                    rows.add(List.of(name, String.valueOf(v[0]), String.valueOf(v[1]), String.valueOf(v[2]),
+                            v[4] == 0 ? "—" : String.format(java.util.Locale.ROOT, "%.1f", (double) v[3] / v[4])));
+                    if (cats.size() < 12) {
+                        cats.add(name);
+                        opened.add(v[0]);
+                    }
+                });
+        return new Report(ReportKind.TOP_REQUESTERS, List.of("requester", "opened", "stillOpen", "incidents", "satisfaction"),
+                rows, ChartKind.BAR, cats, Map.of("report.series.opened", opened));
     }
 
     private Report satisfaction(LocalDate from, LocalDate to) {

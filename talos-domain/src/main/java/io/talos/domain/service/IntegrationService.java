@@ -39,12 +39,6 @@ import java.util.stream.Collectors;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * Integrações de saída: envia os eventos do atendimento para Slack, Microsoft Teams, Discord,
- * Google Chat ou qualquer endpoint HTTP que aceite JSON. A configuração fica na tabela de
- * configurações (uma chave por webhook), o envio é assíncrono e nunca interrompe a operação
- * que originou o evento.
- */
 public class IntegrationService extends AbstractService {
 
     public enum Kind { SLACK, TEAMS, DISCORD, GOOGLE_CHAT, GENERIC }
@@ -90,7 +84,6 @@ public class IntegrationService extends AbstractService {
                            String detail) {
     }
 
-    /** Transporte HTTP substituível em testes. */
     @FunctionalInterface
     public interface Transport {
         int post(URI uri, String body, Map<String, String> headers) throws Exception;
@@ -111,7 +104,6 @@ public class IntegrationService extends AbstractService {
         super(services);
     }
 
-    /** Textos legíveis (traduções) usados nas mensagens; a interface registra o seu dicionário. */
     public void setLabels(Function<String, String> labels) {
         this.labels = labels == null ? this.labels : labels;
     }
@@ -119,8 +111,6 @@ public class IntegrationService extends AbstractService {
     public void setTransport(Transport transport) {
         this.transport = transport;
     }
-
-    // ---------------------------------------------------------------- configuração
 
     public List<Webhook> webhooks() {
         List<Webhook> list = new ArrayList<>();
@@ -201,7 +191,6 @@ public class IntegrationService extends AbstractService {
         return new Webhook(w.id(), name, w.kind() == null ? Kind.GENERIC : w.kind(), url, secret, w.enabled(), w.events());
     }
 
-    /** Somente HTTPS; HTTP é aceito apenas para a própria máquina (testes locais). */
     static boolean isAllowedUrl(String url) {
         try {
             URI uri = new URI(url);
@@ -253,16 +242,12 @@ public class IntegrationService extends AbstractService {
                     events.add(Event.valueOf(e.trim()));
                 }
             } catch (IllegalArgumentException ignored) {
-                // evento de uma versão mais nova: ignora
             }
         }
         return new Webhook(id, m.getOrDefault("name", id), kind, m.getOrDefault("url", ""), m.getOrDefault("secret", ""),
                 Boolean.parseBoolean(m.getOrDefault("enabled", "true")), events);
     }
 
-    // ---------------------------------------------------------------- envio
-
-    /** Publica um evento de chamado, problema ou mudança. */
     public void publishItem(Event event, ItilItem item) {
         if (item == null) {
             return;
@@ -272,7 +257,6 @@ public class IntegrationService extends AbstractService {
                 item.getStatus() == null ? null : item.getStatus().name(), item.getPriority(), actor, null));
     }
 
-    /** Publica o resumo diário de garantias, contratos e licenças a vencer. */
     public void publishExpiration(int warranties, int contracts, int licenses, long overUsed, int days) {
         Function<String, String> l = labels;
         String title = l.apply("integration.expiration.warranties") + ": " + warranties + " · "
@@ -283,7 +267,6 @@ public class IntegrationService extends AbstractService {
                 l.apply("integration.expiration.window").replace("{0}", String.valueOf(days))));
     }
 
-    /** Envia para todos os webhooks ativos que assinam o evento. Nunca lança exceção. */
     public void publish(Payload payload) {
         List<Webhook> targets;
         try {
@@ -299,7 +282,6 @@ public class IntegrationService extends AbstractService {
         }
     }
 
-    /** Envia uma mensagem de teste e devolve o resultado (sem exigir que o webhook esteja salvo). */
     public CompletableFuture<Delivery> test(Webhook w) {
         require(Module.SETTINGS, Right.UPDATE);
         Webhook clean = validate(w);
@@ -376,8 +358,6 @@ public class IntegrationService extends AbstractService {
         }
         return e;
     }
-
-    // ---------------------------------------------------------------- formatos
 
     static String sign(String secret, String body) {
         try {

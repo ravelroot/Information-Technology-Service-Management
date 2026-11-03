@@ -14,6 +14,8 @@ import java.util.List;
 
 public class RecurringTicketService extends AbstractService {
 
+    private static final System.Logger LOG = System.getLogger(RecurringTicketService.class.getName());
+
     public RecurringTicketService(Services services) {
         super(services);
     }
@@ -85,8 +87,21 @@ public class RecurringTicketService extends AbstractService {
         int count = 0;
         for (RecurringTicket r : repo(RecurringTicket.class).find(Filter.and(Filter.isTrue("active"),
                 Filter.le("nextRunAt", now())))) {
-            tx(() -> fire(r));
-            count++;
+            try {
+                tx(() -> fire(r));
+                count++;
+            } catch (RuntimeException e) {
+                LOG.log(System.Logger.Level.WARNING, "Recurring ticket " + r.getId() + " failed", e);
+                txRun(() -> {
+                    RecurringTicket fresh = repo(RecurringTicket.class).getById(r.getId());
+                    LocalDateTime next = next(fresh.getNextRunAt() == null ? now() : fresh.getNextRunAt(), fresh);
+                    while (!next.isAfter(now())) {
+                        next = next(next, fresh);
+                    }
+                    fresh.setNextRunAt(next);
+                    saveQuietly(fresh);
+                });
+            }
         }
         return count;
     }

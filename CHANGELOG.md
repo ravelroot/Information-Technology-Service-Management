@@ -4,6 +4,36 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 
 ## [Não publicado]
 
+## [1.2.0] - 2026-11-03
+
+### Adicionado
+- **Ações em lote** nas listas de chamados, problemas e mudanças: seleção múltipla (Ctrl ou Shift + clique, <kbd>Ctrl</kbd> + <kbd>A</kbd>) e o botão **Ações em lote**, também no menu do botão direito, para atribuir (a mim ou a um técnico e grupo), alterar status, urgência ou categoria, adicionar o mesmo acompanhamento, duplicar, mesclar e mover para a lixeira ou restaurar. Cada item passa pelas mesmas permissões da tela do item, e as falhas são listadas com o número e o motivo.
+- **Mesclar itens duplicados**, pela lista ou por **Mesclar em outro item…** na tela do item: o item principal recebe a descrição, os acompanhamentos (com o número de origem), as tarefas e o tempo gasto (transferidos, sem contar duas vezes), o requerente, os seguidores, os grupos e os ativos; os duplicados ganham o vínculo **Duplica** e são fechados (mudanças são canceladas). Itens na lixeira não podem ser mesclados.
+- **Duplicar** um chamado, problema ou mudança, com um vínculo para o original; no autoatendimento, a cópia fica em nome de quem a criou.
+- **Itens parecidos** no formulário de novo item: enquanto o título é digitado, até quatro itens abertos com título parecido aparecem como links.
+- Relatórios **Primeiro atendimento** (tempo até assumir e cumprimento do SLA de atendimento), **Idade dos chamados abertos** e **Quem mais abre chamados**.
+- Atalhos <kbd>Ctrl</kbd> + <kbd>A</kbd> e <kbd>Shift</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd> no guia de atalhos (<kbd>F1</kbd>).
+
+### Corrigido
+- A busca no banco de dados (H2, PostgreSQL, MySQL, MariaDB, SQL Server e Oracle) ignora acentos, como o modo demonstração.
+- Buscar um número com mais de 18 dígitos não gera mais erro.
+- O alerta de SLA em risco conta só o horário comercial quando o SLA usa horário comercial, sem avisos falsos no fim de semana.
+- Uma mudança recusada pode ser aprovada depois de um novo pedido: vale a resposta mais recente de cada aprovador.
+- Regras de negócio que não alteram urgência nem impacto não recalculam mais a prioridade; o operador **não contém** com grupos do requerente funciona.
+- Um chamado recorrente com erro não impede mais os outros de rodar nem fica tentando a cada 5 minutos.
+- O progresso e as datas das tarefas-mãe de projetos são atualizados em todos os níveis.
+- Importação CSV de ativos só atualiza ativos visíveis para quem importa e com permissão de edição.
+- Salvar um item não move mais o item para uma unidade que o usuário não vê nem o envia para a lixeira sem a permissão Excluir.
+- Excluir uma tarefa respeita a visibilidade do item, e o tempo gasto não fica negativo.
+- Seguidores do autoatendimento não alteram mais os responsáveis e seguidores do chamado de outra pessoa.
+- O CSV aceita aspas no meio de um campo e recusa datas impossíveis como 31/02.
+
+### Alterado
+- Manual de uso atualizado para a versão 1.2.0 (`Manual-Talos-Versão 1.2.0.pdf`), com as ações em lote, a mescla, os itens parecidos, os novos relatórios e as correções.
+- README no padrão dos demais repositórios do autor.
+- Instalador renomeado para `Talos-1.2.0.exe`. Nenhuma tabela nova: quem usa a 1.0.0 ou a 1.1.0 instala por cima.
+- Código-fonte, scripts e workflows sem comentários.
+
 ## [1.1.0] - 2026-10-27
 
 ### Adicionado
@@ -54,6 +84,7 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 - Assistente de primeiro uso, temas claro e escuro, português e inglês.
 - Instalador `.exe` para Windows gerado com `jpackage`; a desinstalação remove configurações, logs e o banco local.
 
-[Não publicado]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.1.0...HEAD
+[Não publicado]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/ravelroot/Information-Technology-Service-Management/releases/tag/v1.0.0

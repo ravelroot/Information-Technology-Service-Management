@@ -68,6 +68,10 @@ public abstract class ListPage<T> extends View {
         return null;
     }
 
+    protected Node[] trailing() {
+        return new Node[0];
+    }
+
     protected String exportName() {
         return "talos-export";
     }
@@ -92,7 +96,9 @@ public abstract class ListPage<T> extends View {
         search.textProperty().addListener((o, a, b) -> debounce.playFromStart());
         toolbar.getChildren().add(searchBox);
         toolbar.getChildren().addAll(filters());
-        toolbar.getChildren().addAll(Ui.spacer(), Ui.iconButton("download", I18n.t("list.export"), this::exportCsv),
+        toolbar.getChildren().add(Ui.spacer());
+        toolbar.getChildren().addAll(trailing());
+        toolbar.getChildren().addAll(Ui.iconButton("download", I18n.t("list.export"), this::exportCsv),
                 Ui.iconButton("refresh-cw", I18n.t("action.refresh"), this::reload));
         toolbar.setAlignment(Pos.CENTER_LEFT);
         toolbar.getStyleClass().add("toolbar");

@@ -286,7 +286,6 @@ public final class MainWindow {
         return bar;
     }
 
-    /** Alterna entre os temas claro e escuro e lembra a escolha neste computador. */
     public static void toggleTheme() {
         Theme.Mode next = Theme.mode() == Theme.Mode.DARK ? Theme.Mode.LIGHT : Theme.Mode.DARK;
         Theme.setMode(next);
@@ -297,7 +296,6 @@ public final class MainWindow {
         App.config().save();
     }
 
-    /** Telas que o usuário atual pode abrir, na ordem da barra lateral. */
     public static List<Route> visibleRoutes() {
         List<Route> list = new ArrayList<>();
         UserSession s = App.session();

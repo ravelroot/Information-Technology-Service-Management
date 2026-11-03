@@ -62,6 +62,9 @@ class JpaBackendTest {
         assertEquals(0, repo.count(Filter.in("id", List.of())));
         assertTrue(repo.countBy("assetType", Filter.ALL).size() > 3);
         assertEquals(0, repo.count(Filter.like("name", "100%_x")), "LIKE wildcards are escaped");
+        var dropdowns = backend.dataStore().repository(io.talos.domain.model.core.DropdownItem.class);
+        assertTrue(dropdowns.count(Filter.like("name", "manutencao")) > 0, "LIKE ignores accents");
+        assertEquals(dropdowns.count(Filter.like("name", "Manutenção")), dropdowns.count(Filter.like("name", "MANUTENCAO")));
         var page = repo.page(Query.all().orderBy(Sort.asc("id")).page(2, 10));
         assertEquals(10, page.items().size());
         assertEquals(total, page.total());

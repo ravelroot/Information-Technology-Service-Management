@@ -34,6 +34,11 @@ public class ChangeService extends ItilService<Change> {
     }
 
     @Override
+    protected void resetCopy(Change copy) {
+        copy.setApprovalStatus(ApprovalStatus.NONE);
+    }
+
+    @Override
     protected void validate(Change item) {
         super.validate(item);
         Validator.create()

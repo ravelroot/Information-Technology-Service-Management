@@ -73,7 +73,7 @@ public final class Csv {
                 } else {
                     cell.append(ch);
                 }
-            } else if (ch == '"') {
+            } else if (ch == '"' && cell.length() == 0) {
                 quoted = true;
             } else if (ch == sep) {
                 row.add(cell.toString());
@@ -135,7 +135,7 @@ public final class Csv {
             return null;
         }
         try {
-            return c.contains("/") ? LocalDate.parse(c, DateTimeFormatter.ofPattern("dd/MM/yyyy")) : LocalDate.parse(c);
+            return c.contains("/") ? LocalDate.parse(c, DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(java.time.format.ResolverStyle.STRICT)) : LocalDate.parse(c);
         } catch (DateTimeParseException e) {
             throw new BusinessException("validation.date", s);
         }

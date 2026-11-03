@@ -1,6 +1,7 @@
 package io.talos.infrastructure.persistence;
 
 import io.talos.domain.query.Filter;
+import io.talos.domain.support.Texts;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
@@ -9,12 +10,13 @@ import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 final class PredicateBuilder {
 
     private static final int IN_CHUNK = 500;
     private static final char ESCAPE = '!';
+    private static final String ACCENTED = "áàâãäéèêëíìîïóòôõöúùûüçñ";
+    private static final String PLAIN = "aaaaaeeeeiiiiooooouuuucn";
 
     private PredicateBuilder() {
     }
@@ -42,7 +44,7 @@ final class PredicateBuilder {
             case LE -> cb.lessThanOrEqualTo((Expression) path, (Comparable) v);
             case IN -> in(cb, path, (Collection<?>) v);
             case NOT_IN -> cb.and(cb.isNotNull(path), cb.not(in(cb, path, (Collection<?>) v)));
-            case LIKE -> cb.like(cb.lower(path.as(String.class)), "%" + escape(String.valueOf(v).toLowerCase(Locale.ROOT)) + "%", ESCAPE);
+            case LIKE -> cb.like(fold(cb, cb.lower(path.as(String.class))), "%" + escape(Texts.fold(String.valueOf(v))) + "%", ESCAPE);
             case IS_NULL -> cb.isNull(path);
             case NOT_NULL -> cb.isNotNull(path);
         };
@@ -62,6 +64,15 @@ final class PredicateBuilder {
             chunks.add(in);
         }
         return chunks.size() == 1 ? chunks.get(0) : cb.or(chunks.toArray(Predicate[]::new));
+    }
+
+    private static Expression<String> fold(CriteriaBuilder cb, Expression<String> text) {
+        Expression<String> out = text;
+        for (int i = 0; i < ACCENTED.length(); i++) {
+            out = cb.function("replace", String.class, out, cb.literal(String.valueOf(ACCENTED.charAt(i))),
+                    cb.literal(String.valueOf(PLAIN.charAt(i))));
+        }
+        return out;
     }
 
     static String escape(String text) {

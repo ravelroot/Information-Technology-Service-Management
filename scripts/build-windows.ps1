@@ -16,7 +16,7 @@ $Stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $Log = Join-Path $Logs "build-$Stamp.log"
 
 $AppName = 'Talos'
-$AppVersion = '1.1.0'
+$AppVersion = '1.2.0'
 $UpgradeUuid = '241ea7a4-95f2-539c-b574-4d367c3e5c72'
 $MavenVersion = '3.9.9'
 $JdkUrl = 'https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse'
@@ -128,8 +128,6 @@ try {
     $AppInput = Join-Path $Root 'talos-desktop\target\app'
     if (-not (Test-Path (Join-Path $AppInput 'talos.jar'))) { Fail "talos.jar nao encontrado em $AppInput" }
 
-    # Jars sem compressao interna: o instalador comprime tudo junto e fica bem menor.
-    # Uncompressed jars: the installer compresses everything together and ends up much smaller.
     Write-Step 'Regravando os .jar sem compressao / Storing the jars uncompressed'
     $rc = Invoke-Logged (Join-Path $JavaHome 'bin\java.exe') @((Join-Path $PSScriptRoot 'StoreJars.java'), $AppInput)
     if ($rc -ne 0) { Fail 'Nao foi possivel regravar os .jar. / Could not rewrite the jars.' }
@@ -151,8 +149,6 @@ try {
         $CleanupSequence = Get-Content -Path (Join-Path $Root 'packaging\windows\cleanup-sequence.xml') -Raw
         $Xml = $Xml.Replace('<InstallExecuteSequence>', $CleanupActions + "`r`n    <InstallExecuteSequence>`r`n" + $CleanupSequence)
         if (-not $Xml.Contains('TalosCleanData')) { Fail 'Nao foi possivel incluir a limpeza na desinstalacao. / Could not add the uninstall cleanup.' }
-        # Compressao maxima (LZX) para o .exe ficar abaixo de 100 MB, limite do GitHub sem Git LFS.
-        # Maximum (LZX) compression keeps the .exe under 100 MB, GitHub's limit without Git LFS.
         $Xml = $Xml.Replace('<Media ', '<Media CompressionLevel="high" ')
         if (-not $Xml.Contains('CompressionLevel="high"')) { Write-Step 'Aviso: compressao maxima nao aplicada. / Warning: high compression not applied.' }
         Set-Content -Path (Join-Path $ResDir 'main.wxs') -Value $Xml -Encoding UTF8

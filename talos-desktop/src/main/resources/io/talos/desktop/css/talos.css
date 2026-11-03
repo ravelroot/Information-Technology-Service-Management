@@ -1039,7 +1039,6 @@
 .donut-seg.seg-6 { -fx-stroke: -tl-red; }          .donut-dot.seg-6, .meter-fill.seg-6 { -fx-fill: -tl-red; -fx-background-color: -tl-red; }
 .donut-seg.seg-7 { -fx-stroke: -tl-slate; }        .donut-dot.seg-7, .meter-fill.seg-7 { -fx-fill: -tl-slate; -fx-background-color: -tl-slate; }
 
-/* ---- 1.1.0: paleta de comandos, atalhos e integrações (no mesmo visual da paleta minimalista) ---- */
 .palette-results .list-cell,
 .palette-results .list-cell:hover,
 .palette-results .list-cell:selected,

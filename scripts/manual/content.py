@@ -1,13 +1,5 @@
-"""Conteúdo do manual do Talos. (pt-BR).
 
-Blocos aceitos: ("p", texto), ("h2", título), ("h3", título), ("bullets", [itens]), ("steps", [itens]),
-("table", cabeçalhos, linhas, larguras-relativas), ("fig", [arquivos candidatos], legenda, largura 0-1),
-("note", rótulo, texto, "tip"|"warn"), ("code", texto), ("break",).
-Marcação: **negrito**, `código`, [[Ctrl + K]] para teclas.
-"""
-
-VERSION = "1.1.0"
-
+VERSION = "1.2.0"
 
 def chapters():
     return [
@@ -31,7 +23,26 @@ def chapters():
                     "**Equipe de TI e desenvolvedores:** capítulos 10 e 11 trazem segurança, arquitetura, banco de "
                     "dados, compilação e testes.",
                 ]),
-                ("h2", "Novidades da versão 1.1.0"),
+                ("h2", "Novidades da versão 1.2.0"),
+                ("table", ["Novidade", "O que muda no dia a dia"], [
+                    ["Ações em lote", "Selecione vários chamados, problemas ou mudanças na lista (Ctrl ou Shift + "
+                     "clique, [[Ctrl + A]]) e atribua, mude o status, a urgência ou a categoria, adicione um "
+                     "acompanhamento ou mova para a lixeira de uma vez, pelo botão **Ações em lote** ou pelo menu do "
+                     "botão direito."],
+                    ["Mesclar duplicados", "Junte chamados repetidos em um item principal: descrição, "
+                     "acompanhamentos, tarefas, pessoas e ativos são copiados, e os duplicados são fechados com o "
+                     "vínculo **Duplica**."],
+                    ["Duplicar", "Crie um item novo a partir de outro, com os mesmos dados e um vínculo com o "
+                     "original."],
+                    ["Itens parecidos", "Ao digitar o título de um chamado novo, o Talos. mostra os itens abertos "
+                     "com título parecido, para evitar duplicados."],
+                    ["Novos relatórios", "Primeiro atendimento (tempo até assumir e SLA de atendimento), Idade dos "
+                     "chamados abertos e Quem mais abre chamados."],
+                    ["Correções", "Busca sem diferenciar acentos no banco, SLA em risco contado em horário "
+                     "comercial, aprovações refeitas, chamados recorrentes isolados, segurança reforçada e outras "
+                     "correções listadas no capítulo 11."],
+                ], [1.1, 3]),
+                ("h3", "Versão 1.1.0"),
                 ("table", ["Novidade", "O que muda no dia a dia"], [
                     ["Central de integrações", "Webhooks para Slack, Microsoft Teams, Discord, Google Chat e JSON "
                      "genérico (com assinatura HMAC-SHA256). Escolha os eventos, envie um teste e acompanhe as "
@@ -81,15 +92,15 @@ def chapters():
             "blocks": [
                 ("h2", "Instalar"),
                 ("steps", [
-                    "Execute **Talos-1.1.0.exe**. Se o Windows SmartScreen avisar que o editor é desconhecido, clique "
+                    "Execute **Talos-1.2.0.exe**. Se o Windows SmartScreen avisar que o editor é desconhecido, clique "
                     "em **Mais informações** e depois em **Executar assim mesmo** (o instalador não é assinado "
                     "digitalmente).",
                     "Aceite a licença MIT, escolha a pasta de instalação (padrão: `Arquivos de Programas\\Talos`) e "
                     "conclua.",
                     "Abra o Talos pelo menu Iniciar (grupo **Talos**) ou pelo atalho criado na área de trabalho.",
                 ]),
-                ("note", "Atualizando da 1.0.0?", "Instale a 1.1.0 por cima. O banco de dados, as configurações e "
-                         "a conexão salva são mantidos; nenhuma tabela nova é criada."),
+                ("note", "Atualizando da 1.0.0 ou da 1.1.0?", "Instale a 1.2.0 por cima. O banco de dados, as "
+                         "configurações e a conexão salva são mantidos; nenhuma tabela nova é criada."),
                 ("h2", "Onde o Talos. guarda arquivos"),
                 ("table", ["Pasta", "Conteúdo"], [
                     ["`%APPDATA%\\Talos`", "Configuração deste computador (`talos.properties`): conexão com o banco, "
@@ -238,6 +249,8 @@ def chapters():
                     ["[[Ctrl + +]] / [[Ctrl + -]]", "Ampliar / reduzir"],
                     ["[[Ctrl + 0]]", "Voltar o zoom para o padrão (75%)"],
                     ["[[Enter]] em uma tabela", "Abrir o item selecionado (o mesmo que clique duplo)"],
+                    ["[[Ctrl + A]] na lista de chamados", "Selecionar a página inteira para as ações em lote"],
+                    ["Ctrl ou Shift + clique", "Selecionar vários itens na lista de chamados, problemas ou mudanças"],
                 ], [1.6, 3]),
                 ("h2", "Zoom, temas e movimento"),
                 ("bullets", [
@@ -335,6 +348,9 @@ def chapters():
                     ["Seguidores", "Pessoas que só acompanham: veem o item e recebem as notificações."],
                     ["Descrição", "Caixa de texto para explicar o pedido."],
                 ], [1, 3.6]),
+                ("p", "Enquanto você digita o título, a janela mostra até quatro itens **parecidos e ainda "
+                      "abertos** (mesmas palavras no título, sem diferenciar acentos). Clique em um deles para abri-lo "
+                      "em vez de criar um duplicado."),
                 ("p", "A urgência começa em Média e a prioridade é calculada pela matriz abaixo; técnicos podem "
                       "ajustá-las depois na tela do chamado."),
                 ("h3", "Matriz de prioridade (urgência × impacto)"),
@@ -347,6 +363,34 @@ def chapters():
                 ], [1.3, 1, 1, 1, 1, 1]),
                 ("p", "A prioridade 6 (**Crítica**) só pode ser definida manualmente por quem tem permissão de "
                       "edição."),
+                ("h3", "Ações em lote"),
+                ("p", "Quem pode editar chamados seleciona vários itens na lista com Ctrl ou Shift + clique (ou "
+                      "[[Ctrl + A]] para a página inteira) e usa o botão **Ações em lote**, ao lado da exportação, ou "
+                      "o menu do botão direito:"),
+                ("table", ["Ação", "Efeito"], [
+                    ["Atribuir a mim / Atribuir…", "Define o técnico e/ou o grupo responsáveis por todos os "
+                                                  "selecionados; o que ficar em branco é mantido (exige a "
+                                                  "permissão Atribuir)."],
+                    ["Alterar status", "Move todos para o status escolhido, respeitando o fluxo. Solucionar e "
+                                       "fechar continuam exigindo uma solução."],
+                    ["Urgência", "Muda a urgência e recalcula a prioridade pela matriz."],
+                    ["Alterar categoria…", "Troca a categoria de todos."],
+                    ["Adicionar acompanhamento…", "Escreve o mesmo texto (público ou privado) em todos."],
+                    ["Mesclar selecionados…", "Escolha o item principal; os outros são copiados para ele e "
+                                              "fechados como duplicados."],
+                    ["Duplicar", "Com um item selecionado, cria uma cópia nova e abre a tela dela."],
+                    ["Mover para a lixeira / Restaurar", "Exclui ou restaura todos (exige a permissão Excluir)."],
+                ], [1.5, 3.1]),
+                ("p", "Cada item é tratado separadamente, com as mesmas permissões e validações da tela do item. "
+                      "Se algum não puder ser alterado, os demais são gravados e uma janela lista o número e o motivo "
+                      "de cada falha. São até 500 itens por vez."),
+                ("h3", "Mesclar e duplicar"),
+                ("p", "Na tela do item, o menu de três pontos, no canto superior direito, tem **Mesclar em outro "
+                      "item…** (informe o número do item principal) e **Duplicar**. Ao mesclar, o item principal recebe a descrição, os "
+                      "acompanhamentos (marcados com o número de origem), as tarefas e o tempo gasto (transferidos, "
+                      "sem contar duas vezes), o requerente "
+                      "e os seguidores, os grupos que acompanham e os ativos; o duplicado ganha um acompanhamento com "
+                      "o destino, o vínculo **Duplica** e é fechado (mudanças são canceladas)."),
                 ("h3", "Tela do chamado"),
                 ("fig", ["40-ticket", "ticket"], "Detalhe do chamado: linha do tempo, ações e propriedades."),
                 ("table", ["Ação", "Efeito"], [
@@ -605,6 +649,13 @@ def chapters():
                     ["Chamados por categoria", "Volume e tempo médio de solução."],
                     ["Desempenho dos técnicos", "Atribuídos, solucionados, tempo gasto e satisfação."],
                     ["Cumprimento de SLA", "Chamados com SLA cumprido e estourado por mês."],
+                    ["Primeiro atendimento", "Chamados assumidos por mês, tempo médio até o primeiro atendimento e "
+                                             "cumprimento do SLA de atendimento (TTO)."],
+                    ["Idade dos chamados abertos", "Chamados abertos agora por tempo de espera (até 1 dia, 1 a 3, "
+                                                   "3 a 7, 7 a 30 e mais de 30 dias), com incidentes, requisições "
+                                                   "e atrasados."],
+                    ["Quem mais abre chamados", "Os 25 requerentes com mais chamados no período, quantos seguem "
+                                                "abertos, incidentes e satisfação média."],
                     ["Satisfação", "Distribuição das notas dadas pelos requerentes."],
                     ["Ativos por tipo", "Composição do parque de equipamentos."],
                     ["Ativos por localização", "Locais com mais equipamentos."],
@@ -878,8 +929,9 @@ def chapters():
                 ("p", "São 43 tabelas com o prefixo `pyh_`. Toda tabela tem `id`, `version` (trava otimista), "
                       "`created_at` e `updated_at`. Os relacionamentos usam colunas `*_id` (integridade garantida pela "
                       "aplicação), itens excluíveis têm `deleted` (lixeira) e listas fixas são gravadas como texto. O "
-                      "histórico das migrações fica em `pyh_schema_history`. A versão 1.1.0 não cria tabelas novas: a "
-                      "configuração das integrações fica na tabela de configurações (`setting`). O modelo completo "
+                      "histórico das migrações fica em `pyh_schema_history`. As versões 1.1.0 e 1.2.0 não criam tabelas "
+                      "novas: a configuração das integrações fica na tabela de configurações (`setting`) e a mescla "
+                      "usa as tabelas de vínculos, acompanhamentos e tarefas que já existiam. O modelo completo "
                       "está em `docs/banco-de-dados.md`."),
                 ("table", ["Grupo", "Tabelas"], [
                     ["Organização e acesso", "org_unit, user, group, group_member, profile, profile_right, "
@@ -918,7 +970,7 @@ CREATE DATABASE talos OWNER talos ENCODING 'UTF8';"""),
                     "No Windows, dê dois cliques em `scripts\\build-windows.cmd`.",
                     "O script procura (ou baixa para `.tools`) o JDK 21, o Maven e o WiX Toolset 3, sem instalar nada "
                     "no sistema.",
-                    "Roda `mvn clean verify` com todos os testes e gera `Talos-1.1.0.exe` na raiz do projeto.",
+                    "Roda `mvn clean verify` com todos os testes e gera `Talos-1.2.0.exe` na raiz do projeto.",
                     "O log completo fica em `build-logs\\`. Use `-SkipTests` para compilar mais rápido.",
                 ]),
                 ("p", "Manualmente: JDK 21+ e Maven 3.9+, `mvn verify` e depois `jpackage`. Publicar uma tag `v*` no "
@@ -926,13 +978,37 @@ CREATE DATABASE talos OWNER talos ENCODING 'UTF8';"""),
                 ("h3", "Gerar este manual"),
                 ("code", """pip install reportlab
 python3 scripts/manual/build_manual.py --images <pasta-dos-prints> \\
-        --out "Manual-Talos-Versão 1.1.0.pdf\""""),
+        --out "Manual-Talos-Versão 1.2.0.pdf\""""),
                 ("p", "Os prints são gerados pela classe de teste `ScreenshotTour` do módulo `talos-desktop`."),
+                ("h2", "Correções da versão 1.2.0"),
+                ("table", ["Área", "O que foi corrigido"], [
+                    ["Busca", "A busca no banco (H2, PostgreSQL, MySQL, MariaDB, SQL Server e Oracle) ignora acentos, "
+                              "como o modo demonstração: \"manutencao\" encontra \"Manutenção\". Números com mais de "
+                              "18 dígitos não derrubam mais a busca."],
+                    ["SLA", "O alerta de prazo em risco conta só o horário comercial quando o SLA usa horário "
+                            "comercial, sem avisos falsos no fim de semana."],
+                    ["Mudanças", "Uma aprovação recusada não bloqueia mais a mudança para sempre: vale a resposta "
+                                 "mais recente de cada aprovador."],
+                    ["Regras de negócio", "Uma regra que não mexe em urgência nem impacto não recalcula mais a "
+                                          "prioridade (a prioridade Crítica e os ajustes manuais são mantidos). O "
+                                          "operador **não contém** com grupos do requerente funciona."],
+                    ["Chamados recorrentes", "Um modelo com erro não impede mais os outros de rodar e não fica "
+                                             "tentando a cada 5 minutos."],
+                    ["Projetos", "O progresso e as datas das tarefas-mãe sobem por todos os níveis de uma vez."],
+                    ["Segurança", "Importação CSV de ativos só altera ativos visíveis e com permissão de edição; "
+                                  "salvar um item não troca a unidade para uma que você não vê nem envia o item "
+                                  "para a lixeira sem a permissão Excluir; excluir uma tarefa respeita a "
+                                  "visibilidade do item; seguidores do autoatendimento não alteram as pessoas do "
+                                  "chamado de outra pessoa."],
+                    ["CSV", "Aspas no meio de um campo (`Monitor 24\" Dell`) não engolem mais o resto do arquivo, e "
+                            "datas impossíveis como 31/02 são recusadas."],
+                ], [1.3, 3.3]),
                 ("h2", "Testes"),
                 ("table", ["Módulo", "Cobertura"], [
                     ["`talos-domain`", "Ciclo de vida do chamado, SLA e calendário, matriz de prioridade, regras, "
                                        "segurança, permissões, CSV, documentos, configuração inicial, criação pelo "
-                                       "Kanban e integrações (formato das mensagens e assinatura)."],
+                                       "Kanban, integrações (formato das mensagens e assinatura), ações em lote, "
+                                       "mescla, duplicação, itens parecidos, novos relatórios e as correções da 1.2.0."],
                     ["`talos-infrastructure`", "JPA com H2, esquema gerado igual às migrações dos cinco bancos e "
                                                "compatibilidade com bancos reais (ativada com `-Dtalos.databases`)."],
                     ["`talos-desktop`", "Paridade das traduções português/inglês."],

@@ -3,6 +3,7 @@ package io.talos.domain.service;
 import io.talos.domain.itil.SlaState;
 import io.talos.domain.model.core.AuditAction;
 import io.talos.domain.model.core.Module;
+import io.talos.domain.model.itil.ApprovalStatus;
 import io.talos.domain.model.itil.ItilStatus;
 import io.talos.domain.model.itil.ItilType;
 import io.talos.domain.model.itil.RecurringTicket;
@@ -61,6 +62,23 @@ public class TicketService extends ItilService<Ticket> {
         RuleOutcome outcome = services.rules().apply(ticket, RuleTrigger.ON_CREATE);
         pendingOutcome.set(outcome);
         services.slas().apply(ticket);
+    }
+
+    @Override
+    protected void resetCopy(Ticket copy) {
+        copy.setSourceId(null);
+        copy.setSlaTtoId(null);
+        copy.setSlaTtrId(null);
+        copy.setTtoDueAt(null);
+        copy.setTakenAt(null);
+        copy.setWaitingSince(null);
+        copy.setWaitingMinutes(0);
+        copy.setSlaWarned(false);
+        copy.setSlaBreachNotified(false);
+        copy.setSatisfaction(null);
+        copy.setSatisfactionComment(null);
+        copy.setApprovalStatus(ApprovalStatus.NONE);
+        copy.setRecurringId(null);
     }
 
     @Override

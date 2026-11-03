@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 public class SlaService extends AbstractService {
 
     private volatile BusinessCalendar calendar;
+    private volatile java.util.Map<Long, Boolean> businessFlags;
+    private volatile long businessFlagsAt;
 
     public SlaService(Services services) {
         super(services);
@@ -51,11 +53,13 @@ public class SlaService extends AbstractService {
                 .required("orgUnitId", sla.getOrgUnitId())
                 .check(sla.getDurationMinutes() != null && sla.getDurationMinutes() > 0, "durationMinutes", "validation.positive")
                 .range("priority", sla.getPriority(), 1, 6).throwIfInvalid();
+        businessFlags = null;
         return tx(() -> persist(sla));
     }
 
     public void delete(Long id) {
         require(Module.SLA, Right.DELETE);
+        businessFlags = null;
         txRun(() -> purge(get(id)));
     }
 
@@ -193,14 +197,35 @@ public class SlaService extends AbstractService {
     }
 
     public SlaState ttoState(Ticket t) {
-        return state(t.getOpenedAt(), t.getTtoDueAt(), t.getTakenAt(), false);
+        return state(t.getOpenedAt(), t.getTtoDueAt(), t.getTakenAt(), false, business(t.getSlaTtoId()));
     }
 
     public SlaState ttrState(Ticket t) {
-        return state(t.getOpenedAt(), t.getDueAt(), t.getSolvedAt(), t.getWaitingSince() != null);
+        return state(t.getOpenedAt(), t.getDueAt(), t.getSolvedAt(), t.getWaitingSince() != null, business(t.getSlaTtrId()));
+    }
+
+    private boolean business(Long slaId) {
+        if (slaId == null) {
+            return false;
+        }
+        long stamp = System.nanoTime();
+        java.util.Map<Long, Boolean> flags = businessFlags;
+        if (flags == null || stamp - businessFlagsAt > 60_000_000_000L) {
+            java.util.Map<Long, Boolean> fresh = new java.util.HashMap<>();
+            for (Sla s : repo(Sla.class).find(Filter.all())) {
+                fresh.put(s.getId(), s.isBusinessHours());
+            }
+            businessFlags = flags = fresh;
+            businessFlagsAt = stamp;
+        }
+        return flags.getOrDefault(slaId, false);
     }
 
     SlaState state(LocalDateTime opened, LocalDateTime due, LocalDateTime done, boolean paused) {
+        return state(opened, due, done, paused, false);
+    }
+
+    SlaState state(LocalDateTime opened, LocalDateTime due, LocalDateTime done, boolean paused, boolean business) {
         if (due == null) {
             return SlaState.NONE;
         }
@@ -211,8 +236,8 @@ public class SlaService extends AbstractService {
         if (now.isAfter(due)) {
             return paused ? SlaState.AT_RISK : SlaState.BREACHED;
         }
-        long total = Math.max(1, Duration.between(opened, due).toMinutes());
-        long left = Duration.between(now, due).toMinutes();
+        long total = Math.max(1, business ? calendar().businessMinutesBetween(opened, due) : Duration.between(opened, due).toMinutes());
+        long left = business ? calendar().businessMinutesBetween(now, due) : Duration.between(now, due).toMinutes();
         int warn = services.settings().getInt(SettingKeys.SLA_WARNING_PERCENT, 25);
         return left * 100 / total <= warn ? SlaState.AT_RISK : SlaState.ON_TIME;
     }
