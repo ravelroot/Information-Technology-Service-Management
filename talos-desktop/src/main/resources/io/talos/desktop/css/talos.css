@@ -339,8 +339,11 @@
     -fx-padding: 16 10 6 10;
 }
 .nav-item {
-    -fx-padding: 8 10 8 10;
+    -fx-padding: 7 9 7 9;
     -fx-background-radius: 7;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-border-radius: 7;
     -fx-cursor: hand;
 }
 .nav-item .label { -fx-text-fill: -tl-sidebar-text; }
@@ -348,6 +351,7 @@
 .nav-item:focused { -fx-background-color: -tl-sidebar-2; }
 .nav-item:selected {
     -fx-background-color: -tl-sidebar-accent;
+    -fx-border-color: -tl-sidebar-accent-line;
     -tl-icon-color: -tl-sidebar-on-accent;
 }
 .nav-item:selected .label { -fx-text-fill: -tl-sidebar-on-accent; -fx-font-family: "IBM Plex Sans Medium"; }
@@ -603,7 +607,7 @@
 .lane-sort { -fx-background-color: -tl-accent; -fx-background-radius: 8; -fx-padding: 4 4 4 10; -tl-icon-color: -tl-on-accent; }
 .lane-sort-text { -fx-text-fill: -tl-on-accent; -fx-font-size: 11px; -fx-font-family: "IBM Plex Sans SemiBold"; }
 .button.lane-sort-clear { -fx-background-color: transparent; -fx-padding: 2 4 2 4; -fx-background-radius: 6; -tl-icon-color: -tl-on-accent; -fx-cursor: hand;  -fx-border-color: transparent; -fx-effect: null; }
-.button.lane-sort-clear:hover { -fx-background-color: rgba(241, 239, 238, 0.16); }
+.button.lane-sort-clear:hover { -fx-background-color: rgba(255, 255, 255, 0.16); }
 .kanban-card {
     -fx-background-color: -tl-surface;
     -fx-border-color: -tl-line;
@@ -812,8 +816,8 @@
 .launcher-root { -fx-background-color: -tl-bg; }
 .brand-panel {
     -fx-background-color: -tl-sidebar;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
+    -fx-border-color: transparent -tl-sidebar-line transparent transparent;
+    -fx-border-width: 0 1 0 0;
     -fx-padding: 48 40 34 44;
     -tl-icon-color: -tl-amber;
 }
@@ -955,7 +959,7 @@
     -fx-font-size: 11.5px;
     -fx-font-family: "IBM Plex Sans SemiBold";
 }
-.setup-step.done .setup-step-num { -fx-background-color: -tl-sidebar-accent; -fx-border-color: -tl-sidebar-accent; -tl-icon-color: -tl-sidebar-on-accent; }
+.setup-step.done .setup-step-num { -fx-background-color: -tl-sidebar-accent; -fx-border-color: -tl-sidebar-accent-line; -tl-icon-color: -tl-sidebar-on-accent; }
 .setup-step.done .setup-step-name { -fx-text-fill: -tl-sidebar-text; }
 .setup-step.current { -fx-background-color: -tl-sidebar-2; }
 .setup-step.current .setup-step-num { -fx-background-color: -tl-sidebar-text; -fx-border-color: -tl-sidebar-text; -fx-text-fill: -tl-sidebar; }

@@ -4,6 +4,15 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 
 ## [Não publicado]
 
+## [1.2.1] - 2026-11-08
+
+### Alterado
+- **Nova paleta**, a mesma do Bento e do Turno: no tema claro, fundo `#F5F4F4`, cartões brancos, bordas `#E8E7E6`, textos e botões pretos e barra lateral clara; no tema escuro, fundo `#020202`, cartões `#121111`, bordas `#333232` e textos e botões brancos. Verde, âmbar e vermelho ficam só nos status.
+- Na barra lateral, o item aberto aparece num cartão com contorno, e a logo segue o tema (preta no claro, branca no escuro).
+- Cores das categorias de novas instalações e do seletor de cor na mesma paleta.
+- Prints do README, banners e manual em PDF (`Manual-Talos-Versão 1.2.1.pdf`) refeitos com a nova paleta.
+- Instalador renomeado para `Talos-1.2.1.exe`. Nenhuma tabela nova: quem usa a 1.0.0, a 1.1.0 ou a 1.2.0 instala por cima.
+
 ## [1.2.0] - 2026-11-03
 
 ### Adicionado
@@ -84,7 +93,8 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 - Assistente de primeiro uso, temas claro e escuro, português e inglês.
 - Instalador `.exe` para Windows gerado com `jpackage`; a desinstalação remove configurações, logs e o banco local.
 
-[Não publicado]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.2.0...HEAD
+[Não publicado]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/ravelroot/Information-Technology-Service-Management/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/ravelroot/Information-Technology-Service-Management/releases/tag/v1.0.0

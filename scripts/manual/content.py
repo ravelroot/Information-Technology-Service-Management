@@ -1,5 +1,5 @@
 
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 
 def chapters():
     return [
@@ -199,7 +199,7 @@ def chapters():
                 ("fig", ["10-dashboard", "dashboard"], "Janela principal: barra lateral, barra superior e o Painel."),
                 ("h2", "Barra lateral"),
                 ("p", "Organiza os módulos por seção. Só aparecem os itens que o seu perfil pode ver. O item "
-                      "selecionado fica em destaque, com fundo areia. No rodapé da barra ficam o banco em uso e a "
+                      "selecionado fica em destaque, num cartão com contorno. No rodapé da barra ficam o banco em uso e a "
                       "versão do programa."),
                 ("table", ["Seção", "Itens"], [
                     ["Início", "Painel (técnicos) ou Início (autoatendimento)"],
@@ -257,8 +257,9 @@ def chapters():
                     "**Zoom** padrão de 75%, como em um navegador. Os níveis vão de 50% a 175% (50, 67, 75, 80, 90, "
                     "100, 110, 125, 150 e 175%). O nível aparece por um instante no topo e fica salvo para as próximas "
                     "aberturas.",
-                    "**Tema claro:** fundo cinza-claro, textos e botões pretos, barra lateral preta com destaque areia. "
-                    "**Tema escuro:** fundo quase preto, textos claros e destaques em areia. Troque pelo botão da lua "
+                    "**Tema claro:** fundo cinza-claro, cartões brancos, textos e botões pretos e barra lateral clara. "
+                    "**Tema escuro:** fundo preto, cartões grafite, textos e botões brancos. Nos dois, as cores "
+                    "aparecem só nos status: verde, âmbar e vermelho. Troque pelo botão da lua "
                     "na barra superior ou pela paleta de comandos.",
                     "**Idioma:** português ou inglês, em Configurações › Aparência e idioma ou na conta do usuário.",
                     "Transições suaves entre telas, rolagem suave e indicadores animados. A janela abre maximizada.",

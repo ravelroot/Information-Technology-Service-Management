@@ -6,7 +6,7 @@
 |---|---|
 | 1.2.x | Sim |
 | 1.1.x | Sim |
-| 1.0.x | Não (atualize para a 1.2.0, que instala por cima) |
+| 1.0.x | Não (atualize para a 1.2.1, que instala por cima) |
 
 ## Como relatar uma vulnerabilidade
 

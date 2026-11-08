@@ -4,7 +4,7 @@ Este documento descreve o banco de dados do **Talos.**: quais bancos são aceito
 
 > **Você não cria as tabelas.** Ao conectar pela primeira vez, o Talos. cria todas elas sozinho (Flyway) e, nas próximas versões, aplica as alterações automaticamente. Basta entregar um banco **vazio** e um usuário com permissão para criar tabelas.
 
-> **Versão 1.2.0:** o esquema é o mesmo da 1.0.0 e da 1.1.0, sem tabelas nem colunas novas. As ações em lote gravam nas tabelas de cada item, a mescla de duplicados copia linhas para `pyh_itil_followup`, `pyh_itil_task`, `pyh_itil_observer` e `pyh_itil_asset` e cria o vínculo `DUPLICATES` em `pyh_itil_relation`, e a busca por texto passou a ignorar acentos em todos os bancos (`lower` + `replace` na consulta, sem índice novo).
+> **Versões 1.2.0 e 1.2.1:** o esquema é o mesmo da 1.0.0 e da 1.1.0 (a 1.2.1 muda só o visual), sem tabelas nem colunas novas. As ações em lote gravam nas tabelas de cada item, a mescla de duplicados copia linhas para `pyh_itil_followup`, `pyh_itil_task`, `pyh_itil_observer` e `pyh_itil_asset` e cria o vínculo `DUPLICATES` em `pyh_itil_relation`, e a busca por texto passou a ignorar acentos em todos os bancos (`lower` + `replace` na consulta, sem índice novo).
 
 ## Bancos aceitos
 

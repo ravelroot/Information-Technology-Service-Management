@@ -235,7 +235,7 @@ public final class ScreenshotTour {
             WritableImage base = fx(() -> stage.getScene().snapshot(null));
             BufferedImage bi = toBuffered(base);
             java.awt.Graphics2D g = bi.createGraphics();
-            g.setColor(new java.awt.Color(20, 18, 16, 70));
+            g.setColor(new java.awt.Color(0, 0, 0, 92));
             g.fillRect(0, 0, bi.getWidth(), bi.getHeight());
             double originX = fx(() -> stage.getX() + stage.getScene().getX());
             double originY = fx(() -> stage.getY() + stage.getScene().getY());

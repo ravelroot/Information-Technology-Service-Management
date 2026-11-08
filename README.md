@@ -8,7 +8,7 @@
   Gestão de serviços de TI, central de suporte e inventário de ativos num aplicativo desktop para Windows: chamados com prazos de SLA em horário comercial, problemas e mudanças no modelo ITIL, quadro Kanban, Gantt de projetos com caminho crítico, agenda dos técnicos, inventário de equipamentos, software, licenças, contratos e fornecedores, base de conhecimento com autoatendimento, relatórios com gráficos e integrações com Slack, Microsoft Teams, Discord e Google Chat.<br>
   Selecione vários chamados e resolva tudo de uma vez com as <b>ações em lote</b>, junte duplicados com a <b>mescla</b> e veja os itens parecidos antes de abrir um novo.<br>
   Inspirado na arquitetura do GLPI, sem site nem servidor web: os dados ficam no banco que você escolher, do arquivo local H2 a um PostgreSQL, MySQL, MariaDB, SQL Server ou Oracle compartilhado pela equipe.<br>
-  Um instalador <code>Talos-1.2.0.exe</code> com o Java embutido, em português e inglês, temas claro e escuro.<br>
+  Um instalador <code>Talos-1.2.1.exe</code> com o Java embutido, em português e inglês, temas claro e escuro na paleta neutra do Bento e do Turno.<br>
   Pronto para baixar e usar.
 </p>
 
@@ -18,15 +18,15 @@
 
 ---
 
-> **Baixar e usar:** pegue o [Talos-1.2.0.exe](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.0.exe) (Windows 10/11 de 64 bits, já com o Java embutido), execute e conclua o assistente. Abra o **Talos** pelo menu Iniciar, escolha o banco (para experimentar, o **H2**, que não precisa de servidor) e crie a sua conta de administrador: não existe senha padrão. Só quer conhecer? **Explorar sem banco de dados** abre o programa com dados fictícios. Se o Windows mostrar *O Windows protegeu o computador*, clique em **Mais informações → Executar assim mesmo** (o instalador não tem assinatura digital paga).
+> **Baixar e usar:** pegue o [Talos-1.2.1.exe](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.1.exe) (Windows 10/11 de 64 bits, já com o Java embutido), execute e conclua o assistente. Abra o **Talos** pelo menu Iniciar, escolha o banco (para experimentar, o **H2**, que não precisa de servidor) e crie a sua conta de administrador: não existe senha padrão. Só quer conhecer? **Explorar sem banco de dados** abre o programa com dados fictícios. Se o Windows mostrar *O Windows protegeu o computador*, clique em **Mais informações → Executar assim mesmo** (o instalador não tem assinatura digital paga).
 
-> **Manual completo:** [`Manual-Talos-Versão 1.2.0.pdf`](Manual-Talos-Vers%C3%A3o%201.2.0.pdf) explica a instalação, o primeiro uso, cada tela, aba e botão (Painel, chamados, ações em lote, mescla, Kanban, problemas, mudanças, agenda, projetos e Gantt, inventário, base de conhecimento, relatórios e autoatendimento), a administração (usuários, grupos, perfis e permissões, unidades, listas, regras de negócio, SLAs, integrações, auditoria e configurações), as rotinas automáticas, a segurança, a arquitetura, o banco de dados, a compilação e os testes, passo a passo (cópia em [`docs/manual/`](docs/manual/Manual-Talos-Vers%C3%A3o%201.2.0.pdf)).
+> **Manual completo:** [`Manual-Talos-Versão 1.2.1.pdf`](Manual-Talos-Vers%C3%A3o%201.2.1.pdf) explica a instalação, o primeiro uso, cada tela, aba e botão (Painel, chamados, ações em lote, mescla, Kanban, problemas, mudanças, agenda, projetos e Gantt, inventário, base de conhecimento, relatórios e autoatendimento), a administração (usuários, grupos, perfis e permissões, unidades, listas, regras de negócio, SLAs, integrações, auditoria e configurações), as rotinas automáticas, a segurança, a arquitetura, o banco de dados, a compilação e os testes, passo a passo (cópia em [`docs/manual/`](docs/manual/Manual-Talos-Vers%C3%A3o%201.2.1.pdf)).
 
 > **Banco de dados:** [`docs/banco-de-dados.md`](docs/banco-de-dados.md) traz todas as 43 tabelas com campos, tipos em cada banco, chaves, valores aceitos e relacionamentos, as migrações Flyway e as configurações guardadas na tabela `setting`.
 
-> **Versão 1.2.0 (Atual):** **ações em lote** nas listas de chamados, problemas e mudanças (selecione com Ctrl, Shift ou <kbd>Ctrl</kbd> + <kbd>A</kbd> e atribua, mude o status, a urgência ou a categoria, escreva o mesmo acompanhamento ou mande para a lixeira de uma vez), **mesclar duplicados** num item principal, **duplicar** itens, **itens parecidos** no formulário de novo chamado e três relatórios novos: **Primeiro atendimento**, **Idade dos chamados abertos** e **Quem mais abre chamados**. Também corrige a busca no banco, que agora ignora acentos, o alerta de SLA em risco no fim de semana, mudanças travadas depois de uma recusa, regras que recalculavam a prioridade, chamados recorrentes, progresso de projetos, CSV e reforça a segurança. Nenhuma tabela nova: quem usa a 1.0.0 ou a 1.1.0 instala por cima. Detalhes em [Ações em lote e mescla (1.2.0)](#ações-em-lote-e-mescla-120).
+> **Versão 1.2.1 (Atual):** **nova paleta**, a mesma do Bento e do Turno: no tema claro, fundo cinza-claro, cartões brancos, textos e botões pretos e barra lateral clara, com o item aberto num cartão com contorno; no tema escuro, fundo preto, cartões grafite e textos e botões brancos. As cores ficam só nos status (verde, âmbar e vermelho), e as categorias de novas instalações seguem a mesma paleta. Prints, banners e manual em PDF refeitos. Nenhuma tabela nova: quem usa a 1.0.0, a 1.1.0 ou a 1.2.0 instala por cima.
 
-> **Versão 1.1.0 (Anterior):** **central de integrações** com webhooks para Slack, Microsoft Teams, Discord, Google Chat e JSON genérico assinado com HMAC-SHA256, exportação da agenda em **iCalendar** (`.ics`), **paleta de comandos** (<kbd>Ctrl</kbd> + <kbd>K</kbd>), **guia de atalhos** (<kbd>F1</kbd>), **respostas prontas** na linha do tempo e a nova logo, um rack com três gavetas. Detalhes em [Integrações (1.1.0)](#integrações-110).
+> **Versão 1.2.0 (Anterior):** **ações em lote** nas listas de chamados, problemas e mudanças (selecione com Ctrl, Shift ou <kbd>Ctrl</kbd> + <kbd>A</kbd> e atribua, mude o status, a urgência ou a categoria, escreva o mesmo acompanhamento ou mande para a lixeira de uma vez), **mesclar duplicados** num item principal, **duplicar** itens, **itens parecidos** no formulário de novo chamado e três relatórios novos: **Primeiro atendimento**, **Idade dos chamados abertos** e **Quem mais abre chamados**. Também corrige a busca no banco, que agora ignora acentos, o alerta de SLA em risco no fim de semana, mudanças travadas depois de uma recusa, regras que recalculavam a prioridade, chamados recorrentes, progresso de projetos, CSV e reforça a segurança. Nenhuma tabela nova: quem usa a 1.0.0 ou a 1.1.0 instala por cima. Detalhes em [Ações em lote e mescla (1.2.0)](#ações-em-lote-e-mescla-120).
 
 > **English:** [README.en.md](README.en.md).
 
@@ -243,9 +243,9 @@ O Talos não usa código do GLPI; ele reaproveita os **conceitos** que tornaram 
 
 ## Como rodar
 
-### 1. Instalador (Talos-1.2.0.exe)
+### 1. Instalador (Talos-1.2.1.exe)
 
-1. Baixe o [**Talos-1.2.0.exe**](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.0.exe), que fica na raiz deste repositório.
+1. Baixe o [**Talos-1.2.1.exe**](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.1.exe), que fica na raiz deste repositório.
 2. Execute, escolha a pasta de instalação e conclua.
 3. Abra o **Talos** pelo menu Iniciar ou pelo atalho na área de trabalho.
 
@@ -253,11 +253,11 @@ O Talos não usa código do GLPI; ele reaproveita os **conceitos** que tornaram 
 <summary>Baixar e abrir o instalador pelo PowerShell</summary>
 
 ```powershell
-$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; $f="$env:TEMP\Talos-1.2.0.exe"; Invoke-WebRequest 'https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.0.exe' -OutFile $f -UseBasicParsing; Start-Process $f
+$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; $f="$env:TEMP\Talos-1.2.1.exe"; Invoke-WebRequest 'https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.1.exe' -OutFile $f -UseBasicParsing; Start-Process $f
 ```
 </details>
 
-O instalador já inclui o Java e todas as bibliotecas. Quem usa a 1.0.0 ou a 1.1.0 pode instalar por cima: banco, configurações e conexão são mantidos. Ao desinstalar (Configurações › Aplicativos), o Talos apaga também o que guardou no computador: configurações, logs e o banco local H2. Bancos em servidor não são tocados.
+O instalador já inclui o Java e todas as bibliotecas. Quem usa a 1.0.0, a 1.1.0 ou a 1.2.0 pode instalar por cima: banco, configurações e conexão são mantidos. Ao desinstalar (Configurações › Aplicativos), o Talos apaga também o que guardou no computador: configurações, logs e o banco local H2. Bancos em servidor não são tocados.
 
 | | Mínimo |
 |---|---|
@@ -309,7 +309,7 @@ cd Information-Technology-Service-Management
 scripts\build-windows.cmd
 ```
 
-O script procura um **JDK 21** e o **Maven** (ou baixa versões portáteis para `.tools`, sem instalar nada no sistema), baixa o **WiX Toolset 3** usado pelo `jpackage`, roda `mvn clean verify` e gera o `Talos-1.2.0.exe` na raiz do projeto. Use `scripts\build-windows.cmd -SkipTests` para compilar mais rápido; o log completo fica em `build-logs\`.
+O script procura um **JDK 21** e o **Maven** (ou baixa versões portáteis para `.tools`, sem instalar nada no sistema), baixa o **WiX Toolset 3** usado pelo `jpackage`, roda `mvn clean verify` e gera o `Talos-1.2.1.exe` na raiz do projeto. Use `scripts\build-windows.cmd -SkipTests` para compilar mais rápido; o log completo fica em `build-logs\`.
 
 Manualmente, com JDK 21+ e Maven 3.9+:
 
@@ -324,7 +324,7 @@ O manual em PDF é gerado a partir do texto em `scripts/manual/content.py`, com 
 
 ```bash
 pip install reportlab
-python3 scripts/manual/build_manual.py --images <pasta-dos-prints> --out "Manual-Talos-Versão 1.2.0.pdf"
+python3 scripts/manual/build_manual.py --images <pasta-dos-prints> --out "Manual-Talos-Versão 1.2.1.pdf"
 ```
 
 ## Banco de dados
@@ -340,7 +340,7 @@ O banco é escolha sua. O Talos traz os drivers e os scripts de criação para t
 | **Microsoft SQL Server** | 2017 | Equipes que já usam SQL Server |
 | **Oracle Database** | 19c | Equipes que já usam Oracle |
 
-O modelo completo (tabelas, campos, relacionamentos, valores aceitos e tipos em cada banco) está em [**docs/banco-de-dados.md**](docs/banco-de-dados.md). A estrutura é versionada com **Flyway**: ao atualizar o Talos, as novas migrações são aplicadas sozinhas na primeira conexão. A 1.2.0 não cria tabelas nem colunas: a mescla usa as tabelas de vínculos, acompanhamentos, tarefas, observadores e ativos que já existiam.
+O modelo completo (tabelas, campos, relacionamentos, valores aceitos e tipos em cada banco) está em [**docs/banco-de-dados.md**](docs/banco-de-dados.md). A estrutura é versionada com **Flyway**: ao atualizar o Talos, as novas migrações são aplicadas sozinhas na primeira conexão. A 1.2.0 não cria tabelas nem colunas: a mescla usa as tabelas de vínculos, acompanhamentos, tarefas, observadores e ativos que já existiam. A 1.2.1 também não: muda só o visual.
 
 Para um servidor, crie antes um banco vazio e um usuário com permissão para criar tabelas (troque o nome e **use uma senha forte sua**):
 
@@ -436,8 +436,8 @@ O workflow `ci.yml` roda os testes a cada envio e todos os dias, e a compatibili
 
 ```
 Information-Technology-Service-Management/
-├── Talos-1.2.0.exe             instalador para Windows
-├── Manual-Talos-Versão 1.2.0.pdf
+├── Talos-1.2.1.exe             instalador para Windows
+├── Manual-Talos-Versão 1.2.1.pdf
 ├── talos-domain/               regras de negócio (sem framework)
 ├── talos-infrastructure/       Spring Boot, JPA, Flyway, drivers
 │   └── src/main/resources/db/migration/{h2,postgresql,mysql,sqlserver,oracle}

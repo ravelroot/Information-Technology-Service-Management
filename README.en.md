@@ -8,7 +8,7 @@
   IT service management, help desk and asset inventory in a Windows desktop app: tickets with SLA deadlines counted in business hours, ITIL problems and changes, a Kanban board, project Gantt charts with the critical path, a technician schedule, inventory of equipment, software, licenses, contracts and suppliers, a knowledge base with self-service, reports with charts and integrations with Slack, Microsoft Teams, Discord and Google Chat.<br>
   Select several tickets and handle them at once with <b>bulk actions</b>, fold duplicates together with <b>merge</b> and see similar items before opening a new one.<br>
   Inspired by the GLPI architecture, with no website or web server: your data lives in the database you choose, from a local H2 file to a PostgreSQL, MySQL, MariaDB, SQL Server or Oracle server shared by the team.<br>
-  One <code>Talos-1.2.0.exe</code> installer with Java built in, in Portuguese and English, light and dark themes.<br>
+  One <code>Talos-1.2.1.exe</code> installer with Java built in, in Portuguese and English, light and dark themes in the neutral palette of Bento and Turno.<br>
   Ready to download and use.
 </p>
 
@@ -18,15 +18,15 @@
 
 ---
 
-> **Download and use:** get [Talos-1.2.0.exe](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.0.exe) (Windows 10/11 64-bit, Java included), run it and finish the wizard. Open **Talos** from the Start menu, pick a database (to try it out, **H2** needs no server) and create your administrator account: there is no default password. Just looking? **Explore without a database** opens the app with sample data. If Windows shows *Windows protected your PC*, click **More info → Run anyway** (the installer has no paid code signature).
+> **Download and use:** get [Talos-1.2.1.exe](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.1.exe) (Windows 10/11 64-bit, Java included), run it and finish the wizard. Open **Talos** from the Start menu, pick a database (to try it out, **H2** needs no server) and create your administrator account: there is no default password. Just looking? **Explore without a database** opens the app with sample data. If Windows shows *Windows protected your PC*, click **More info → Run anyway** (the installer has no paid code signature).
 
-> **Full manual (Portuguese):** [`Manual-Talos-Versão 1.2.0.pdf`](Manual-Talos-Vers%C3%A3o%201.2.0.pdf) walks through installation, first use, every screen, tab and button, administration, automatic jobs, security, architecture, database, build and tests (copy in [`docs/manual/`](docs/manual/Manual-Talos-Vers%C3%A3o%201.2.0.pdf)).
+> **Full manual (Portuguese):** [`Manual-Talos-Versão 1.2.1.pdf`](Manual-Talos-Vers%C3%A3o%201.2.1.pdf) walks through installation, first use, every screen, tab and button, administration, automatic jobs, security, architecture, database, build and tests (copy in [`docs/manual/`](docs/manual/Manual-Talos-Vers%C3%A3o%201.2.1.pdf)).
 
 > **Database:** [`docs/banco-de-dados.md`](docs/banco-de-dados.md) documents all 43 tables with columns, types per database, keys, accepted values and relationships.
 
-> **Version 1.2.0 (Current):** **bulk actions** on ticket, problem and change lists (select with Ctrl, Shift or <kbd>Ctrl</kbd> + <kbd>A</kbd>, then assign, change status, urgency or category, post the same follow-up or move to the trash at once), **merge duplicates** into a main item, **duplicate** items, **similar items** in the new-ticket form and three new reports: **First response**, **Backlog aging** and **Top requesters**. It also makes database search accent-insensitive and fixes weekend SLA warnings, changes stuck after a refusal, rules that reset priority, recurring tickets, project rollup and CSV parsing, and tightens permissions. No new tables: install over 1.0.0 or 1.1.0. Details in [Bulk actions and merge (1.2.0)](#bulk-actions-and-merge-120).
+> **Version 1.2.1 (Current):** **new palette**, the same as Bento and Turno: in the light theme, a light gray background, white cards, black text and buttons and a light sidebar, with the open item in an outlined card; in the dark theme, a black background, graphite cards and white text and buttons. Color is kept for status only (green, amber and red), and the categories of new installations follow the same palette. Screenshots, banners and the PDF manual were redone. No new tables: install over 1.0.0, 1.1.0 or 1.2.0.
 
-> **Version 1.1.0 (Previous):** **integrations hub** with webhooks for Slack, Microsoft Teams, Discord, Google Chat and generic JSON signed with HMAC-SHA256, **iCalendar** (`.ics`) export of the schedule, **command palette** (<kbd>Ctrl</kbd> + <kbd>K</kbd>), **shortcut guide** (<kbd>F1</kbd>), **canned responses** and the new server-rack logo.
+> **Version 1.2.0 (Previous):** **bulk actions** on ticket, problem and change lists (select with Ctrl, Shift or <kbd>Ctrl</kbd> + <kbd>A</kbd>, then assign, change status, urgency or category, post the same follow-up or move to the trash at once), **merge duplicates** into a main item, **duplicate** items, **similar items** in the new-ticket form and three new reports: **First response**, **Backlog aging** and **Top requesters**. It also makes database search accent-insensitive and fixes weekend SLA warnings, changes stuck after a refusal, rules that reset priority, recurring tickets, project rollup and CSV parsing, and tightens permissions. No new tables: install over 1.0.0 or 1.1.0. Details in [Bulk actions and merge (1.2.0)](#bulk-actions-and-merge-120).
 
 > **Version 1.0.0 (Previous):** first release. Tickets, problems and changes with ITIL workflows, priority matrix, business-hours SLA, approvals and satisfaction surveys; Kanban, Gantt, portfolio and schedule; inventory, software, licenses, contracts and suppliers; knowledge base and self-service; org units, per-module profiles, business rules, audit and trash; six databases and a `.exe` installer.
 
@@ -101,11 +101,11 @@ Hexagonal architecture in three Maven modules: `talos-domain` (pure Java entitie
 
 ## How to run
 
-1. Download [**Talos-1.2.0.exe**](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.0.exe), run it and open **Talos** from the Start menu.
+1. Download [**Talos-1.2.1.exe**](https://github.com/ravelroot/Information-Technology-Service-Management/raw/main/Talos-1.2.1.exe), run it and open **Talos** from the Start menu.
 2. Pick the database and test the connection; tables are created automatically.
 3. Create the organization and your administrator account, sign in and finish the guided setup (organization, units, locations, team, business hours and categories).
 
-To build from source on Windows, run `scripts\build-windows.cmd`: it finds or downloads JDK 21, Maven and WiX Toolset 3 into `.tools`, runs `mvn clean verify` and writes `Talos-1.2.0.exe` to the project root. Elsewhere, with JDK 21+ and Maven 3.9+: `mvn clean verify` and `java -jar talos-desktop/target/app/talos.jar`.
+To build from source on Windows, run `scripts\build-windows.cmd`: it finds or downloads JDK 21, Maven and WiX Toolset 3 into `.tools`, runs `mvn clean verify` and writes `Talos-1.2.1.exe` to the project root. Elsewhere, with JDK 21+ and Maven 3.9+: `mvn clean verify` and `java -jar talos-desktop/target/app/talos.jar`.
 
 ## Database
 
@@ -118,7 +118,7 @@ To build from source on Windows, run `scripts\build-windows.cmd`: it finds or do
 | **Microsoft SQL Server** | 2017 |
 | **Oracle Database** | 19c |
 
-Create an empty database and a user allowed to create tables; Talos creates the schema with Flyway. Version 1.2.0 adds no tables or columns. Configuration lives in `%APPDATA%\Talos\talos.properties` (the database password is encrypted with Windows DPAPI), the embedded H2 database in `%LOCALAPPDATA%\Talos\database` and logs in `%LOCALAPPDATA%\Talos\logs`.
+Create an empty database and a user allowed to create tables; Talos creates the schema with Flyway. Versions 1.2.0 and 1.2.1 add no tables or columns. Configuration lives in `%APPDATA%\Talos\talos.properties` (the database password is encrypted with Windows DPAPI), the embedded H2 database in `%LOCALAPPDATA%\Talos\database` and logs in `%LOCALAPPDATA%\Talos\logs`.
 
 ## Development and tests
 

@@ -24,22 +24,22 @@ ROOT = Path(__file__).resolve().parents[2]
 FONTS = ROOT / "talos-desktop/src/main/resources/io/talos/desktop/fonts"
 
 INK = colors.HexColor("#000000")
-TEXT2 = colors.HexColor("#2B2727")
-MUTED = colors.HexColor("#6B6262")
-PAPER = colors.HexColor("#E8E8E8")
+TEXT2 = colors.HexColor("#4D4B4B")
+MUTED = colors.HexColor("#6B6969")
+PAPER = colors.HexColor("#F5F4F4")
 SURFACE = colors.HexColor("#FFFFFF")
-SURFACE2 = colors.HexColor("#F1EFEE")
+SURFACE2 = colors.HexColor("#FAFAF9")
 HEAD = colors.HexColor("#000000")
-ZEBRA = colors.HexColor("#E8E8E8")
-LINE = colors.HexColor("#D9D4D1")
-LINE2 = colors.HexColor("#BAB7B5")
-SAND = colors.HexColor("#D9D1CE")
-STONE = colors.HexColor("#BAB7B5")
-MAUVE = colors.HexColor("#AB9D9D")
-DARK = colors.HexColor("#2B2727")
+ZEBRA = colors.HexColor("#F5F4F4")
+LINE = colors.HexColor("#E8E7E6")
+LINE2 = colors.HexColor("#D3D1D0")
+SAND = colors.HexColor("#E8E7E6")
+STONE = colors.HexColor("#BAB7B6")
+MAUVE = colors.HexColor("#6B6969")
+DARK = colors.HexColor("#333232")
 BLACK = colors.HexColor("#000000")
-ON_DARK = colors.HexColor("#F1EFEE")
-ON_DARK_MUTED = colors.HexColor("#BAB7B5")
+ON_DARK = colors.HexColor("#FFFFFF")
+ON_DARK_MUTED = colors.HexColor("#BAB7B6")
 
 PAGE_W, PAGE_H = A4
 MARGIN_X = 22 * mm
@@ -100,7 +100,7 @@ def md(text: str) -> str:
     t = re.sub(r"\[\[(.+?)\]\]",
                lambda m: f'<font face="PlexMono-Medium" size="8.2" color="#000000" backColor="#E8E8E8">'
                          f'&nbsp;{m.group(1)}&nbsp;</font>', t)
-    t = re.sub(r"`(.+?)`", lambda m: f'<font face="PlexMono" size="8.6" color="#2B2727">{m.group(1)}</font>', t)
+    t = re.sub(r"`(.+?)`", lambda m: f'<font face="PlexMono" size="8.6" color="#4D4B4B">{m.group(1)}</font>', t)
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     return t
 
@@ -211,7 +211,7 @@ class ManualDoc(BaseDocTemplate):
             self.canv.addOutlineEntry(f.toc_text, key, level=f.level, closed=f.level > 0)
             label = f.toc_text
             if f.number:
-                label = f'<font face="PlexMono-Medium" color="#6B6262">{f.number}</font>&nbsp;&nbsp;&nbsp;{f.toc_text}'
+                label = f'<font face="PlexMono-Medium" color="#6B6969">{f.number}</font>&nbsp;&nbsp;&nbsp;{f.toc_text}'
             self.notify("TOCEntry", (f.level, label, self.page, key))
             if f.level == 0:
                 self._starts.append((self.page, f.toc_text))
@@ -257,7 +257,7 @@ def draw_cover(c, doc) -> None:
 
     c.setFont("PlexMono", 9)
     c.setFillColor(ON_DARK)
-    c.drawString(x, 58 * mm, f"Versão {VERSION}  ·  Outubro de 2026  ·  Windows 10 e 11 (64 bits)")
+    c.drawString(x, 58 * mm, f"Versão {VERSION}  ·  Novembro de 2026  ·  Windows 10 e 11 (64 bits)")
     c.drawString(x, 52 * mm, "Java 21  ·  Spring Boot 4  ·  JavaFX 21  ·  Licença MIT")
     c.drawString(x, 46 * mm, "Copyright (©) 2026 Erik Pimenta")
     band = [PAPER, SAND, STONE, MAUVE, DARK]

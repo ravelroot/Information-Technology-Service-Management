@@ -8,7 +8,7 @@ import java.time.Clock;
 
 public final class Services {
 
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.2.1";
 
     private final DataStore store;
     private final Clock clock;

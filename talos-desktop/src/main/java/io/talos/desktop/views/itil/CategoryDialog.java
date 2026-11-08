@@ -28,7 +28,7 @@ import javafx.scene.layout.VBox;
 
 public final class CategoryDialog {
 
-    static final List<String> COLORS = List.of("#000000", "#2B2727", "#6B6262", "#AB9D9D", "#BAB7B5", "#D9D1CE", "#2F5A3F", "#8A2F2F");
+    static final List<String> COLORS = List.of("#000000", "#333232", "#6B6969", "#A3A09F", "#BAB7B6", "#D3D1D0", "#3E6B2A", "#9B2F1E");
 
     private final VBox rows = new VBox(4);
     private final Runnable onChange;
